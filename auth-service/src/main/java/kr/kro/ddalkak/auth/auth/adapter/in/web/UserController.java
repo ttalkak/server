@@ -35,8 +35,7 @@ public class UserController {
         RegisterCommand command = new RegisterCommand(
                 request.getUsername(),
                 request.getPassword(),
-                request.getEmail(),
-                UserRole.valueOf(request.getUserRole())
+                request.getEmail()
         );
 
         signUpUseCase.signUp(command);

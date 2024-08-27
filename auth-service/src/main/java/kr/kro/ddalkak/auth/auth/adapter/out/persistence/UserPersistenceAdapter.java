@@ -1,5 +1,7 @@
 package kr.kro.ddalkak.auth.auth.adapter.out.persistence;
 
+import kr.kro.ddalkak.auth.auth.adapter.out.persistence.entity.UserEntity;
+import kr.kro.ddalkak.auth.auth.domain.UserRole;
 import kr.kro.ddalkak.auth.common.PersistenceAdapter;
 import kr.kro.ddalkak.auth.auth.adapter.out.persistence.entity.UserEntityMapper;
 import kr.kro.ddalkak.auth.auth.adapter.out.persistence.repository.UserJpaRepository;
@@ -22,7 +24,8 @@ public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort {
     }
 
     @Override
-    public void save(String username, String password, String email, String userRole) {
-
+    public void save(String username, String password, String email, UserRole role) {
+        UserEntity entity = new UserEntity(username, password, email, role);
+        userJpaRepository.save(entity);
     }
 }

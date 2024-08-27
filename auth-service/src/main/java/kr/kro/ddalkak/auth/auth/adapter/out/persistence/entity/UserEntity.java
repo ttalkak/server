@@ -2,19 +2,18 @@ package kr.kro.ddalkak.auth.auth.adapter.out.persistence.entity;
 
 import jakarta.persistence.*;
 import kr.kro.ddalkak.auth.auth.domain.UserRole;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(
-        name = "user",
+        name = "users",
         uniqueConstraints = {
                 @UniqueConstraint(name = "username_unique_constraint", columnNames = "username")
         }
 )
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +34,11 @@ public class UserEntity {
     @Column(name = "is_email_verified", nullable = false)
     @ColumnDefault("false")
     private boolean isEmailVerified = false;
+
+    public UserEntity(String username, String password, String email, UserRole userRole) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.userRole = userRole;
+    }
 }
