@@ -3,10 +3,6 @@ RUN apt-get update && apt-get install -y procps
 
 COPY . .
 
-RUN ./gradlew build
-
-RUN ls -al
-
-RUN pwd
+RUN sh gradlew build
 
 ENTRYPOINT ["java", "-jar", "build/libs/gateway-0.0.1.jar"]

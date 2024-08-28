@@ -3,6 +3,6 @@ RUN apt-get update && apt-get install -y procps
 
 COPY . .
 
-RUN ./gradlew build
+RUN sh gradlew build
 
 ENTRYPOINT ["java", "-jar", "build/libs/config-0.0.1.jar"]
