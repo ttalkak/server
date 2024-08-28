@@ -1,10 +1,10 @@
-package kr.kro.ddalkak.auth;
+package kr.kro.ddalkak.gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AuthServiceApplicationTests {
+class GatewayServiceApplicationTests {
 
     @Test
     void contextLoads() {

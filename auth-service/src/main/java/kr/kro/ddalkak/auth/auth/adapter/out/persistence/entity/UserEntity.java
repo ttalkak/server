@@ -19,13 +19,16 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String username;
 
     @Column(nullable = false, length = 300)
     private String password;
 
     private String email;
+
+    @Column(name = "provider_id")
+    private String providerToken;
 
     @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -40,5 +43,10 @@ public class UserEntity {
         this.password = password;
         this.email = email;
         this.userRole = userRole;
+    }
+
+    public UserEntity(String username, String password, String email, UserRole userRole, String providerToken) {
+        this(username, password, email, userRole);
+        this.providerToken = providerToken;
     }
 }
