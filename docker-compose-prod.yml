@@ -1,0 +1,70 @@
+name: ddalkak-docker-compose
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ddalkak
+      - POSTGRES_USER=ddalkak
+      - POSTGRES_PASSWORD=ddalkak
+    networks:
+      - spring-network
+
+  redis:
+    image: redis:6.0
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - spring-network
+
+  eureka-server:
+    container_name: eureka-server
+    build: eureka-server
+    networks:
+      - spring-network
+  
+  config-server:
+    container_name: config-server
+    build: config-server
+    ports:
+      - 8888:8888
+    networks:
+      - spring-network
+  
+  gateway-service:
+    container_name: gateway-service
+    build: gateway-service
+    ports:
+      - 8000:8000
+    networks:
+      - spring-network
+
+  # compute-service:
+  #   container_name: compute-service
+  #   build: compute-service
+  #   depends_on:
+  #     - eureka-server
+  #     - gateway-service
+  
+  auth-service:
+    container_name: auth-service
+    build: auth-service
+    depends_on:
+      - eureka-server
+      - gateway-service
+      - config-server
+
+    networks:
+      - spring-network
+
+volumes:
+  postgres_data:
+
+networks:
+  spring-network:

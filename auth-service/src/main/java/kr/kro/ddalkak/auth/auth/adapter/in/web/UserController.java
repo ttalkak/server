@@ -3,6 +3,8 @@ package kr.kro.ddalkak.auth.auth.adapter.in.web;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.kro.ddalkak.auth.auth.adapter.in.web.exception.CustomValidationException;
+import kr.kro.ddalkak.auth.common.WebAdapter;
 import kr.kro.ddalkak.auth.common.util.CookieUtils;
 import kr.kro.ddalkak.auth.auth.adapter.in.web.request.SignInRequest;
 import kr.kro.ddalkak.auth.auth.adapter.in.web.request.SignUpRequest;
@@ -15,13 +17,16 @@ import kr.kro.ddalkak.auth.auth.domain.JwtToken;
 import kr.kro.ddalkak.auth.auth.domain.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static kr.kro.ddalkak.auth.auth.adapter.in.security.JwtTokenProvider.REFRESH_TOKEN_COOKIE;
 
 @RestController
-@RequestMapping("/v1/users")
+@WebAdapter
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 public class UserController {
     private final SignUpUseCase signUpUseCase;
     private final SignInUseCase signInUseCase;
@@ -31,7 +36,14 @@ public class UserController {
     private int refreshExpire;
 
     @PostMapping("/sign-up")
-    public ApiResponse<Void> signUp(@RequestBody SignUpRequest request) {
+    public ApiResponse<Void> signUp(
+            @RequestBody @Validated SignUpRequest request,
+            Errors errors
+    ) {
+        if (errors.hasErrors()) {
+            throw new CustomValidationException("입력값이 올바르지 않습니다.", errors);
+        }
+
         RegisterCommand command = new RegisterCommand(
                 request.getUsername(),
                 request.getPassword(),
@@ -43,7 +55,14 @@ public class UserController {
     }
 
     @PostMapping("/sign-in")
-    public ApiResponse<JwtToken> loadUser(@RequestBody SignInRequest request) {
+    public ApiResponse<JwtToken> loadUser(
+            @RequestBody @Validated SignInRequest request,
+            Errors errors
+        ) {
+        if (errors.hasErrors()) {
+            throw new CustomValidationException("입력값이 올바르지 않습니다.", errors);
+        }
+
         return ApiResponse.success(
                 signInUseCase.signIn(request.getUsername(), request.getPassword())
         );

@@ -3,6 +3,8 @@ package kr.kro.ddalkak.auth.auth.adapter.in.web.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 @AllArgsConstructor
 public class ApiResponse<T> {
@@ -21,5 +23,9 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> fail(String message, int status) {
         return new ApiResponse<>(false, message, status, null);
+    }
+
+    public static <T> ApiResponse<Map<String, String>> fail(String message, Map<String, String> errors) {
+        return new ApiResponse<>(false, message, 400, errors);
     }
 }

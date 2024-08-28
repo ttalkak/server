@@ -1,1 +1,1 @@
-rootProject.name = "compute"
+rootProject.name = "compute-service"
