@@ -54,6 +54,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 .queryParam("accessToken", accessToken)
                 .build()
                 .toUriString();
+        
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
