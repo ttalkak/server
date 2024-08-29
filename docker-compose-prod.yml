@@ -22,6 +22,7 @@ services:
       - "6379:6379"
     networks:
       - spring-network
+    entrypoint: redis-server --requirepass ddalkak --maxmemory 128mb
 
   eureka-server:
     container_name: eureka-server

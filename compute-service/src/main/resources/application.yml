@@ -4,8 +4,6 @@ server:
 spring:
   application:
     name: compute-service
-  profiles:
-    active: dev
   config:
     import: optional:configserver:http://localhost:8888
     name: compute-service
