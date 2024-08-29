@@ -26,6 +26,8 @@ services:
   eureka-server:
     container_name: eureka-server
     build: eureka-server
+    ports:
+      - 8761:8761
     networks:
       - spring-network
   
