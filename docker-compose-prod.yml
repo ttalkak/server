@@ -56,7 +56,9 @@ services:
   
   auth-service:
     container_name: auth-service
-    build: auth-service
+    build: 
+      context: auth-service
+      dockerfile: Dockerfile.prod
     depends_on:
       - eureka-server
       - gateway-service
