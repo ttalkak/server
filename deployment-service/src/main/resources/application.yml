@@ -1,0 +1,23 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: deployment-service
+
+
+
+
+#  cloud:
+#    routes:
+#      - id: project-service
+#        uri: lb://PROJECT-SERVICE
+#        predicates:
+#          - Path=/project-service/**
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
