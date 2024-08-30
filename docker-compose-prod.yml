@@ -42,7 +42,9 @@ services:
   
   gateway-service:
     container_name: gateway-service
-    build: gateway-service
+    build: 
+      context: gateway-service
+      dockerfile: Dockerfile.prod
     ports:
       - 8000:8000
     networks:
