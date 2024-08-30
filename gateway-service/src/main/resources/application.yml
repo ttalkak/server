@@ -8,12 +8,11 @@ spring:
     active: dev
   cloud:
     gateway:
-      mvc:
-        routes:
-          - id: auth-service
-            uri: lb://AUTH-SERVICE
-            predicates:
-              - Path=/auth/**
+      routes:
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
 
 eureka:
   client:

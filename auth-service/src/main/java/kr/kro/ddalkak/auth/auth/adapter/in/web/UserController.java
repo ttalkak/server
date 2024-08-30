@@ -16,6 +16,7 @@ import kr.kro.ddalkak.auth.auth.application.port.in.SignUpUseCase;
 import kr.kro.ddalkak.auth.auth.domain.JwtToken;
 import kr.kro.ddalkak.auth.auth.domain.UserRole;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static kr.kro.ddalkak.auth.auth.adapter.in.security.JwtTokenProvider.REFRESH_TOKEN_COOKIE;
 
+@Slf4j
 @RestController
 @WebAdapter
 @RequiredArgsConstructor
@@ -83,5 +85,10 @@ public class UserController {
         CookieUtils.addCookie(response, REFRESH_TOKEN_COOKIE, refresh.getRefreshToken(), refreshExpire, true);
 
         return ApiResponse.success(refresh);
+    }
+
+    @GetMapping("/test")
+    public void test() {
+        log.info("ㅎㅎㅎ");
     }
 }
