@@ -20,7 +20,7 @@ public class DeploymentController {
     private final DeploymentDeleteUseCase deploymentDeleteUseCase;
 
     @PostMapping("/create")
-    public ApiResponse<Void> create(@RequestBody DeploymentCreateRequest request){
+    public ApiResponse<Void> create(@RequestBody DeploymentCreateRequest request) {
 
         // 서비스단의 dto를 생성한다.
         DeploymentCreateCommand command = new DeploymentCreateCommand(
@@ -32,8 +32,5 @@ public class DeploymentController {
 
         return ApiResponse.success();
     }
-
-
-
 
 }
