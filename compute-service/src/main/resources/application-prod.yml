@@ -6,3 +6,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://host.docker.internal:8761/eureka/
+
+hosts:
+  logstash: logstash
