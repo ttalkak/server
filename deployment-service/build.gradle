@@ -32,7 +32,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
 
     // 스프링 클라우드 의존성
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+//    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
     implementation 'org.springframework.kafka:spring-kafka'
@@ -47,6 +47,11 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // swagger 의존성
+//    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+//
+//    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0' // 최신 버전으로 교체 가능
 
 }
 
