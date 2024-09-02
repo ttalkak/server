@@ -86,9 +86,4 @@ public class UserController {
 
         return ApiResponse.success(refresh);
     }
-
-    @GetMapping("/test")
-    public void test() {
-        log.info("ㅎㅎㅎ");
-    }
 }
