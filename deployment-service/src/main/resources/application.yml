@@ -4,9 +4,29 @@ server:
 spring:
   application:
     name: deployment-service
+  config:
+    import : optional:configserver:http://localhost:8888
+    name : deployment-service
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: deployment
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
 
-
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 #  cloud:
 #    routes:
@@ -16,8 +36,15 @@ spring:
 #          - Path=/project-service/**
 
 eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance.id:${random.value}}
   client:
     fetch-registry: true
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+producers:
+  bootstrap-servers: localhost:9092
+  topic1:
+    name: create_instance

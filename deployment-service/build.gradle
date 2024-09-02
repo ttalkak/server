@@ -29,10 +29,14 @@ dependencies {
     // 데이터베이스 관련 의존성
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'com.h2database:h2'
 
     // 스프링 클라우드 의존성
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+    implementation 'org.springframework.kafka:spring-kafka'
+
 
     // 개발 도구 의존성
     compileOnly 'org.projectlombok:lombok'
@@ -43,6 +47,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 }
 
 dependencyManagement {
