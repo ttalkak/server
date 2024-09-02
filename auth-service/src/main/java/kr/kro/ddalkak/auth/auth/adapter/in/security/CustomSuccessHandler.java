@@ -50,7 +50,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     }
 
     private String getRedirectUrl(String redirectURI, String accessToken) {
-        return UriComponentsBuilder.fromUriString(redirectURI + "/auth/callback")
+        return UriComponentsBuilder.fromUriString(redirectURI)
                 .queryParam("accessToken", accessToken)
                 .build()
                 .toUriString();

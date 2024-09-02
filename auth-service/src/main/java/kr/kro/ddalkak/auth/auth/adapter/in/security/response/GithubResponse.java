@@ -26,11 +26,19 @@ public class GithubResponse implements OAuth2Response {
 
 	@Override
 	public String getEmail() {
-		return attribute.get("email").toString();
+		Object email = attribute.get("email");
+		if (email == null) {
+			return getProviderId() + "@github.com";
+		}
+		return email.toString();
 	}
 
 	@Override
 	public String getName() {
-		return attribute.get("name").toString();
+		Object name = attribute.get("name");
+		if (name == null) {
+			return getProviderId();
+		}
+		return name.toString();
 	}
 }

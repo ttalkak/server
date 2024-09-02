@@ -35,9 +35,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
 		ProviderType providerType = ProviderType.valueOf(registrationId.toUpperCase());
-		OAuth2Response response = CustomOAuthUserFactory.parseOAuth2Response(providerType,
-			oauth2User.getAttributes()
-		);
+		OAuth2Response response = CustomOAuthUserFactory.parseOAuth2Response(providerType, oauth2User.getAttributes());
 
 
 		String username = response.getEmail();
