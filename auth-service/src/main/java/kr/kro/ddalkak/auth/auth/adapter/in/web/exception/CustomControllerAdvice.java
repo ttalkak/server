@@ -23,8 +23,9 @@ public class CustomControllerAdvice {
     @ExceptionHandler(CustomValidationException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationException(CustomValidationException e) {
         log.error("error message: {}", e.getMessage());
+        // ! 핸들링 가능한 에러인 경우 200 상태코드로 응답
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.OK)
                 .body(ApiResponse.fail(e.getMessage(), e.getErrors()));
     }
 }
