@@ -17,7 +17,6 @@ public class UserEntityMapper {
         user.setAccessToken(userEntity.getAccessToken());
         user.setUserRole(userEntity.getUserRole());
         return user;
-        
     }
 
     public static LoginUser toLoginUser(UserEntity userEntity) {
