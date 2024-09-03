@@ -23,7 +23,7 @@ spring:
         - id: project-service
           uri: lb://PROJECT-SERVICE
           predicates:
-            - Path=/v1/**
+            - Path=/v1/project/**
           filters:
             - AuthenticationHeaderFilter
 
