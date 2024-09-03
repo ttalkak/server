@@ -12,6 +12,7 @@ public class UserEntityMapper {
         User user = new User();
         user.setId(userEntity.getId());
         user.setUsername(userEntity.getUsername());
+        user.setPassword(userEntity.getPassword());
         user.setEmail(userEntity.getEmail());
         user.setAccessToken(userEntity.getAccessToken());
         user.setUserRole(userEntity.getUserRole());
