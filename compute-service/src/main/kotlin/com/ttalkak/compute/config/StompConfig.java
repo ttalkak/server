@@ -1,4 +1,4 @@
-package kr.kro.ddalkak.compute.config;
+package com.ttalkak.compute.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,8 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("http://localhost:3000", "https://ttalkak.kro.kr");
+                .setAllowedOrigins("http://localhost:3000", "http://localhost:5173", "https://ttalkak.kro.kr")
+                .withSockJS();
     }
 
     @Override

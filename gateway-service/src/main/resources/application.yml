@@ -20,3 +20,10 @@ spring:
             - Path=/user/**
           filters:
             - AuthenticationHeaderFilter
+
+        - id: compute-service
+          uri: lb://COMPUTE-SERVICE
+          predicates:
+              - Path=/ws/**
+          filters:
+              - AuthenticationHeaderFilter

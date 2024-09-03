@@ -26,6 +26,15 @@ public class CustomControllerAdvice {
         // ! 핸들링 가능한 에러인 경우 200 상태코드로 응답
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ApiResponse.fail(e.getMessage(), e.getErrors()));
+                .body(ApiResponse.fail(e.getMessage(), HttpStatus.BAD_REQUEST.value(), e.getErrors()));
+    }
+
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+    public ResponseEntity<ApiResponse<Void>> handleBadRequestException(Exception e) {
+        log.error("error", e);
+        // ! 핸들링 가능한 에러인 경우 200 상태코드로 응답
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.fail(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
     }
 }

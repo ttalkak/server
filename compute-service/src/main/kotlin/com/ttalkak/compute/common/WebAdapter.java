@@ -1,4 +1,4 @@
-package kr.kro.ddalkak.compute.common;
+package com.ttalkak.compute.common;
 
 import org.springframework.stereotype.Component;
 
@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Component
-public @interface UseCase {
+public @interface WebAdapter {
 }

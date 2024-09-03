@@ -1,4 +1,4 @@
-package kr.kro.ddalkak.compute
+package com.ttalkak.compute
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
