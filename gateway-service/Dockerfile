@@ -5,4 +5,4 @@ COPY . .
 
 RUN sh gradlew build
 
-ENTRYPOINT ["java", "-jar", "build/libs/gateway-service-0.0.1.jar"]
+ENTRYPOINT ["java", "-jar", , "-Dspring.profiles.active=dev", "build/libs/gateway-service-0.0.1.jar"]
