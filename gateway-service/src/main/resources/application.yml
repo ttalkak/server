@@ -8,16 +8,28 @@ spring:
     active: dev
   cloud:
     gateway:
-      mvc:
-        routes:
-          - id: auth-service
-            uri: lb://AUTH-SERVICE
-            predicates:
-              - Path=/auth/**
+      routes:
+        - id: auth-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/auth/**
 
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://eureka-server:8761/eureka/
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/**
+          filters:
+            - AuthenticationHeaderFilter
+        - id: project-service
+          uri: lb://PROJECT-SERVICE
+          predicates:
+            - Path=/v1/**
+          filters:
+            - AuthenticationHeaderFilter
+
+        - id: compute-service
+          uri: lb://COMPUTE-SERVICE
+          predicates:
+              - Path=/ws/**
+          filters:
+              - AuthenticationHeaderFilter
