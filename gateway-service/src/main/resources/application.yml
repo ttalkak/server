@@ -20,6 +20,12 @@ spring:
             - Path=/user/**
           filters:
             - AuthenticationHeaderFilter
+        - id: project-service
+          uri: lb://PROJECT-SERVICE
+          predicates:
+            - Path=/v1/project/**
+          filters:
+            - AuthenticationHeaderFilter
 
         - id: compute-service
           uri: lb://COMPUTE-SERVICE

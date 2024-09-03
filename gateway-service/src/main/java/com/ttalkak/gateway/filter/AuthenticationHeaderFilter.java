@@ -57,9 +57,9 @@ public class AuthenticationHeaderFilter extends AbstractGatewayFilterFactory<Aut
                 return onError(exchange, "유효하지 않은 JWT 토큰 입니다.", HttpStatus.UNAUTHORIZED);
             }
 
-                ServerHttpRequest newRequest = request.mutate()
-                        .header("X-USER-ID", userId)
-                    .build();
+            ServerHttpRequest newRequest = request.mutate()
+                    .header("X-USER-ID", userId)
+                .build();
 
             log.debug("newRequest: {}", newRequest);
 
@@ -70,7 +70,7 @@ public class AuthenticationHeaderFilter extends AbstractGatewayFilterFactory<Aut
     private Mono<Void> onError(ServerWebExchange exchange, String error, HttpStatus status) {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(status);
-        log.error(error);
+        log.error("error: {}", error);
         return response.setComplete();
     }
 
