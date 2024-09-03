@@ -25,7 +25,7 @@ public class ApiResponse<T> {
         return new ApiResponse<>(false, message, status, null);
     }
 
-    public static <T> ApiResponse<Map<String, String>> fail(String message, Map<String, String> errors) {
-        return new ApiResponse<>(false, message, 200, errors);
+    public static ApiResponse<Map<String, String>> fail(String message, int status, Map<String, String> errors) {
+        return new ApiResponse<>(false, message, status, errors);
     }
 }

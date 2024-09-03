@@ -5,4 +5,6 @@ COPY . .
 
 RUN sh gradlew build
 
+EXPOSE 8888
+
 ENTRYPOINT ["java", "-jar", "build/libs/config-0.0.1.jar"]
