@@ -28,4 +28,8 @@ class ComputeUserCacheRepository(
     fun exists(userId: Long): Boolean {
         return hashOperations.hasKey(COMPUTE_CACHE_KEY, userId)
     }
+
+    fun findAll(): List<ComputeUserCache> {
+        return hashOperations.entries(COMPUTE_CACHE_KEY).values.toList()
+    }
 }
