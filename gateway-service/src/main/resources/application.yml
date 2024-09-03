@@ -10,11 +10,13 @@ spring:
     gateway:
       routes:
         - id: auth-service
-          uri: lb://AUTH-SERVICE
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/auth/**
 
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/**
+          filters:
+            - AuthenticationHeaderFilter

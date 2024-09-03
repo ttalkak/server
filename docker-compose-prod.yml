@@ -75,10 +75,10 @@ services:
   #     - eureka-server
   #     - gateway-service
   
-  auth-service:
-    container_name: auth-service
+  user-service:
+    container_name: user-service
     build: 
-      context: auth-service
+      context: user-service
       dockerfile: Dockerfile.prod
     depends_on:
       - eureka-server
