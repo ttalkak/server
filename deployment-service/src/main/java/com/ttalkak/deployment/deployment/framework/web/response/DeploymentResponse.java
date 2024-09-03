@@ -45,11 +45,11 @@ public class DeploymentResponse {
                 .projectId(deploymentEntity.getProjectId())
                 .status(String.valueOf(deploymentEntity.getStatus()))
                 .serviceType(String.valueOf(deploymentEntity.getServiceType()))
-                .repositoryLastCommitMessage(deploymentEntity.getGithubCommit().getRepositoryLastCommitMessage())
-                .repositoryLastCommitUserName(deploymentEntity.getGithubCommit().getRepositoryLastCommitUserName())
-                .repositoryLastCommitUserProfile(deploymentEntity.getGithubCommit().getRepositoryLastCommitUserProfile())
-                .repositoryUrl(deploymentEntity.getGithubRepository().getRepositoryUrl())
-                .repositoryName(deploymentEntity.getGithubRepository().getRepositoryName())
+                .repositoryLastCommitMessage(deploymentEntity.getGithubInfo().getRepositoryLastCommitMessage())
+                .repositoryLastCommitUserName(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserName())
+                .repositoryLastCommitUserProfile(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserProfile())
+                .repositoryUrl(deploymentEntity.getGithubInfo().getRepositoryUrl())
+                .repositoryName(deploymentEntity.getGithubInfo().getRepositoryName())
                 .build();
     }
 

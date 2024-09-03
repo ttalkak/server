@@ -10,8 +10,7 @@ import com.ttalkak.deployment.deployment.domain.event.HostingEvent;
 import com.ttalkak.deployment.deployment.domain.model.DatabaseEntity;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
-import com.ttalkak.deployment.deployment.domain.model.vo.GithubCommit;
-import com.ttalkak.deployment.deployment.domain.model.vo.GithubRepository;
+import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
@@ -34,23 +33,26 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
 
     private final DatabaseOutputPort databaseOutputPort;
 
-    private final GithubOutputPort githubOutputPort;
 
     private final EventOutputPort eventOutputPort;
 
     @Override
     public DeploymentResponse createDeployment(DeploymentCreateRequest deploymentCreateRequest) {
 
+        GithubInfo githubInfo = GithubInfo.create(
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryName(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getRootDirectory()
+        );
 
-        GithubRepository repositoryDetails = githubOutputPort.getRepositoryDetails(deploymentCreateRequest.getGithubOwner(), deploymentCreateRequest.getGithubRepo());
-        GithubCommit lastCommitDetails = githubOutputPort.getLastCommitDetails(deploymentCreateRequest.getGithubOwner(), deploymentCreateRequest.getGithubRepo());
-        // 배포 객체 생성
+       // 배포 객체 생성
         DeploymentEntity deployment = DeploymentEntity.createDeployment(
                 deploymentCreateRequest.getProjectId(),
                 ServiceType.valueOf(deploymentCreateRequest.getServiceType()),
-                lastCommitDetails,
-                repositoryDetails,
-                deploymentCreateRequest.getRootDirectory(),
+                githubInfo,
                 deploymentCreateRequest.getEnv()
         );
         // 배포 객체 저장
@@ -74,7 +76,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         if(ServiceType.isBackendType(deploymentCreateRequest.getServiceType())){
 
             databaseEvents = new ArrayList<>();
-            for(DatabaseCreateRequest databaseCreateRequest : deploymentCreateRequest.getDatabaseCreateDTOs()) {
+            for(DatabaseCreateRequest databaseCreateRequest : deploymentCreateRequest.getDatabaseCreateRequests()) {
                 DatabaseEntity database = DatabaseEntity.createDatabase(
                         savedDeployment,
                         databaseCreateRequest.getDatabasePort(),
@@ -94,7 +96,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         }
 
         HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), saveHostingEntity.getId(), null, saveHostingEntity.getHostingPort(), hosting.getDomainId(), null);
-        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getRootDirectory(), savedDeployment.getEnv());
+        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getGithubInfo().getRootDirectory(), savedDeployment.getEnv());
         CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, databaseEvents);
         try {
             eventOutputPort.occurCreateInstance(createInstanceEvent);

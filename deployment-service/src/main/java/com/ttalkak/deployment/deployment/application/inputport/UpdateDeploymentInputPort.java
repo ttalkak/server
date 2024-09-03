@@ -4,8 +4,7 @@ import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutput
 import com.ttalkak.deployment.deployment.application.outputport.GithubOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUsecase;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
-import com.ttalkak.deployment.deployment.domain.model.vo.GithubCommit;
-import com.ttalkak.deployment.deployment.domain.model.vo.GithubRepository;
+import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
@@ -31,12 +30,17 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         deploymentEntity.setProjectId(deploymentUpdateRequest.getDeploymentId());
         deploymentEntity.setServiceType(ServiceType.valueOf(deploymentUpdateRequest.getServiceType()));
         // 레포지토리를 바꿨으면?
-        if(!deploymentUpdateRequest.getGithubRepo().equals(deploymentEntity.getGithubRepository().getRepositoryName())){
+        if(!deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryName().equals(deploymentEntity.getGithubInfo().getRepositoryName())){
 
-            GithubRepository repositoryDetails = githubOutputPort.getRepositoryDetails(deploymentUpdateRequest.getGithubOwner(), deploymentUpdateRequest.getGithubRepo());
-            GithubCommit lastCommitDetails = githubOutputPort.getLastCommitDetails(deploymentUpdateRequest.getGithubOwner(), deploymentUpdateRequest.getGithubRepo());
-            deploymentEntity.setGithubRepository(repositoryDetails);
-            deploymentEntity.setGithubCommit(lastCommitDetails);
+            GithubInfo githubInfo = GithubInfo.create(
+                    deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryName(),
+                    deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
+                    deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
+                    deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
+                    deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
+                    deploymentUpdateRequest.getGithubRepositoryRequest().getRootDirectory()
+            );
+            deploymentEntity.setGithubInfo(githubInfo);
         }
 
         deploymentOutputPort.save(deploymentEntity);

@@ -3,8 +3,7 @@ package com.ttalkak.deployment.deployment.domain.model;
 import jakarta.persistence.*;
 import com.ttalkak.deployment.common.BaseEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeployStatus;
-import com.ttalkak.deployment.deployment.domain.model.vo.GithubCommit;
-import com.ttalkak.deployment.deployment.domain.model.vo.GithubRepository;
+import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,38 +40,29 @@ public class DeploymentEntity extends BaseEntity {
     private final List<DatabaseEntity> dataBaseEntities = new ArrayList<>();
 
     @Embedded
-    private GithubCommit githubCommit;
-
-    @Embedded
-    private GithubRepository githubRepository;
-
-    private String rootDirectory;
+    private GithubInfo githubInfo;
 
     private String env;
 
     @Builder
-    private DeploymentEntity(Long id, Long projectId, DeployStatus status, ServiceType serviceType, GithubCommit githubCommit, GithubRepository githubRepository, String rootDirectory, String env) {
+    private DeploymentEntity(Long id, Long projectId, DeployStatus status, ServiceType serviceType, GithubInfo githubInfo, String env) {
         this.id = id;
         this.projectId = projectId;
         this.status = status;
         this.serviceType = serviceType;
-        this.githubCommit = githubCommit;
-        this.rootDirectory = rootDirectory;
-        this.githubRepository = githubRepository;
+        this.githubInfo = githubInfo;
         this.env = env;
     }
 
 
 
     // 배포 생성
-    public static DeploymentEntity createDeployment(Long projectId, ServiceType ServiceType, GithubCommit githubCommit, GithubRepository githubRepository, String rootDirectory, String env){
+    public static DeploymentEntity createDeployment(Long projectId, ServiceType ServiceType, GithubInfo githubInfo, String env){
         return DeploymentEntity.builder()
                 .projectId(projectId)
                 .serviceType(ServiceType)
                 .status(DeployStatus.READY)
-                .githubCommit(githubCommit)
-                .githubRepository(githubRepository)
-                .rootDirectory(rootDirectory)
+                .githubInfo(githubInfo)
                 .env(env)
                 .build();
     }
@@ -89,12 +79,8 @@ public class DeploymentEntity extends BaseEntity {
         this.serviceType = serviceType;
     }
 
-    public void setGithubCommit(GithubCommit githubCommit) {
-        this.githubCommit = githubCommit;
-    }
-
-    public void setGithubRepository(GithubRepository githubRepository) {
-        this.githubRepository = githubRepository;
+    public void setGithubInfo(GithubInfo githubInfo) {
+        this.githubInfo = githubInfo;
     }
 
     public void addHostingEntity(HostingEntity hostingEntity){
@@ -106,6 +92,4 @@ public class DeploymentEntity extends BaseEntity {
         this.dataBaseEntities.add(databaseEntity);
     }
 
-    public void createCreateInstanceEvent() {
-    }
 }

@@ -7,14 +7,32 @@ import lombok.Getter;
 @Getter
 public class GithubCommitResponse {
 
-    @JsonProperty("commit.message")
-    private String repositoryLastCommitMessage;
+    private Commit commit;
 
+    private Committer committer;
 
-    @JsonProperty("committer.avatar_url")
-    private String repositoryLastCommitUserProfile;
+    @Getter
+    public static class Commit {
+        private String message;
+    }
 
+    @Getter
+    public static class Committer {
+        @JsonProperty("avatar_url")
+        private String avatarUrl;
 
-    @JsonProperty("committer.avatar_login")
-    private String repositoryLastCommitUserName;
+        private String login;
+    }
+
+    public String getRepositoryLastCommitMessage() {
+        return commit.getMessage();
+    }
+
+    public String getRepositoryLastCommitUserProfile() {
+        return committer.getAvatarUrl();
+    }
+
+    public String getRepositoryLastCommitUserName() {
+        return committer.getLogin();
+    }
 }

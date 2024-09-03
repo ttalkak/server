@@ -11,7 +11,5 @@ public class DeploymentUpdateRequest {
 
     private String serviceType;
 
-    private String githubOwner;
-
-    private String githubRepo;
+    private GithubRepositoryRequest githubRepositoryRequest;
 }

@@ -27,7 +27,7 @@ public class DeploymentController {
 
     // 배포 등록
     @PostMapping("/deployment")
-    public ResponseEntity<DeploymentResponse> createDeployment(DeploymentCreateRequest deploymentCreateRequest){
+    public ResponseEntity<DeploymentResponse> createDeployment(@RequestBody DeploymentCreateRequest deploymentCreateRequest){
         DeploymentResponse deployment = createDeploymentUsecase.createDeployment(deploymentCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(deployment);
     }

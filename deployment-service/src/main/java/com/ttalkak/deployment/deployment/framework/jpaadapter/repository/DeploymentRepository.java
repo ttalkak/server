@@ -15,7 +15,7 @@ public interface DeploymentRepository extends JpaRepository<DeploymentEntity, Lo
     @Query("select d from DeploymentEntity d where d.projectId = :projectId")
     public List<DeploymentEntity> findAllByProjectId(@Param("projectId") Long projectId);
 
-    @Query("select d from DeploymentEntity d where d.githubRepository.repositoryName like %:githubRepoName% ORDER BY d.id")
+    @Query("select d from DeploymentEntity d where d.githubInfo.repositoryName like %:githubRepoName% ORDER BY d.id")
     public List<DeploymentEntity> searchDeploymentByGithubRepoName(@Param("githubRepoName") String githubRepoName, Pageable pageable);
 
 }

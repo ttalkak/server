@@ -2,7 +2,7 @@ package com.ttalkak.deployment.deployment.framework.githubadpater;
 
 import com.ttalkak.deployment.config.GithubFeignClient;
 import com.ttalkak.deployment.deployment.application.outputport.GithubOutputPort;
-import com.ttalkak.deployment.deployment.domain.model.vo.GithubCommit;
+import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubRepository;
 import com.ttalkak.deployment.deployment.framework.githubadpater.dto.GithubCommitResponse;
 import com.ttalkak.deployment.deployment.framework.githubadpater.dto.GithubRepositoryResponse;
@@ -20,15 +20,22 @@ public class GithubAdapter implements GithubOutputPort {
     @Override
     public GithubRepository getRepositoryDetails(String owner, String repo) {
         GithubRepositoryResponse repositoryDetailsDTO = githubFeignClient.getRepositoryDetails(owner, repo);
+        System.out.println(repositoryDetailsDTO.getRepositoryName());
+        System.out.println(repositoryDetailsDTO.getRepositoryUrl());
+
+
         return new GithubRepository(repositoryDetailsDTO.getRepositoryName(), repositoryDetailsDTO.getRepositoryUrl());
     }
 
     @Override
-    public GithubCommit getLastCommitDetails(String owner, String repo) {
+    public GithubInfo getLastCommitDetails(String owner, String repo) {
         List<GithubCommitResponse> lastCommitDetailsDTO = githubFeignClient.getLastCommitDetails(owner, repo, 1);
         GithubCommitResponse githubCommitResponse = lastCommitDetailsDTO.get(0);
-        return new GithubCommit(githubCommitResponse.getRepositoryLastCommitMessage(),
-                githubCommitResponse.getRepositoryLastCommitUserProfile(),
-                githubCommitResponse.getRepositoryLastCommitUserName());
+
+        System.out.println(githubCommitResponse.getCommit().getMessage());
+        System.out.println(githubCommitResponse.getCommitter().getAvatarUrl());
+        System.out.println(githubCommitResponse.getCommitter().getLogin());
+
+        return null;
     }
 }
