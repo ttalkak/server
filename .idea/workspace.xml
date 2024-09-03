@@ -4,10 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="인텔리제이 설정 삭제">
       <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/logback-spring.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway-service/src/main/java/kr/kro/ddalkak/gateway/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/src/main/java/kr/kro/ddalkak/gateway/config/CorsConfig.java" afterDir="false" />
+=======
+    <list default="true" id="31d36367-ead4-4c91-beaa-636a573d206f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/GithubInfoEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/DeploymentServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/DeploymentServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/CreateDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/CreateDeploymentInputPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/CreateInstanceEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/CreateInstanceEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/DeploymentEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/DeploymentEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/kafka/DeploymentKafkaProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/kafka/DeploymentKafkaProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/src/main/resources/application.yml" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,44 +31,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "JuneYub"
-  }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/sunsuking/ddalkak.git",
-    "accountId": "38a329a7-15d9-4250-b119-04d53c6d467f"
-  }
-}]]></component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 3
-}</component>
-  <component name="ProjectId" id="2lHLQjbhAhbD0x0UH2mB47siOjS" />
-  <component name="ProjectViewState">
-    <option name="flattenModules" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Project/ddalkak/gateway-service",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "vue.rearranger.settings.migration": "true"
+    "git-widget-placeholder": "jun",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
+<<<<<<< Updated upstream
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -64,49 +47,22 @@
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+=======
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+>>>>>>> Stashed changes
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="" />
-      <created>1724832040451</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1724832040451</updated>
-      <workItem from="1724832041616" duration="307000" />
-      <workItem from="1724995147079" duration="2561000" />
-    </task>
-    <task id="LOCAL-00001" summary="로그 트레이싱 기능 구현">
-      <option name="closed" value="true" />
-      <created>1724995186463</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1724995186463</updated>
-    </task>
-    <task id="LOCAL-00002" summary="로그 트레이싱 기능 구현">
-      <option name="closed" value="true" />
-      <created>1724995225254</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1724995225254</updated>
-    </task>
-    <task id="LOCAL-00003" summary="인텔리제이 설정 삭제">
-      <option name="closed" value="true" />
-      <created>1724995302379</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1724995302379</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="로그 트레이싱 기능 구현" />
-    <MESSAGE value="인텔리제이 설정 삭제" />
-    <option name="LAST_COMMIT_MESSAGE" value="인텔리제이 설정 삭제" />
   </component>
 </project>

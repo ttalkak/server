@@ -43,6 +43,23 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+<<<<<<< Updated upstream
+=======
+
+
+    // 로그 id 수집
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation('io.micrometer:micrometer-tracing-bridge-brave') {
+        // 프로젝트에서 Zipkin을 사용하지 않는 경우
+        exclude group: 'io.zipkin.reporter2'
+    }
+
+    // swagger 의존성
+//    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+//
+//    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0' // 최신 버전으로 교체 가능
+
+>>>>>>> Stashed changes
 }
 
 dependencyManagement {

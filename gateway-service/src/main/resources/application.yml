@@ -19,4 +19,28 @@ spring:
           predicates:
             - Path=/user/**
           filters:
+<<<<<<< Updated upstream
             - AuthenticationHeaderFilter
+=======
+            - AuthenticationHeaderFilter
+        - id: project-service
+          uri: lb://PROJECT-SERVICE
+          predicates:
+            - Path=/v1/project/**
+          filters:
+            - AuthenticationHeaderFilter
+
+        - id: compute-service
+          uri: lb://COMPUTE-SERVICE
+          predicates:
+              - Path=/ws/**
+          filters:
+              - AuthenticationHeaderFilter
+                
+        - id: deployment-service
+          uri: lb://DEPLOYMENT-SERVICE
+          predicates:
+            - Path=/v1/deployment/**
+          filters:
+            - AuthenticationHeaderFilter
+>>>>>>> Stashed changes
