@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Slf4j
 @Service
@@ -46,6 +47,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			UserEntity entity = saveUserPort.save(username, encodedPassword, response.getEmail(), response.getProviderId(), accessToken.getTokenValue());
 			return UserEntityMapper.toUser(entity);
 		});
+
+		if (!StringUtils.hasText(user.getAccessToken())) {
+			user.setAccessToken(accessToken.getTokenValue());
+		}
 
 		return new CustomOAuth2User(user);
 	}

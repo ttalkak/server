@@ -5,4 +5,4 @@ COPY . .
 
 RUN sh gradlew build
 
-ENTRYPOINT ["java", "-jar", "build/libs/user-service-0.0.1.jar", "-Dspring.profiles.active=prod"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "build/libs/user-service-0.0.1.jar"]
