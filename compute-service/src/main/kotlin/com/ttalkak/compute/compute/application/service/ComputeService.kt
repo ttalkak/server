@@ -3,16 +3,16 @@ package com.ttalkak.compute.compute.application.service
 import com.ttalkak.compute.common.UseCase
 import com.ttalkak.compute.compute.application.port.`in`.ComputeListener
 import com.ttalkak.compute.compute.application.port.`in`.ConnectCommand
-import com.ttalkak.compute.compute.application.port.out.LoadComputePort
+import com.ttalkak.compute.compute.application.port.out.CheckComputePort
 import com.ttalkak.compute.compute.application.port.out.SaveComputePort
 
 @UseCase
-class ComputeSocketService(
+class ComputeService(
     private val saveComputePort: SaveComputePort,
-    private val loadComputePort: LoadComputePort
+    private val checkComputePort: CheckComputePort
 ): ComputeListener {
     override fun connect(command: ConnectCommand) {
-        if (loadComputePort.isConnected(command.userId)) {
+        if (checkComputePort.isConnected(command.userId)) {
             throw IllegalArgumentException("이미 연결된 사용자입니다.")
         }
 
@@ -27,7 +27,7 @@ class ComputeSocketService(
     }
 
     override fun disconnect(userId: Long) {
-        if (!loadComputePort.isConnected(userId)) {
+        if (!checkComputePort.isConnected(userId)) {
             throw IllegalArgumentException("연결되지 않은 사용자입니다.")
         }
 

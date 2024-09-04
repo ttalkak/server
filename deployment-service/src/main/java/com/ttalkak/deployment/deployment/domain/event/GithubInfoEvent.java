@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeploymentEvent {
+public class GithubInfoEvent {
 
-    private Long deploymentId;
+    private String repositoryUrl;
 
-    private Long projectId;
+    private String rootDirectory;
 
-    private String env;
 }
