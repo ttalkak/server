@@ -1,5 +1,6 @@
 package com.ttalkak.project.project.domain.model;
 
+import com.ttalkak.project.project.domain.model.vo.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,8 +24,11 @@ public class ProjectEntity extends BaseEntity {
 
     private String domainName;
 
+    @Column(name = "status")
+    private ProjectStatus status = ProjectStatus.ACTIVE;
+
     @Builder
-    private ProjectEntity(Long id, Long userId, String projectName, String domainName) {
+    private ProjectEntity(Long id, Long userId, String projectName, String domainName, ProjectStatus status) {
         this.id = id;
         this.userId = userId;
         this.projectName = projectName;
@@ -41,5 +45,13 @@ public class ProjectEntity extends BaseEntity {
     public void edit(ProjectEditor projectEditor) {
         this.projectName = projectEditor.projectName;
         this.domainName = projectEditor.domainName;
+    }
+
+    public void rollbackDeletedStatus() {
+        this.status = ProjectStatus.ACTIVE;
+    }
+
+    public void updateDeletedStatus() {
+        this.status = ProjectStatus.DELETED;
     }
 }

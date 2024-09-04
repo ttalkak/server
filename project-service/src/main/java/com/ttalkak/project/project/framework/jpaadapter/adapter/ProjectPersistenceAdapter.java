@@ -6,11 +6,13 @@ import com.ttalkak.project.global.exception.EntityNotFoundException;
 import com.ttalkak.project.project.application.outputport.DeleteProjectOutputPort;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
+import com.ttalkak.project.project.domain.model.vo.ProjectStatus;
 import com.ttalkak.project.project.framework.jpaadapter.repository.ProjectJpaRepository;
 import com.ttalkak.project.project.application.outputport.SaveProjectOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -37,7 +39,11 @@ public class ProjectPersistenceAdapter implements SaveProjectOutputPort,
      */
     @Override
     public ProjectEntity findById(Long projectId) {
-        return projectJpaRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_PROJECT));
+        ProjectEntity projectEntity = projectJpaRepository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_PROJECT));
+
+        if(projectEntity.getStatus() == ProjectStatus.DELETED) throw new EntityNotFoundException(ErrorCode.NOT_EXISTS_PROJECT);
+        return projectEntity;
     }
 
     /**
@@ -80,6 +86,23 @@ public class ProjectPersistenceAdapter implements SaveProjectOutputPort,
      */
     @Override
     public void deleteProject(Long projectId) {
-        projectJpaRepository.deleteById(projectId);
+        ProjectEntity projectEntity = projectJpaRepository.findById(projectId)
+                .orElseThrow( () -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_PROJECT));
+
+        projectEntity.updateDeletedStatus();
+        projectJpaRepository.save(projectEntity);
+    }
+
+    /**
+     * 삭제된 프로젝트 롤백
+     * @param projectId
+     */
+    @Override
+    public void rollbackStatusProject(Long projectId) {
+        ProjectEntity projectEntity = projectJpaRepository.findById(projectId)
+                .orElseThrow( () -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_PROJECT));
+
+        projectEntity.rollbackDeletedStatus();
+        projectJpaRepository.save(projectEntity);
     }
 }

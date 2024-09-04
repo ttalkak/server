@@ -29,7 +29,7 @@ class ProjectControllerTest {
                 .build();
 
         ProjectResponse response = ProjectResponse.builder()
-                .name("프로젝트V1")
+                .projectName("프로젝트V1")
                 .userId(1L)
                 .build();
 

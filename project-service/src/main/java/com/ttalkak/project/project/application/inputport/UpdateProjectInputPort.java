@@ -33,4 +33,5 @@ public class UpdateProjectInputPort implements UpdateProjectUseCase {
         saveProjectOutputPort.save(projectEntity);
         return ProjectResponse.mapToResponse(projectEntity);
     }
+
 }
