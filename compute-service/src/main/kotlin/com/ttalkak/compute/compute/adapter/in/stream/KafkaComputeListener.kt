@@ -12,9 +12,9 @@ class KafkaComputeListener(
         const val COMPUTE_TOPIC = "create-compute"
     }
     
-    @KafkaListener(topics = [COMPUTE_TOPIC])
-    fun listen(message: String) {
-        redisTemplate.convertAndSend(COMPUTE_TOPIC, message)
-        println("KafkaComputeListener: $message")
-    }
+//    @KafkaListener(topics = [COMPUTE_TOPIC])
+//    fun listen(message: String) {
+//        redisTemplate.convertAndSend(COMPUTE_TOPIC, message)
+//        println("KafkaComputeListener: $message")
+//    }
 }

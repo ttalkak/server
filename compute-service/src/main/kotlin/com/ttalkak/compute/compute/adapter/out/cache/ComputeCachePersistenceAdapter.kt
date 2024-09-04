@@ -3,14 +3,13 @@ package com.ttalkak.compute.compute.adapter.out.cache
 import com.ttalkak.compute.common.PersistenceAdapter
 import com.ttalkak.compute.compute.adapter.out.cache.entity.ComputeUserCache
 import com.ttalkak.compute.compute.adapter.out.cache.repository.ComputeUserCacheRepository
-import com.ttalkak.compute.compute.application.port.out.CheckComputePort
 import com.ttalkak.compute.compute.application.port.out.SaveComputePort
 import com.ttalkak.compute.compute.domain.ComputerType
 
 @PersistenceAdapter
 class ComputeCachePersistenceAdapter(
     private val computeUserCacheRepository: ComputeUserCacheRepository
-): SaveComputePort, CheckComputePort {
+): SaveComputePort {
     override fun saveCompute(
         userId: Long,
         computeLimit: Int,
@@ -21,6 +20,7 @@ class ComputeCachePersistenceAdapter(
     ) {
         val compute = ComputeUserCache(
             userId = userId,
+            sessionId = "",
             availableCompute = computeLimit,
             usedCompute = 0,
             availablePortStart = availablePortStart,
@@ -34,9 +34,5 @@ class ComputeCachePersistenceAdapter(
 
     override fun deleteCompute(userId: Long) {
         computeUserCacheRepository.delete(userId)
-    }
-
-    override fun isConnected(userId: Long): Boolean {
-        return computeUserCacheRepository.exists(userId)
     }
 }

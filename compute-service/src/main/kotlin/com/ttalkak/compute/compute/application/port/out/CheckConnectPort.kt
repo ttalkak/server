@@ -1,7 +1,7 @@
 
 package com.ttalkak.compute.compute.application.port.out
 
-interface CheckComputePort {
+interface CheckConnectPort {
     /**
      * 특정한 사용자가 현재 연결되어있는지 확인
      *

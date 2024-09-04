@@ -1,6 +1,6 @@
 package com.ttalkak.compute.compute.application.port.`in`
 
-interface ComputeListener {
+interface ComputeUseCase {
     /**
      * 신규 컴퓨터가 연결되었을 때 호출
      *

@@ -28,12 +28,10 @@ spring:
             - AuthenticationHeaderFilter
 
         - id: compute-service
-          uri: lb://COMPUTE-SERVICE
+          uri: lb:ws://COMPUTE-SERVICE
           predicates:
               - Path=/ws/**
-          filters:
-              - AuthenticationHeaderFilter
-                
+
         - id: deployment-service
           uri: lb://DEPLOYMENT-SERVICE
           predicates:
