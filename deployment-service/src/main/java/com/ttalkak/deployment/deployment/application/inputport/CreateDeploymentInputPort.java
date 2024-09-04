@@ -7,6 +7,7 @@ import com.ttalkak.deployment.deployment.domain.event.CreateInstanceEvent;
 import com.ttalkak.deployment.deployment.domain.event.DatabaseEvent;
 import com.ttalkak.deployment.deployment.domain.event.DeploymentEvent;
 import com.ttalkak.deployment.deployment.domain.event.HostingEvent;
+import com.ttalkak.deployment.deployment.domain.event.*;
 import com.ttalkak.deployment.deployment.domain.model.DatabaseEntity;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
@@ -96,8 +97,9 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         }
 
         HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), saveHostingEntity.getId(), null, saveHostingEntity.getHostingPort(), hosting.getDomainId(), null);
-        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getGithubInfo().getRootDirectory(), savedDeployment.getEnv());
-        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, databaseEvents);
+        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getEnv());
+        GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory());
+        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, databaseEvents, githubInfoEvent);
         try {
             eventOutputPort.occurCreateInstance(createInstanceEvent);
         } catch (JsonProcessingException e) {

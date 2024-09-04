@@ -33,3 +33,10 @@ spring:
               - Path=/ws/**
           filters:
               - AuthenticationHeaderFilter
+                
+        - id: deployment-service
+          uri: lb://DEPLOYMENT-SERVICE
+          predicates:
+            - Path=/v1/deployment/**
+          filters:
+            - AuthenticationHeaderFilter

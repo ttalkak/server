@@ -12,11 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateInstanceEvent implements Serializable {
 
-    private DeploymentEvent deploymentEvent;
+    private DeploymentEvent deployment;
 
-    private HostingEvent hostingEvent;
+    private HostingEvent hosting;
 
-    private List<DatabaseEvent> databaseEvents;
+    private List<DatabaseEvent> database;
+
+    private GithubInfoEvent githubInfo;
 
 
 }
