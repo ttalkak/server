@@ -5,9 +5,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "projectServiceFeignClient", url = "https://localhost:8000/v1/project")
+@FeignClient(name = "PROJECT-SERVICE")
 public interface ProjectFeignClient {
 
-    @GetMapping("/{projectId}")
+    @GetMapping("/v1/project/{projectId}")
     ProjectInfoResponse getProjectInfo(@PathVariable("projectId")Long projectId);
 }

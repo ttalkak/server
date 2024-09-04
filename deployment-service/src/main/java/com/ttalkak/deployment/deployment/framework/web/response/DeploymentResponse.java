@@ -3,6 +3,8 @@ package com.ttalkak.deployment.deployment.framework.web.response;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -26,8 +28,12 @@ public class DeploymentResponse {
 
     private String repositoryLastCommitUserName;
 
+    private List<HostingResponse> hostingResponses;
+
+
+
     @Builder
-    private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName) {
+    private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
@@ -37,6 +43,7 @@ public class DeploymentResponse {
         this.repositoryLastCommitMessage = repositoryLastCommitMessage;
         this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
         this.repositoryLastCommitUserName = repositoryLastCommitUserName;
+        this.hostingResponses = hostingResponses;
     }
 
     public static DeploymentResponse mapToDTO(DeploymentEntity deploymentEntity){
@@ -50,6 +57,9 @@ public class DeploymentResponse {
                 .repositoryLastCommitUserProfile(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserProfile())
                 .repositoryUrl(deploymentEntity.getGithubInfo().getRepositoryUrl())
                 .repositoryName(deploymentEntity.getGithubInfo().getRepositoryName())
+                .hostingResponses(deploymentEntity.getHostingEntities().stream()
+                        .map(HostingResponse::mapToDTO)
+                        .toList())
                 .build();
     }
 

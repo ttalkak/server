@@ -72,8 +72,6 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         String domainName = projectInfo.getDomainName();
 
 
-
-
         // 호스팅 객체 생성
         HostingEntity hosting = HostingEntity.createHosting(
                 savedDeployment,
