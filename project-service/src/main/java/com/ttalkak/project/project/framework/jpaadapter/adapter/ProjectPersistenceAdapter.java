@@ -26,6 +26,7 @@ public class ProjectPersistenceAdapter implements SaveProjectOutputPort,
      */
     @Override
     public ProjectEntity save(ProjectEntity projectEntity) {
+
         return projectJpaRepository.save(projectEntity);
     }
 
@@ -61,7 +62,17 @@ public class ProjectPersistenceAdapter implements SaveProjectOutputPort,
     public Page<ProjectEntity> findMyPrjectsContinsSearchKeyWord(Pageable pageable, Long userId, String searchKeyword) {
         return projectJpaRepository.findMyPrjectsContinsSearchKeyWord(pageable, userId, searchKeyword);
     }
-    
+
+    /**
+     * 도메인명으로 엔티티 조회
+     * @param domainName
+     * @return
+     */
+    @Override
+    public ProjectEntity findByDomainName(String domainName) {
+        return projectJpaRepository.findByDomainName(domainName);
+    }
+
 
     /**
      * 프로젝트 삭제

@@ -19,21 +19,27 @@ public class ProjectEntity extends BaseEntity {
 
     private Long userId;
 
-    private String name;
+    private String projectName;
+
+    private String domainName;
 
     @Builder
-    private ProjectEntity(Long id, Long userId, String name) {
+    private ProjectEntity(Long id, Long userId, String projectName, String domainName) {
         this.id = id;
         this.userId = userId;
-        this.name = name;
+        this.projectName = projectName;
+        this.domainName = domainName;
     }
 
     public ProjectEditor.ProjectEditorBuilder toEditor() {
         return ProjectEditor.builder()
-                .projectName(this.name);
+                .projectName(this.domainName)
+                .domainName(this.domainName);
+
     }
 
     public void edit(ProjectEditor projectEditor) {
-        this.name = projectEditor.projectName;
+        this.projectName = projectEditor.projectName;
+        this.domainName = projectEditor.domainName;
     }
 }

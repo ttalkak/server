@@ -7,11 +7,14 @@ import com.ttalkak.deployment.deployment.domain.event.CreateInstanceEvent;
 import com.ttalkak.deployment.deployment.domain.event.DatabaseEvent;
 import com.ttalkak.deployment.deployment.domain.event.DeploymentEvent;
 import com.ttalkak.deployment.deployment.domain.event.HostingEvent;
+import com.ttalkak.deployment.deployment.domain.event.*;
 import com.ttalkak.deployment.deployment.domain.model.DatabaseEntity;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
+import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainKeyResponse;
+import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
@@ -33,12 +36,17 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
 
     private final DatabaseOutputPort databaseOutputPort;
 
+    private final ProjectOutputPort projectOutputPort;
+
+    private final DomainOutputPort domainOutputPort;
 
     private final EventOutputPort eventOutputPort;
 
     @Override
     public DeploymentResponse createDeployment(DeploymentCreateRequest deploymentCreateRequest) {
 
+
+        // 깃허브 관련 정보 객체 생성
         GithubInfo githubInfo = GithubInfo.create(
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryName(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
@@ -59,19 +67,33 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deployment);
 
 
+        // OpenFeign을 이용하여 프로젝트서비스로부터 프로젝트정보(도메인 이름)받아오기
+        ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
+        String domainName = projectInfo.getDomainName();
 
+
+
+
+        // 호스팅 객체 생성
         HostingEntity hosting = HostingEntity.createHosting(
                 savedDeployment,
                 deploymentCreateRequest.getHostingCreateRequest().getHostingPort(),
-                deploymentCreateRequest.getHostingCreateRequest().getDomainId(),
-                deploymentCreateRequest.getServiceType()
+                deploymentCreateRequest.getServiceType(),
+                domainName
         );
-        HostingEntity saveHostingEntity = hostingOutputPort.save(hosting);
-        deployment.addHostingEntity(saveHostingEntity);
 
+        // 호스팅 객체 저장
+        HostingEntity savedHostingEntity = hostingOutputPort.save(hosting);
+        deployment.addHostingEntity(savedHostingEntity);
+
+        // 서버로 요청해서 도메인 키 받아오기
+//        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(savedHostingEntity.getId());
+//        String detailSubDomainKey = domainKeyResponse.getKey();
+        String detailSubDomainKey = null;
+
+        savedHostingEntity.setDetailSubDomainKey(detailSubDomainKey);
 
         // 백엔드 서버면? =>  데이터베이스가 존재한다.
-
         List<DatabaseEvent> databaseEvents = null;
         if(ServiceType.isBackendType(deploymentCreateRequest.getServiceType())){
 
@@ -85,7 +107,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
                         databaseCreateRequest.getPassword()
                 );
                 DatabaseEntity savedDatabaseEntity = databaseOutputPort.save(database);
-                deployment.addDatabaseEntity(savedDatabaseEntity);
+                savedDeployment.addDatabaseEntity(savedDatabaseEntity);
                 databaseEvents.add(new DatabaseEvent(savedDatabaseEntity.getId(),
                         savedDatabaseEntity.getDatabaseType().toString(),
                         savedDatabaseEntity.getUsername(),
@@ -95,9 +117,10 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
             }
         }
 
-        HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), saveHostingEntity.getId(), null, saveHostingEntity.getHostingPort(), hosting.getDomainId(), null);
-        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getGithubInfo().getRootDirectory(), savedDeployment.getEnv());
-        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, databaseEvents);
+        HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), savedHostingEntity.getId(), null, savedHostingEntity.getHostingPort(), null,hosting.getDetailSubDomainName(), hosting.getDetailSubDomainKey());
+        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getEnv());
+        GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory());
+        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, databaseEvents, githubInfoEvent);
         try {
             eventOutputPort.occurCreateInstance(createInstanceEvent);
         } catch (JsonProcessingException e) {

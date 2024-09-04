@@ -24,7 +24,10 @@ public class UpdateProjectInputPort implements UpdateProjectUseCase {
         ProjectEntity projectEntity = loadProjectOutputPort.findById(projectId);
 
         ProjectEditor.ProjectEditorBuilder projectEditorBuilder = projectEntity.toEditor();
-        ProjectEditor projectEditor = projectEditorBuilder.projectName(projectUpdateRequest.getProjectName()).build();
+        ProjectEditor projectEditor = projectEditorBuilder
+                .projectName(projectUpdateRequest.getProjectName())
+                .domainName(projectUpdateRequest.getDomainName())
+                .build();
 
         projectEntity.edit(projectEditor);
         saveProjectOutputPort.save(projectEntity);

@@ -1,6 +1,8 @@
 package com.ttalkak.project.project.application.inputport;
 
 import com.ttalkak.project.common.UseCase;
+import com.ttalkak.project.global.error.ErrorCode;
+import com.ttalkak.project.global.exception.BusinessException;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.outputport.SaveProjectOutputPort;
 import com.ttalkak.project.project.application.usercase.CreateProjectUseCase;
@@ -11,10 +13,11 @@ import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 @UseCase
 @RequiredArgsConstructor
-public class CreateProjectInputPort implements CreateProjectUseCase, GetProjectUseCase {
+public class CreateProjectInputPort implements CreateProjectUseCase {
 
     private final SaveProjectOutputPort saveProjectOutputPort;
 
@@ -25,44 +28,28 @@ public class CreateProjectInputPort implements CreateProjectUseCase, GetProjectU
      * @param projectCreateRequest
      * @return
      */
+    @Transactional
     @Override
     public ProjectResponse createProject(ProjectCreateRequest projectCreateRequest) {
 
+        // 도메인명 중복 체크
+        if(projectCreateRequest.getDomainName() != null && !"".equals(projectCreateRequest.getDomainName())) {
+            ProjectEntity projectEntity = loadProjectOutputPort.findByDomainName(projectCreateRequest.getDomainName());
+            if(projectEntity != null) {
+                throw new BusinessException(ErrorCode.ALREADY_EXISTS_DOMAIN_NAME);
+            }
+        }
+
         ProjectEntity projectEntity = ProjectEntity.builder()
-                .name(projectCreateRequest.getProjectName())
+                .projectName(projectCreateRequest.getProjectName())
+                .domainName(projectCreateRequest.getDomainName())
                 .userId(projectCreateRequest.getUserId())
                 .build();
 
         ProjectEntity result = saveProjectOutputPort.save(projectEntity);
 
-        return ProjectResponse.mapToResponse(result);
-    }
 
-    /**
-     * 프로젝트 단건 조회
-     * @param projectId
-     * @return
-     */
-    @Override
-    public ProjectResponse getProject(Long projectId) {
-        ProjectEntity result = loadProjectOutputPort.findById(projectId);
-        return ProjectResponse.mapToResponse(result);
-    }
 
-    /**
-     * 프로젝트 페이징 조회
-     * @param pageable
-     * @return
-     */
-    @Override
-    public Page<ProjectResponse> getProjects(Pageable pageable, String searchKeyword, Long userId) {
-        Page<ProjectEntity> projects = null;
-        if(searchKeyword == null || searchKeyword.isEmpty()) {
-            projects = loadProjectOutputPort.findMyProjects(pageable, userId);
-        } else {
-            projects = loadProjectOutputPort.findMyPrjectsContinsSearchKeyWord(pageable, userId, searchKeyword);
-        }
-        return projects
-                .map(ProjectResponse::mapToResponse);
+        return ProjectResponse.mapToResponse(result);
     }
 }

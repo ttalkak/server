@@ -18,8 +18,6 @@ public class HostingEntity {
 
     private int hostingPort;
 
-    private Long domainId;
-
 
     // 처음 호스팅객체가 생성되었을때는 제공자와 호스팅아이피가 null값이어야함.
     @Column(name = "user_id", nullable = true)
@@ -35,26 +33,45 @@ public class HostingEntity {
     @Enumerated(EnumType.STRING)
     private ServiceType serviceType;
 
+    private String detailSubDomainName;
+
+    private String detailSubDomainKey;
+
+
+
     @Builder
-    private HostingEntity(int hostingPort, Long domainId, Long deployerId, String hostingIp, DeploymentEntity deploymentEntity, ServiceType serviceType) {
+    private HostingEntity(int hostingPort, Long deployerId, String hostingIp, DeploymentEntity deploymentEntity, ServiceType serviceType, String detailSubDomainName, String detailSubDomainKey) {
         this.hostingPort = hostingPort;
-        this.domainId = domainId;
         this.deployerId = deployerId;
         this.hostingIp = hostingIp;
         this.deploymentEntity = deploymentEntity;
         this.serviceType = serviceType;
+        this.detailSubDomainName = detailSubDomainName;
+        this.detailSubDomainKey = detailSubDomainKey;
     }
 
     public static HostingEntity createHosting(DeploymentEntity deploymentEntity,
                                               int hostingPort,
-                                              Long domainId,
-                                              String serviceType){
+                                              String serviceType,
+                                              String projectDomainName){
         return HostingEntity.builder()
                 .deploymentEntity(deploymentEntity)
                 .hostingPort(hostingPort)
-                .domainId(domainId)
                 .serviceType(ServiceType.valueOf(serviceType))
+                .detailSubDomainName(changeDetailDomainName(projectDomainName, serviceType))
                 .build();
+    }
+
+    private static String changeDetailDomainName(String projectDomainName, String serviceType) {
+        if(ServiceType.isBackendType(serviceType)){
+            return "api." + projectDomainName;
+        }
+
+        else if(ServiceType.isFrontendType(serviceType)){
+            return projectDomainName;
+        }
+
+        throw new IllegalArgumentException("ServiceType이 잘못 입력되었습니다.");
     }
 
     public void setHostingPort(String hostingIp){
@@ -65,4 +82,9 @@ public class HostingEntity {
     public void setDeployerId(Long deployerId){
         this.deployerId = deployerId;
     }
+
+    public void setDetailSubDomainKey(String detailSubDomainKey){
+        this.detailSubDomainKey = detailSubDomainKey;
+    }
+
 }

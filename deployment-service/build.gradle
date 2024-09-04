@@ -32,7 +32,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
 
     // 스프링 클라우드 의존성
-//    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
     implementation 'org.springframework.kafka:spring-kafka'
@@ -47,6 +47,14 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+    // 로그 id 수집
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation('io.micrometer:micrometer-tracing-bridge-brave') {
+        // 프로젝트에서 Zipkin을 사용하지 않는 경우
+        exclude group: 'io.zipkin.reporter2'
+    }
 
     // swagger 의존성
 //    implementation 'io.springfox:springfox-boot-starter:3.0.0'

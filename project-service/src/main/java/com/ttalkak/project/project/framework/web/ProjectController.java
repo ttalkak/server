@@ -6,8 +6,10 @@ import com.ttalkak.project.project.application.usercase.DeleteProjectUseCase;
 import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
 import com.ttalkak.project.project.application.usercase.UpdateProjectUseCase;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
+import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
 import com.ttalkak.project.project.framework.web.request.ProjectCreateRequest;
 import com.ttalkak.project.project.framework.web.request.ProjectUpdateRequest;
+import com.ttalkak.project.project.framework.web.response.DomainNameResponse;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -90,6 +92,24 @@ public class ProjectController {
     public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) {
         deleteProjectUseCase.deleteProject(projectId);
         return ResponseEntity.ok().build();
+    }
+    
+    /**
+     * 도메인명 중복 체크
+     * @param request
+     * @return
+     */
+    @PostMapping("/project/domain/check")
+    public ResponseEntity<DomainNameResponse> isDuplicateDomainName(@RequestBody DomainNameRequest request) {
+        DomainNameResponse.DomainNameResponseBuilder responseBuilder = DomainNameResponse.builder();
+        if(!getProjectUseCase.isDuplicateDomainName(request)) {
+            responseBuilder.canMake(true).message("생성할 수 있는 도메인입니다.");
+        } else {
+            responseBuilder.canMake(false).message("이미 존재하는 도메인입니다.");
+        }
+
+        return ResponseEntity.ok(responseBuilder.build());
+
     }
 
 
