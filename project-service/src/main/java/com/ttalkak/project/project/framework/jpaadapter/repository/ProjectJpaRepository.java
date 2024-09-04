@@ -14,6 +14,10 @@ public interface ProjectJpaRepository extends JpaRepository<ProjectEntity, Long>
     Page<ProjectEntity> findMyProjects(Pageable pageable, @Param("userId")Long userId);
 
     // 유저 Id, 키워드로 페이징처리
-    @Query("select p from ProjectEntity p where p.userId = :userId and lower(p.name) like lower(concat('%', :searchKeyword, '%'))")
+    @Query("select p from ProjectEntity p where p.userId = :userId and lower(p.projectName) like lower(concat('%', :searchKeyword, '%'))")
     Page<ProjectEntity> findMyPrjectsContinsSearchKeyWord(Pageable pageable, @Param("userId")Long userId, @Param("searchKeyword")String searchKeyword);
+
+    // 도메인 명으로 프로젝트 조회
+    @Query("select p from ProjectEntity p where p.domainName like :domainName")
+    ProjectEntity findByDomainName(@Param("domainName") String domainName);
 }

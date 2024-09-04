@@ -15,17 +15,20 @@ public class ProjectResponse {
 
     private Long userId;
 
-    private String name;
+    private String projectName;
+
+    private String domainName;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     @Builder
-    private ProjectResponse(Long id, Long userId, String name, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private ProjectResponse(Long id, Long userId, String projectName, String domainName, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
-        this.name = name;
+        this.projectName = projectName;
+        this.domainName = domainName;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -34,7 +37,8 @@ public class ProjectResponse {
         return ProjectResponse.builder()
                 .id(projectEntity.getId())
                 .userId(projectEntity.getUserId())
-                .name(projectEntity.getName())
+                .projectName(projectEntity.getProjectName())
+                .domainName(projectEntity.getDomainName())
                 .createdAt(projectEntity.getCreatedAt())
                 .updatedAt(projectEntity.getUpdatedAt())
                 .build();

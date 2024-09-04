@@ -1,13 +1,17 @@
 package com.ttalkak.project.project.framework.web.request;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ProjectCreateRequest {
 
     private Long userId;
 
     private String projectName;
+
+    private String domainName;
 }
