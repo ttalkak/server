@@ -3,6 +3,7 @@ package com.ttalkak.deployment.deployment.application.inputport;
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.InquiryUsecase;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
+import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class InquiryInputPort implements InquiryUsecase {
     public List<DeploymentResponse> getDeploymentsByProjectId(Long projectId) {
         return deploymentOutputPort.findAllByProjectId(projectId)
                 .stream()
+                .filter(deployment -> DeploymentStatus.isAlive(deployment.getStatus()))
                 .map(DeploymentResponse::mapToDTO)
                 .collect(Collectors.toList());
     }
@@ -42,6 +44,7 @@ public class InquiryInputPort implements InquiryUsecase {
     public List<DeploymentResponse> searchDeploymentByGithubRepositoryName(String githubRepoName, int page, int size) {
         return deploymentOutputPort.searchDeploymentByGithubRepoName(githubRepoName, page, size)
                 .stream()
+                .filter(deployment -> DeploymentStatus.isAlive(deployment.getStatus()))
                 .map(DeploymentResponse::mapToDTO)
                 .collect(Collectors.toList());
     }

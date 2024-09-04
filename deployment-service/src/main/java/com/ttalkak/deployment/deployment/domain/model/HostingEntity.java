@@ -39,6 +39,7 @@ public class HostingEntity {
 
 
 
+
     @Builder
     private HostingEntity(int hostingPort, Long deployerId, String hostingIp, DeploymentEntity deploymentEntity, ServiceType serviceType, String detailSubDomainName, String detailSubDomainKey) {
         this.hostingPort = hostingPort;

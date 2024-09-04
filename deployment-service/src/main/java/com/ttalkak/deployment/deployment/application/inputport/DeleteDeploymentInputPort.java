@@ -20,6 +20,7 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
     public void deleteDeployment(DeploymentDeleteRequest deploymentDeleteRequest) {
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentDeleteRequest.getDeploymentId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 배포아이디는 존재하지 않습니다."));
-        deploymentOutputPort.delete(deploymentEntity);
+        deploymentEntity.deleteDeployment();
+        deploymentOutputPort.save(deploymentEntity);
     }
 }

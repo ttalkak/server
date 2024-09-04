@@ -4,10 +4,11 @@ import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainKeyRe
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(name = "domainFeignClient")
+@FeignClient(name = "DOMAIN-SERVICE")
 public interface DomainFeignClient {
 
-    @GetMapping("/domain/{hostingId}")
+    @PostMapping("/v1/domain/{hostingId}")
     public DomainKeyResponse getDomainKey(@PathVariable Long hostingId);
 }

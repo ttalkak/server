@@ -38,6 +38,7 @@ public class HostingResponse {
                 .hostingId(hostingEntity.getId())
                 .serviceType(hostingEntity.getServiceType().toString())
                 .detailDomainName(hostingEntity.getDetailSubDomainName())
+                .hostingPort(hostingEntity.getHostingPort())
                 .build();
     }
 

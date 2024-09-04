@@ -85,9 +85,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         deployment.addHostingEntity(savedHostingEntity);
 
         // 서버로 요청해서 도메인 키 받아오기
-//        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(savedHostingEntity.getId());
-//        String detailSubDomainKey = domainKeyResponse.getKey();
-        String detailSubDomainKey = null;
+        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(savedHostingEntity.getId());
+        String detailSubDomainKey = domainKeyResponse.getKey();
 
         savedHostingEntity.setDetailSubDomainKey(detailSubDomainKey);
 
