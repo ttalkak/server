@@ -31,7 +31,6 @@ public class DeploymentKafkaProducer implements EventOutputPort {
         future.thenAccept(result -> {
             CreateInstanceEvent value = result.getProducerRecord().value();
             LOGGER.info("Sent message=[" + value.getDeployment().getDeploymentId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
-
         }).exceptionally(ex ->{
             throw new IllegalArgumentException(ex);
         });

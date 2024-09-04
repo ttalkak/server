@@ -12,4 +12,11 @@ public enum ServiceType {
         }
         return false;
     }
+
+    public static boolean isFrontendType(String serviceType){
+        if(ServiceType.valueOf(serviceType).equals(FRONTEND)){
+            return true;
+        }
+        return false;
+    }
 }
