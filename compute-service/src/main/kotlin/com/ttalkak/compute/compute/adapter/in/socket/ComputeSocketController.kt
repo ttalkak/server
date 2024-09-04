@@ -5,15 +5,17 @@ import com.ttalkak.compute.compute.adapter.`in`.socket.request.CreateComputeRequ
 import com.ttalkak.compute.compute.application.port.`in`.ConnectCommand
 import com.ttalkak.compute.compute.application.service.ComputeService
 import org.springframework.messaging.handler.annotation.MessageMapping
+import org.springframework.messaging.handler.annotation.Payload
+import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 
 @SocketAdapter
-@RequestMapping("/compute")
+@Controller
 class ComputeSocketController(
-    private val computeService: ComputeService
+    private val computeListener: ComputeService
 ) {
-    @MessageMapping("/connect")
-    fun compute(request: CreateComputeRequest) {
+    @MessageMapping("/compute/connect")
+    fun compute(@Payload request: CreateComputeRequest) {
         val command = ConnectCommand(
             userId = request.userId,
             computeLimit = request.computeLimit,
@@ -23,6 +25,6 @@ class ComputeSocketController(
             maxMemory = request.maxMemory
         )
 
-        computeService.connect(command)
+        computeListener.connect(command)
     }
 }

@@ -1,14 +1,16 @@
 package com.ttalkak.compute.compute.adapter.out.cache.repository
 
 import com.ttalkak.compute.compute.adapter.out.cache.entity.ComputeUserCache
+import jakarta.annotation.Resource
 import org.springframework.data.redis.core.HashOperations
 import org.springframework.stereotype.Repository
 import java.util.Optional
 
 @Repository
-class ComputeUserCacheRepository(
-    private val hashOperations: HashOperations<String, Long, ComputeUserCache>
-) {
+class ComputeUserCacheRepository{
+    @Resource(name = "redisTemplate")
+    private lateinit var hashOperations: HashOperations<String, Long, ComputeUserCache>
+
     companion object {
         const val COMPUTE_CACHE_KEY = "computeUserCache"
     }
@@ -23,10 +25,6 @@ class ComputeUserCacheRepository(
 
     fun delete(userId: Long) {
         hashOperations.delete(COMPUTE_CACHE_KEY, userId)
-    }
-
-    fun exists(userId: Long): Boolean {
-        return hashOperations.hasKey(COMPUTE_CACHE_KEY, userId)
     }
 
     fun findAll(): List<ComputeUserCache> {

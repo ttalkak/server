@@ -56,62 +56,74 @@ services:
     depends_on:
       - elasticsearch
 
-  # eureka-server:
-  #   container_name: eureka-server
-  #   build: eureka-server
-  #   ports:
-  #     - 8761:8761
-  #   networks:
-  #     - spring-network
-  #   depends_on:
-  #     - db
-  #     - redis
-  #     - elasticsearch
-  #     - kibana
-  #     - logstash
+  eureka-server:
+    container_name: eureka-server
+    build: eureka-server
+    ports:
+      - 8761:8761
+    networks:
+      - spring-network
+    depends_on:
+      - db
+      - redis
+      - elasticsearch
+      - kibana
+      - logstash
   
-  # config-server:
-  #   container_name: config-server
-  #   build: config-server
-  #   ports:
-  #     - 8888:8888
-  #   networks:
-  #     - spring-network
-  #   depends_on:
-  #     - db
-  #     - redis
-  #     - elasticsearch
-  #     - kibana
-  #     - logstash
-  #     - eureka-server
+  config-server:
+    container_name: config-server
+    build: config-server
+    ports:
+      - 8888:8888
+    networks:
+      - spring-network
+    depends_on:
+      - db
+      - redis
+      - elasticsearch
+      - kibana
+      - logstash
+      - eureka-server
 
-  # gateway-service:
-  #   container_name: gateway-service
-  #   build: gateway-service
-  #   ports:
-  #     - 8000:8000
-  #   networks:
-  #     - spring-network
-  #   depends_on:
-  #     - db
-  #     - redis
-  #     - config-server
-  #     - elasticsearch
-  #     - kibana
-  #     - logstash
+  gateway-service:
+    container_name: gateway-service
+    build: gateway-service
+    ports:
+      - 8000:8000
+    networks:
+      - spring-network
+    depends_on:
+      - db
+      - redis
+      - config-server
+      - elasticsearch
+      - kibana
+      - logstash
 
-  # user-service:
-  #   container_name: user-service
-  #   build: user-service
-  #   depends_on:
-  #     - eureka-server
-  #     - gateway-service
-  #     - config-server
-  #     - elasticsearch
-  #     - kibana
-  #     - logstash
-  #   networks:
-  #     - spring-network
+  user-service:
+    container_name: user-service
+    build: user-service
+    depends_on:
+      - eureka-server
+      - gateway-service
+      - config-server
+      - elasticsearch
+      - kibana
+      - logstash
+    networks:
+      - spring-network
+
+  compute-service:
+    container_name: compute-service
+    build: compute-service
+    depends_on:
+      - db
+      - redis
+      - elasticsearch
+      - kibana
+      - logstash
+      - eureka-server
+      - gateway-service
 
 volumes:
   elasticsearch_data: 

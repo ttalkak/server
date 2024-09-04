@@ -4,6 +4,7 @@ import com.ttalkak.compute.compute.domain.ComputerType
 
 data class ComputeUserCache (
     val userId: Long,
+    val sessionId: String,
     val availableCompute: Int,
     val usedCompute: Int,
     val availablePortStart: Int,
