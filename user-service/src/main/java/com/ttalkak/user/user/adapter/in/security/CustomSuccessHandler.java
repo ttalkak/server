@@ -48,12 +48,13 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CookieUtils.addCookie(response, REFRESH_TOKEN_COOKIE, jwtToken.getRefreshToken(), refreshExpire, true);
 
         String redirectURI = determineTargetUrl(request, response, authentication);
-        getRedirectStrategy().sendRedirect(request, response, getRedirectUrl(redirectURI, jwtToken.getAccessToken()));
+        getRedirectStrategy().sendRedirect(request, response, getRedirectUrl(redirectURI, jwtToken));
     }
 
-    private String getRedirectUrl(String redirectURI, String accessToken) {
+    private String getRedirectUrl(String redirectURI, JwtToken token) {
         return UriComponentsBuilder.fromUriString(redirectURI)
-                .queryParam("accessToken", accessToken)
+                .queryParam("accessToken", token.getAccessToken())
+                .queryParam("refreshToken", token.getRefreshToken())
                 .build()
                 .toUriString();
 

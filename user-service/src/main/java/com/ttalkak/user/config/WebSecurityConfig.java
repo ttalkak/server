@@ -28,9 +28,9 @@ public class WebSecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth.anyRequest().permitAll())
                 .oauth2Login((oauth2) -> oauth2.authorizationEndpoint(authorization ->
-                            authorization.baseUri("/auth/authorization")
+                            authorization.baseUri("/v1/auth/authorization")
                                     .authorizationRequestRepository(authorizationRepository)
-                        ).redirectionEndpoint(redirect -> redirect.baseUri("/auth/oauth2/code/*"))
+                        ).redirectionEndpoint(redirect -> redirect.baseUri("/v1/auth/oauth2/code/*"))
                         .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
                         .successHandler(successHandler)
                 )
