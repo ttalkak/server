@@ -1,8 +1,6 @@
 package com.ttalkak.project.project.application.inputport;
 
 import com.ttalkak.project.common.UseCase;
-import com.ttalkak.project.global.error.ErrorCode;
-import com.ttalkak.project.global.exception.BusinessException;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
@@ -11,7 +9,10 @@ import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @UseCase
 @RequiredArgsConstructor
 public class GetProjectInputPort implements GetProjectUseCase {

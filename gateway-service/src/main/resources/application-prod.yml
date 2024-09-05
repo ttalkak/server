@@ -9,4 +9,4 @@ eureka:
       defaultZone: http://eureka-server:8761/eureka/
 
 hosts:
-  logstash: 10.128.0.2
+  logstash: 10.178.0.6

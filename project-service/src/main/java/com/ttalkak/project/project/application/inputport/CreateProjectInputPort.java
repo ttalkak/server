@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @UseCase
 @RequiredArgsConstructor
 public class CreateProjectInputPort implements CreateProjectUseCase {
@@ -28,9 +29,8 @@ public class CreateProjectInputPort implements CreateProjectUseCase {
      * @param projectCreateRequest
      * @return
      */
-    @Transactional
     @Override
-    public ProjectResponse createProject(ProjectCreateRequest projectCreateRequest) {
+    public ProjectResponse createProject(Long userId, ProjectCreateRequest projectCreateRequest) {
 
         // 도메인명 중복 체크
         if(projectCreateRequest.getDomainName() != null && !"".equals(projectCreateRequest.getDomainName())) {
@@ -43,7 +43,7 @@ public class CreateProjectInputPort implements CreateProjectUseCase {
         ProjectEntity projectEntity = ProjectEntity.builder()
                 .projectName(projectCreateRequest.getProjectName())
                 .domainName(projectCreateRequest.getDomainName())
-                .userId(projectCreateRequest.getUserId())
+                .userId(userId)
                 .build();
 
         ProjectEntity result = saveProjectOutputPort.save(projectEntity);

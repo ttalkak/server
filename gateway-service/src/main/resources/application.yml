@@ -12,12 +12,12 @@ spring:
         - id: auth-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/auth/**
+            - Path=/v1/auth/**
 
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/user/**
+            - Path=/v1/user/**
           filters:
             - AuthenticationHeaderFilter
         - id: project-service

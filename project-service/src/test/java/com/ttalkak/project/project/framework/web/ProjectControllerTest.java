@@ -25,15 +25,16 @@ class ProjectControllerTest {
         // given
         ProjectCreateRequest request = ProjectCreateRequest.builder()
                 .projectName("프로젝트V1")
-                .userId(1L)
                 .build();
+
+        Long userId = 1L;
 
         ProjectResponse response = ProjectResponse.builder()
-                .name("프로젝트V1")
+                .projectName("프로젝트V1")
                 .userId(1L)
                 .build();
 
-        when((Publisher<?>) createProjectUseCase.createProject(any(ProjectCreateRequest.class)))
+        when((Publisher<?>) createProjectUseCase.createProject(userId, any(ProjectCreateRequest.class)))
                 .thenReturn(response);
 
     }

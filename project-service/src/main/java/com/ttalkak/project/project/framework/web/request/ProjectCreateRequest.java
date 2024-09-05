@@ -9,8 +9,6 @@ import lombok.Getter;
 @Builder
 public class ProjectCreateRequest {
 
-    private Long userId;
-
     private String projectName;
 
     private String domainName;

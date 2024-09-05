@@ -5,5 +5,5 @@ import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 
 public interface CreateProjectUseCase {
 
-    ProjectResponse createProject(ProjectCreateRequest projectCreateRequest);
+    ProjectResponse createProject(Long userId, ProjectCreateRequest projectCreateRequest);
 }
