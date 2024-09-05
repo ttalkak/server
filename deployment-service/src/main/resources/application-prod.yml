@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    include: kafka-prod
+  config:
+    import: optional:configserver:http://config-server:8888
+    name: deployment-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+
+hosts:
+  logstash: 10.178.0.6
+
+
+
+
+
+producers:
+  bootstrap-servers: 10.178.0.6:9092
+  topic1:
+    name: create_instance
+
+consumers:
+  bootstrap-servers: 10.178.0.6:9092
+  topic1:
+    name: save_hosting
+  groupid:
+    name: hosting
