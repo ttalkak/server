@@ -20,6 +20,7 @@ spring:
             - Path=/v1/user/**
           filters:
             - AuthenticationHeaderFilter
+
         - id: project-service
           uri: lb://PROJECT-SERVICE
           predicates:
@@ -31,6 +32,13 @@ spring:
           uri: lb:ws://COMPUTE-SERVICE
           predicates:
               - Path=/ws/**
+
+        - id: compute-service
+          uri: lb://COMPUTE-SERVICE
+          predicates:
+            - Path=/v1/compute/**
+          filters:
+            - AuthenticationHeaderFilter
 
         - id: deployment-service
           uri: lb://DEPLOYMENT-SERVICE
