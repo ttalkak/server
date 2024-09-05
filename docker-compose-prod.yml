@@ -56,5 +56,34 @@ services:
     networks:
       - spring-network
 
+
+  deployment-service:
+    container_name: deployment-service
+    build:
+      context: deployment-service
+      dockerfile: Dockerfile.prod
+    depends_on:
+      - eureka-server
+      - config-server
+      - gateway-service
+
+    networks:
+      - spring-network
+
+  project-service:
+    container_name: project-service
+    build:
+      context: project-service
+      dockerfile: Dockerfile.prod
+    depends_on:
+      - eureka-server
+      - config-server
+      - gateway-service
+
+    networks:
+      - spring-network
+
+
+
 networks:
   spring-network:

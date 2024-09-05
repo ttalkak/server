@@ -1,0 +1,25 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: project-service
+  config:
+    import: optional:configserver:http://localhost:8888
+    name: project-service
+
+producers:
+  bootstrap-servers: localhost:9092
+  topic1:
+    name: project_deletion_initiated
+
+consumers:
+  bootstrap-servers: localhost:9092
+  topic1:
+    name: project_deletion_exception
+  groupid:
+    name: project-deletion-group
+
+hosts:
+  logstash: localhost
+
