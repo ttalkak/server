@@ -7,4 +7,7 @@ RUN sh gradlew build
 
 EXPOSE 8000
 
+
+RUN chmod -R 777 build/libs/gateway-service-0.0.1.jar
+
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "build/libs/gateway-service-0.0.1.jar"]

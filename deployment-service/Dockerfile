@@ -5,4 +5,6 @@ COPY . .
 
 RUN sh gradlew build
 
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "build/libs/deployment-service-0.0.1.jar"]
+RUN chmod -R 777 build/libs/deployment-0.0.1.jar
+
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "build/libs/deployment-0.0.1.jar"]
