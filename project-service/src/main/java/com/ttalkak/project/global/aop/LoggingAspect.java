@@ -15,7 +15,7 @@ import java.util.Arrays;
 @Slf4j
 public class LoggingAspect {
 
-    @Around("within(*..InputPort)")
+    @Around("within(com.ttalkak.project..application.inputport.*InputPort)")
     public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
         // 메서드 정보 가져오기
         String methodName = joinPoint.getSignature().getName();
@@ -35,7 +35,7 @@ public class LoggingAspect {
             return result;
         } finally {
             long executionTime = System.currentTimeMillis() - start;
-            log.info("Exiting: {}.{} with parameters {}", className, methodName, params);
+            log.info("Exiting: {}.{} with parameters {} {}", className, methodName, params, executionTime);
         }
     }
 }

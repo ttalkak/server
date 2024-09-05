@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
 @EnableFeignClients
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootApplication
 public class ProjectServiceApplication {
 
