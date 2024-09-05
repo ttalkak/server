@@ -8,4 +8,17 @@ spring:
     import: optional:configserver:http://localhost:8888
     name: project-service
 
+---
+
+spring:
+  profiles:
+    include: kafka-dev
+    active: dev
+
+---
+
+spring:
+  profiles:
+    include: kafka-prod
+    active: prod
 
