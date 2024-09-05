@@ -18,9 +18,6 @@ class ComputeSocketController(
     fun compute(@Payload request: CreateComputeRequest) {
         val command = ConnectCommand(
             userId = request.userId,
-            computeLimit = request.computeLimit,
-            availablePortStart = request.availablePortStart,
-            availablePortEnd = request.availablePortEnd,
             computeType = request.computeType,
             maxMemory = request.maxMemory
         )
