@@ -2,5 +2,12 @@ server:
   port: 0
 
 spring:
+  profiles:
+    include: kafka
   application:
     name: user-service
+
+producer:
+  topics:
+    user-create:
+      name: user-create

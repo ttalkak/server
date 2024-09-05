@@ -7,9 +7,11 @@ import com.ttalkak.user.user.adapter.out.persistence.entity.UserEntity;
 import com.ttalkak.user.user.adapter.out.persistence.entity.UserEntityMapper;
 import com.ttalkak.user.user.application.port.out.LoadUserPort;
 import com.ttalkak.user.user.application.port.out.SaveUserPort;
+import com.ttalkak.user.user.application.port.out.UserCreatePort;
 import com.ttalkak.user.user.domain.CustomOAuth2User;
 import com.ttalkak.user.user.domain.ProviderType;
 import com.ttalkak.user.user.domain.User;
+import com.ttalkak.user.user.domain.UserCreateEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,12 +24,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	private final LoadUserPort loadUserPort;
 	private final SaveUserPort saveUserPort;
+	private final UserCreatePort userCreatePort;
 	private final PasswordEncoder passwordEncoder;
 
 	@Transactional
@@ -42,7 +47,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 		String username = response.getEmail();
 
+		AtomicBoolean isNewUser = new AtomicBoolean(false);
 		User user = loadUserPort.loadUser(username).orElseGet(() -> {
+			isNewUser.set(true);
 			String encodedPassword = passwordEncoder.encode(response.getEmail());
 			UserEntity entity = saveUserPort.save(username, encodedPassword, response.getEmail(), response.getProviderId(), githubToken.getTokenValue());
 			return UserEntityMapper.toUser(entity);
@@ -50,6 +57,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 		if (!StringUtils.hasText(user.getAccessToken())) {
 			user.setAccessToken(githubToken.getTokenValue());
+		}
+
+		if (isNewUser.get()) {
+			userCreatePort.createUser(UserCreateEvent.of(
+					user.getId(),
+					user.getUsername(),
+					user.getEmail()
+			));
 		}
 
 		return new CustomOAuth2User(user);

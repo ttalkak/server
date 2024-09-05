@@ -10,7 +10,7 @@ public interface SaveUserPort {
      * @param password 비밀번호
      * @param email 이메일
      */
-    void save(String username, String password, String email);
+    UserEntity save(String username, String password, String email);
 
     /**
      * 사용자 정보를 저장한다. (OAuth2 사용자 전용 Provider)

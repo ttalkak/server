@@ -2,12 +2,15 @@ package com.ttalkak.user.user.application.service;
 
 import com.ttalkak.user.common.UseCase;
 import com.ttalkak.user.user.adapter.in.security.JwtTokenProvider;
+import com.ttalkak.user.user.adapter.out.persistence.entity.UserEntity;
 import com.ttalkak.user.user.application.port.in.AuthenticationUseCase;
 import com.ttalkak.user.user.application.port.in.RegisterCommand;
 import com.ttalkak.user.user.application.port.out.LoadUserPort;
 import com.ttalkak.user.user.application.port.out.SaveUserPort;
+import com.ttalkak.user.user.application.port.out.UserCreatePort;
 import com.ttalkak.user.user.domain.JwtToken;
 import com.ttalkak.user.user.domain.User;
+import com.ttalkak.user.user.domain.UserCreateEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +23,7 @@ import java.util.List;
 public class AuthenticationService implements AuthenticationUseCase {
     private final LoadUserPort loadUserPort;
     private final SaveUserPort saveUserPort;
+    private final UserCreatePort userCreatePort;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
@@ -49,6 +53,13 @@ public class AuthenticationService implements AuthenticationUseCase {
 
         String encodedPassword = passwordEncoder.encode(command.getPassword());
 
-        saveUserPort.save(command.getUsername(), encodedPassword, command.getEmail());
+        UserEntity entity = saveUserPort.save(command.getUsername(), encodedPassword, command.getEmail());
+
+        // 사용자 생성 이벤트 발행
+        userCreatePort.createUser(UserCreateEvent.of(
+                entity.getId(),
+                entity.getUsername(),
+                entity.getEmail()
+        ));
     }
 }
