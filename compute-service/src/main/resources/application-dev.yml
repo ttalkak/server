@@ -1,12 +1,12 @@
 spring:
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://host.docker.internal/:8888
     name: compute-service
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://host.docker.internal:8761/eureka/
 
 hosts:
-  logstash: localhost
+  logstash: host.docker.internal

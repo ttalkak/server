@@ -5,7 +5,7 @@ spring:
   application:
     name: project-service
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://host.docker.internal:8888
     name: project-service
 
 producers:
@@ -21,5 +21,5 @@ consumers:
     name: project-deletion-group
 
 hosts:
-  logstash: localhost
+  logstash: host.docker.internal
 
