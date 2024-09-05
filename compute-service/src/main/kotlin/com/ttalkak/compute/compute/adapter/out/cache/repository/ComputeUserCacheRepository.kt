@@ -20,11 +20,11 @@ class ComputeUserCacheRepository{
     }
 
     fun findById(userId: Long): Optional<ComputeUserCache> {
-        return Optional.ofNullable(hashOperations.get(COMPUTE_CACHE_KEY, userId))
+        return Optional.ofNullable(hashOperations.get(COMPUTE_CACHE_KEY, userId.toString()))
     }
 
     fun delete(userId: Long) {
-        hashOperations.delete(COMPUTE_CACHE_KEY, userId)
+        hashOperations.delete(COMPUTE_CACHE_KEY, userId.toString())
     }
 
     fun findAll(): List<ComputeUserCache> {

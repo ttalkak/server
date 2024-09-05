@@ -19,7 +19,7 @@ class ConnectCacheRepository {
     }
 
     fun exists(userId: Long): Boolean {
-        return hashOperations.hasKey(CONNECT_CACHE_KEY, userId)
+        return hashOperations.hasKey(CONNECT_CACHE_KEY, userId.toString())
     }
 
     fun delete(sessionId: String) {
@@ -29,6 +29,6 @@ class ConnectCacheRepository {
     }
 
     fun delete(userId: Long) {
-        hashOperations.delete(CONNECT_CACHE_KEY, userId)
+        hashOperations.delete(CONNECT_CACHE_KEY, userId.toString())
     }
 }
