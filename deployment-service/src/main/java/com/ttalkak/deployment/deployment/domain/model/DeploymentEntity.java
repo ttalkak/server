@@ -62,7 +62,7 @@ public class DeploymentEntity extends BaseEntity {
         return DeploymentEntity.builder()
                 .projectId(projectId)
                 .serviceType(ServiceType)
-                .status(DeploymentStatus.READY)
+                .status(DeploymentStatus.PENDING)
                 .githubInfo(githubInfo)
                 .env(env)
                 .build();
@@ -87,6 +87,6 @@ public class DeploymentEntity extends BaseEntity {
     }
 
     public void stopDeployment(){
-        this.status = DeploymentStatus.READY;
+        this.status = DeploymentStatus.STOP;
     }
 }

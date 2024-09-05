@@ -19,7 +19,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
 
     private final DeploymentOutputPort deploymentOutputPort;
 
-    private final GithubOutputPort githubOutputPort;
 
     @Override
     public DeploymentResponse updateDeployment(DeploymentUpdateRequest deploymentUpdateRequest) {
@@ -29,19 +28,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
 
         deploymentEntity.setProjectId(deploymentUpdateRequest.getDeploymentId());
         deploymentEntity.setServiceType(ServiceType.valueOf(deploymentUpdateRequest.getServiceType()));
-        // 레포지토리를 바꿨으면?
-        if(!deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryName().equals(deploymentEntity.getGithubInfo().getRepositoryName())){
-
-            GithubInfo githubInfo = GithubInfo.create(
-                    deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryName(),
-                    deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
-                    deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
-                    deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
-                    deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
-                    deploymentUpdateRequest.getGithubRepositoryRequest().getRootDirectory()
-            );
-            deploymentEntity.setGithubInfo(githubInfo);
-        }
 
         deploymentOutputPort.save(deploymentEntity);
         return DeploymentResponse.mapToDTO(deploymentEntity);

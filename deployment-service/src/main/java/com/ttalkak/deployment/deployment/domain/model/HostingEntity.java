@@ -23,9 +23,6 @@ public class HostingEntity {
     @Column(name = "user_id", nullable = true)
     private Long deployerId;
 
-    @Column(nullable = true)
-    private String hostingIp;
-
     @ManyToOne
     @JoinColumn(name = "deploymentEntity", nullable = false)
     private DeploymentEntity deploymentEntity;
@@ -41,10 +38,9 @@ public class HostingEntity {
 
 
     @Builder
-    private HostingEntity(int hostingPort, Long deployerId, String hostingIp, DeploymentEntity deploymentEntity, ServiceType serviceType, String detailSubDomainName, String detailSubDomainKey) {
+    private HostingEntity(int hostingPort, Long deployerId, DeploymentEntity deploymentEntity, ServiceType serviceType, String detailSubDomainName, String detailSubDomainKey) {
         this.hostingPort = hostingPort;
         this.deployerId = deployerId;
-        this.hostingIp = hostingIp;
         this.deploymentEntity = deploymentEntity;
         this.serviceType = serviceType;
         this.detailSubDomainName = detailSubDomainName;
@@ -73,10 +69,6 @@ public class HostingEntity {
         }
 
         throw new IllegalArgumentException("ServiceType이 잘못 입력되었습니다.");
-    }
-
-    public void setHostingPort(String hostingIp){
-        this.hostingIp = hostingIp;
     }
 
 

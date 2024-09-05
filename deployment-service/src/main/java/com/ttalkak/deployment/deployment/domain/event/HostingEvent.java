@@ -21,7 +21,7 @@ public class HostingEvent implements Serializable {
 
     private Long deployerId;
 
-    private String detailSubDomainName;
+    private String subdomainName;
 
     private String detailSubDomainKey;
 

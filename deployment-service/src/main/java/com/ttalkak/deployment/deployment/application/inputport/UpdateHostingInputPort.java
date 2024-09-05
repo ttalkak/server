@@ -20,7 +20,6 @@ public class UpdateHostingInputPort implements UpdateHostingUsecase {
         HostingEntity findHosting = hostingOutputPort.findById(hostingEvent.getHostingId())
                 .orElseThrow(() -> new IllegalArgumentException("호스팅 객체를 찾을 수 없습니다."));
 
-        findHosting.setHostingPort(hostingEvent.getHostingIp());
         findHosting.setDeployerId(hostingEvent.getDeployerId());
         hostingOutputPort.save(findHosting);
     }

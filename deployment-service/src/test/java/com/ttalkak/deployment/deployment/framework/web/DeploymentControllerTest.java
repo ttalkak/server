@@ -1,10 +1,7 @@
 package com.ttalkak.deployment.deployment.framework.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ttalkak.deployment.deployment.application.usecase.CreateDeploymentUsecase;
-import com.ttalkak.deployment.deployment.application.usecase.DeleteDeploymentUsecase;
-import com.ttalkak.deployment.deployment.application.usecase.InquiryUsecase;
-import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUsecase;
+import com.ttalkak.deployment.deployment.application.usecase.*;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.GithubRepositoryRequest;
@@ -38,11 +35,13 @@ class DeploymentControllerTest extends RestDocsSupport {
 
     private final DeleteDeploymentUsecase deleteDeploymentUsecase = mock(DeleteDeploymentUsecase.class);
 
+    private final UpdateDeploymentStatusUsecase updateDeploymentStatusUsecase = mock(UpdateDeploymentStatusUsecase.class);
+
     private final InquiryUsecase inquiryUsecase = mock(InquiryUsecase.class);
 
     @Override
     public Object initController() {
-        return new DeploymentController(createDeploymentUsecase, updateDeploymentUsecase, deleteDeploymentUsecase, inquiryUsecase);
+        return new DeploymentController(createDeploymentUsecase, updateDeploymentUsecase, deleteDeploymentUsecase, updateDeploymentStatusUsecase, inquiryUsecase);
     }
 
     @DisplayName("배포 실행")

@@ -1,11 +1,9 @@
 package com.ttalkak.deployment.deployment.framework.web;
 
-import com.ttalkak.deployment.deployment.application.usecase.CreateDeploymentUsecase;
-import com.ttalkak.deployment.deployment.application.usecase.DeleteDeploymentUsecase;
-import com.ttalkak.deployment.deployment.application.usecase.InquiryUsecase;
-import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUsecase;
+import com.ttalkak.deployment.deployment.application.usecase.*;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentDeleteRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
+import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateStatusRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +21,7 @@ public class DeploymentController {
     private final CreateDeploymentUsecase createDeploymentUsecase;
     private final UpdateDeploymentUsecase updateDeploymentUsecase;
     private final DeleteDeploymentUsecase deleteDeploymentUsecase;
+    private final UpdateDeploymentStatusUsecase updateDeploymentStatusUsecase;
     private final InquiryUsecase inquiryUsecase;
 
     // 배포 등록
@@ -70,5 +69,9 @@ public class DeploymentController {
         return ResponseEntity.ok().build();
     }
 
-
+    @PostMapping("/deployment/status")
+    public ResponseEntity<Void> updateDeploymentStatus(DeploymentUpdateStatusRequest deploymentUpdateStatusRequest){
+        updateDeploymentStatusUsecase.updateDeploymentStatus(deploymentUpdateStatusRequest);
+        return ResponseEntity.ok().build();
+    }
 }
