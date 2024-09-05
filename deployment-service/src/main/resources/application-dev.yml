@@ -24,3 +24,6 @@ consumers:
     name: save_hosting
   groupid:
     name: hosting
+
+subdomain:
+  endpoint: http://localhost:8000

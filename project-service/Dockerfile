@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y procps
 COPY . .
 
 RUN sh gradlew build
-RUN chmod -R 777 build/libs/project-0.0.1.jar
 
+WORKDIR /app/build/libs
 
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "build/libs/project-0.0.1.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "project-0.0.1.jar"]
