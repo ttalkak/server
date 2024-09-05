@@ -86,7 +86,7 @@ services:
     command:
       logstash -f /etc/logstash/conf.d/logstash.conf
     volumes:
-      - ./docker:/etc/logstash/conf.d
+      - ./docker_config:/etc/logstash/conf.d
     ports:
       - 5000:5000  
     depends_on:
