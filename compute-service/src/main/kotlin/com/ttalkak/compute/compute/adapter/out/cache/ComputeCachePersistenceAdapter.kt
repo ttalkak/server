@@ -12,19 +12,13 @@ class ComputeCachePersistenceAdapter(
 ): SaveComputePort {
     override fun saveCompute(
         userId: Long,
-        computeLimit: Int,
-        availablePortStart: Int,
-        availablePortEnd: Int,
         computeType: ComputerType,
         maxMemory: Int
     ) {
         val compute = ComputeUserCache(
             userId = userId,
             sessionId = "",
-            availableCompute = computeLimit,
             usedCompute = 0,
-            availablePortStart = availablePortStart,
-            availablePortEnd = availablePortEnd,
             computeType = computeType,
             maxMemory = maxMemory
         )

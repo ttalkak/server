@@ -20,9 +20,6 @@ class ComputeService(
 
         saveComputePort.saveCompute(
             userId = command.userId,
-            computeLimit = command.computeLimit,
-            availablePortStart = command.availablePortStart,
-            availablePortEnd = command.availablePortEnd,
             computeType = command.computeType,
             maxMemory = command.maxMemory
         )
