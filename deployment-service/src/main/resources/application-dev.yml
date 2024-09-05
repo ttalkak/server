@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    include: kafka-dev
   config:
     import: optional:configserver:http://localhost:8888
     name: deployment-service

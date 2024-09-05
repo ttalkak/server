@@ -2,8 +2,6 @@ server:
   port: 0
 
 spring:
-  profiles:
-    include: kafka-prod
   config:
     import: optional:configserver:http://config-server:8888
     name: project-service
