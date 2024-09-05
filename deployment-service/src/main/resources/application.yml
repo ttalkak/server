@@ -63,3 +63,7 @@ management:
 
 hosts:
   logstash: localhost
+
+
+subdomain:
+  endpoint: http://localhost:8000

@@ -39,7 +39,6 @@ public class InquiryInputPort implements InquiryUsecase {
     }
 
     // 레포지토리 이름을 포함하면 반
-
     @Override
     public List<DeploymentResponse> searchDeploymentByGithubRepositoryName(String githubRepoName, int page, int size) {
         return deploymentOutputPort.searchDeploymentByGithubRepoName(githubRepoName, page, size)

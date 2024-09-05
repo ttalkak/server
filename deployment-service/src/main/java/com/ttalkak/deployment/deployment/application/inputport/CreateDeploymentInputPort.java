@@ -14,6 +14,7 @@ import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainKeyResponse;
+import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainRequest;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
@@ -85,7 +86,12 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         deployment.addHostingEntity(savedHostingEntity);
 
         // 서버로 요청해서 도메인 키 받아오기
-        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(savedHostingEntity.getId());
+        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(
+                new DomainRequest(
+                        savedHostingEntity.getId().toString(),
+                        savedHostingEntity.getDetailSubDomainName(),
+                        projectInfo.getDomainName()
+                ));
         String detailSubDomainKey = domainKeyResponse.getKey();
 
         savedHostingEntity.setDetailSubDomainKey(detailSubDomainKey);
