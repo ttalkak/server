@@ -5,4 +5,6 @@ COPY . .
 
 RUN sh gradlew build
 
+RUN chmod -R 777 build/libs/eureka-0.0.1.jar
+
 ENTRYPOINT ["java", "-jar", "build/libs/eureka-0.0.1.jar"]
