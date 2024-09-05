@@ -70,6 +70,19 @@ services:
     networks:
       - spring-network
 
+  project-service:
+    container_name: project-service
+    build:
+      context: project-service
+      dockerfile: Dockerfile.prod
+    depends_on:
+      - eureka-server
+      - config-server
+      - gateway-service
+
+    networks:
+      - spring-network
+
 
 
 networks:
