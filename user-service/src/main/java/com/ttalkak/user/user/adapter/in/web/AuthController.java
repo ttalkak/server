@@ -26,7 +26,7 @@ import static com.ttalkak.user.user.adapter.in.security.JwtTokenProvider.REFRESH
 @RestController
 @WebAdapter
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/v1/auth")
 public class AuthController {
     private final AuthenticationUseCase authenticationUseCase;
     private final RefreshTokenUseCase refreshTokenUseCase;
