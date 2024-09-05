@@ -34,8 +34,8 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Column(name = "access_token")
-    private String accessToken;
+    @Column(name = "github_token")
+    private String githubToken;
 
     @Column(name = "is_email_verified", nullable = false)
     @ColumnDefault("false")
@@ -48,9 +48,9 @@ public class UserEntity {
         this.userRole = userRole;
     }
 
-    public UserEntity(String username, String password, String email, UserRole userRole, String providerId, String accessToken) {
+    public UserEntity(String username, String password, String email, UserRole userRole, String providerId, String githubToken) {
         this(username, password, email, userRole);
         this.providerId = providerId;
-        this.accessToken = accessToken;
+        this.githubToken = githubToken;
     }
 }

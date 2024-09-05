@@ -37,8 +37,8 @@ public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort {
     }
 
     @Override
-    public UserEntity save(String username, String password, String email, String providerId, String accessToken) {
-        UserEntity entity = new UserEntity(username, password, email, UserRole.PROVIDER, providerId, accessToken);
+    public UserEntity save(String username, String password, String email, String providerId, String githubToken) {
+        UserEntity entity = new UserEntity(username, password, email, UserRole.PROVIDER, providerId, githubToken);
         return userJpaRepository.save(entity);
     }
 }
