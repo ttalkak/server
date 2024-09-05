@@ -29,7 +29,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate() {
+    public KafkaTemplate<String, ?> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 

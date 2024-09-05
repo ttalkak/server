@@ -91,6 +91,7 @@ public class ProjectPersistenceAdapter implements SaveProjectOutputPort,
 
         projectEntity.updateDeletedStatus();
         projectJpaRepository.save(projectEntity);
+
     }
 
     /**
