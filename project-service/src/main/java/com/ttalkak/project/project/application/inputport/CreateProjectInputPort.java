@@ -30,7 +30,7 @@ public class CreateProjectInputPort implements CreateProjectUseCase {
      * @return
      */
     @Override
-    public ProjectResponse createProject(ProjectCreateRequest projectCreateRequest) {
+    public ProjectResponse createProject(Long userId, ProjectCreateRequest projectCreateRequest) {
 
         // 도메인명 중복 체크
         if(projectCreateRequest.getDomainName() != null && !"".equals(projectCreateRequest.getDomainName())) {
@@ -43,7 +43,7 @@ public class CreateProjectInputPort implements CreateProjectUseCase {
         ProjectEntity projectEntity = ProjectEntity.builder()
                 .projectName(projectCreateRequest.getProjectName())
                 .domainName(projectCreateRequest.getDomainName())
-                .userId(projectCreateRequest.getUserId())
+                .userId(userId)
                 .build();
 
         ProjectEntity result = saveProjectOutputPort.save(projectEntity);

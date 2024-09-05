@@ -1,15 +1,18 @@
 package com.ttalkak.deployment.deployment.framework.web.request;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 public class HostingCreateRequest {
 
     private int hostingPort;
 
-    private String hostingIp;
 
-    private Long domainId;
-
-    private Long deployerId;
+    @Builder
+    private HostingCreateRequest(int hostingPort) {
+        this.hostingPort = hostingPort;
+    }
 }

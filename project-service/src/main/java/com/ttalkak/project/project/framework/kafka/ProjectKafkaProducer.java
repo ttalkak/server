@@ -19,7 +19,6 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class ProjectKafkaProducer implements EventOutputPort {
 
-    private final DeleteProjectInputPort deleteProjectInputPort;
     @Value("${producers.topic1.name}")
     private String TOPIC_DELETE_PROJECT;
 

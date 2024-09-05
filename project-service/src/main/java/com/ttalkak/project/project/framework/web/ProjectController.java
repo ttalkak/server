@@ -1,5 +1,6 @@
 package com.ttalkak.project.project.framework.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ttalkak.project.common.WebAdapter;
 import com.ttalkak.project.project.application.usercase.CreateProjectUseCase;
 import com.ttalkak.project.project.application.usercase.DeleteProjectUseCase;
@@ -43,8 +44,10 @@ public class ProjectController {
      * @return
      */
     @PostMapping("/project")
-    public ResponseEntity<ProjectResponse> createProject(@RequestBody ProjectCreateRequest projectCreateRequest) {
-        ProjectResponse projectResponse = createProjectUseCase.createProject(projectCreateRequest);
+    public ResponseEntity<ProjectResponse> createProject(
+            @RequestHeader("X-USER-ID") Long userId,
+            @RequestBody ProjectCreateRequest projectCreateRequest) {
+        ProjectResponse projectResponse = createProjectUseCase.createProject(userId, projectCreateRequest);
         return ResponseEntity.ok(projectResponse);
     }
 
@@ -89,7 +92,7 @@ public class ProjectController {
      * @return
      */
     @DeleteMapping("/project/{projectId}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) {
+    public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) throws JsonProcessingException {
         deleteProjectUseCase.deleteProject(projectId);
         return ResponseEntity.ok().build();
     }

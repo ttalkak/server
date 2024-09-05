@@ -1,8 +1,9 @@
 package com.ttalkak.deployment.deployment.application.outputport;
 
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainKeyResponse;
+import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainRequest;
 
 public interface DomainOutputPort {
 
-    public DomainKeyResponse makeDomainKey(Long hostingId);
+    public DomainKeyResponse makeDomainKey(DomainRequest domainRequest);
 }

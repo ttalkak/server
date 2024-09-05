@@ -24,6 +24,7 @@ public class ProjectEntity extends BaseEntity {
 
     private String domainName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private ProjectStatus status = ProjectStatus.ACTIVE;
 
