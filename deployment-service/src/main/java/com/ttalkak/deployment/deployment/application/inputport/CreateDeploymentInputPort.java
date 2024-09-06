@@ -89,8 +89,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(
                 new DomainRequest(
                         savedHostingEntity.getId().toString(),
-                        savedHostingEntity.getDetailSubDomainName(),
-                        projectInfo.getDomainName()
+                        projectInfo.getDomainName() + " " + savedHostingEntity.getServiceType().toString(),
+                        savedHostingEntity.getDetailSubDomainName()
                 ));
         String detailSubDomainKey = domainKeyResponse.getKey();
 //        String detailSubDomainKey = "tmp domain key";
