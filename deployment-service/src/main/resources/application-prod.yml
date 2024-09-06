@@ -11,31 +11,11 @@ eureka:
 hosts:
   logstash: 10.178.0.6
 
-
-
-
-
 producers:
   bootstrap-servers: 10.178.0.6:9092
-  topic1:
-    name: create_instance
 
 consumers:
   bootstrap-servers: 10.178.0.6:9092
-  topic:
-    save-hosting:
-      name: save_hosting
-    update-deployment-status:
-      name: project_deletion_initiated
-    delete-deployment:
-      name: project_deletion_initiated
-  groupid:
-    save-hosting:
-      name: save_hosting
-    update-deployment-status:
-      name: project_deletion_initiated
-    delete-deployment:
-      name: project_deletion_initiated
 
 
 subdomain:

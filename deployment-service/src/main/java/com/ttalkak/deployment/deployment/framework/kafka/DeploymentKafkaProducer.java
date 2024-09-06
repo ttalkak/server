@@ -32,7 +32,7 @@ public class DeploymentKafkaProducer implements EventOutputPort {
 
     @Override
     public void occurCreateInstance(CreateInstanceEvent createInstanceEvent) throws JsonProcessingException {
-        String property = env.getProperty("spring.kafka.consumer.bootstrap-servers");
+
         CompletableFuture<SendResult<String, CreateInstanceEvent>> future = kafkaTemplate1.send(TOPIC_CREATE_INSTANCE, createInstanceEvent);
         // 콜백 메서드 생성 해야함.
         future.thenAccept(result -> {
