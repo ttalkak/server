@@ -16,7 +16,7 @@ public interface DeploymentFeignClient {
     @DeleteMapping("/v1/deployment/{projectId}")
     void deleteDeployment(@PathVariable("projectId")Long projectId);
 
-    @GetMapping("/v1/deployment/project/{projectId}")
+    @GetMapping("/v1/deployment/feign/project/{projectId}")
     List<DeploymentResponse> getDeployments(@PathVariable("projectId")Long projectId);
 
 }

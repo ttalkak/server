@@ -33,7 +33,7 @@ public class DeploymentController {
     }
 
     // 하나의 프로젝트에 포함되는 배포이력 전체조회
-    @GetMapping("/deployment/project/{projectId}")
+    @GetMapping("/deployment/feign/project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
     public List<DeploymentResponse> getAllDeploymentByProjectId(@PathVariable("projectId") Long projectId){
         List<DeploymentResponse> deployments = inquiryUsecase.getDeploymentsByProjectId(projectId);
