@@ -19,4 +19,6 @@ public interface DeploymentOutputPort {
     public DeploymentEntity save(DeploymentEntity deploymentEntity);
 
     public void delete(DeploymentEntity deploymentEntity);
+
+    void saveAll(List<DeploymentEntity> deploymentEntities);
 }

@@ -18,6 +18,7 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
 
 
     private final DeploymentOutputPort deploymentOutputPort;
+
     @Override
     public void deleteDeployment(DeploymentDeleteRequest deploymentDeleteRequest) {
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentDeleteRequest.getDeploymentId())
@@ -33,5 +34,7 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
         for(DeploymentEntity deploymentEntity : deploymentEntities) {
             deploymentEntity.deleteDeployment();
         }
+        deploymentOutputPort.saveAll(deploymentEntities);
+
     }
 }
