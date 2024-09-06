@@ -23,17 +23,14 @@ public class DeploymentKafkaProducer implements EventOutputPort {
     @Value("${producers.topic1.name}")
     private String TOPIC_CREATE_INSTANCE;
 
-    private final KafkaTemplate<String, CreateInstanceEvent> kafkaTemplate1;
+    private final KafkaTemplate<String, CreateInstanceEvent> kafkaTemplate;
 
     private final Logger LOGGER = LoggerFactory.getLogger(DeploymentKafkaProducer.class);
 
-    @Autowired
-    private Environment env;
-
     @Override
     public void occurCreateInstance(CreateInstanceEvent createInstanceEvent) throws JsonProcessingException {
-        String property = env.getProperty("spring.kafka.consumer.bootstrap-servers");
-        CompletableFuture<SendResult<String, CreateInstanceEvent>> future = kafkaTemplate1.send(TOPIC_CREATE_INSTANCE, createInstanceEvent);
+
+        CompletableFuture<SendResult<String, CreateInstanceEvent>> future = kafkaTemplate.send(TOPIC_CREATE_INSTANCE, createInstanceEvent);
         // 콜백 메서드 생성 해야함.
         future.thenAccept(result -> {
             CreateInstanceEvent value = result.getProducerRecord().value();

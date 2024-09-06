@@ -24,6 +24,11 @@ public class ProjectKafkaProducer implements EventOutputPort {
 
     private final KafkaTemplate<String, ProjectEvent> kafkaTemplate1;
 
+    /**
+     * Deployment service에  배포 엔티티 삭제를 요청
+     * @param projectEvent
+     * @throws JsonProcessingException
+     */
     @Override
     public void occurDeleteDeploymentInstance(ProjectEvent projectEvent) throws JsonProcessingException {
         CompletableFuture<SendResult<String, ProjectEvent>> future = kafkaTemplate1.send(TOPIC_DELETE_PROJECT, projectEvent);

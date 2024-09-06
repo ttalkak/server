@@ -6,5 +6,5 @@ public interface DeleteDeploymentUsecase {
     void deleteDeployment(DeploymentDeleteRequest deploymentDeleteRequest);
 
 
-    public void deleteDeploymentByProject(Long projectId);
+    public void deleteDeploymentByProject(Long projectId) throws Exception;
 }

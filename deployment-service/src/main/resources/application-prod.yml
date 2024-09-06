@@ -11,19 +11,21 @@ eureka:
 hosts:
   logstash: 10.178.0.6
 
-
-
-
-
 producers:
   bootstrap-servers: 10.178.0.6:9092
   topic1:
     name: create_instance
+  topic2:
+    name: project_deletion_exception
+
 
 consumers:
   bootstrap-servers: 10.178.0.6:9092
   topic1:
     name: save_hosting
+  topic2:
+    name: project_deletion_initiated
+
   groupid:
     name: hosting
 

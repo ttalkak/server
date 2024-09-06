@@ -88,10 +88,12 @@ public class ProjectPersistenceAdapter implements SaveProjectOutputPort,
     public void deleteProject(Long projectId) {
         ProjectEntity projectEntity = projectJpaRepository.findById(projectId)
                 .orElseThrow( () -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_PROJECT));
+        
+        // 이미 삭제된 프로젝트인 경우 삭제 과정을 진행하지 않는다.
+        if(projectEntity.getStatus() == ProjectStatus.DELETED) throw new EntityNotFoundException(ErrorCode.NOT_EXISTS_PROJECT);
 
         projectEntity.updateDeletedStatus();
         projectJpaRepository.save(projectEntity);
-
     }
 
     /**

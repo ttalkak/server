@@ -17,6 +17,8 @@ producers:
   bootstrap-servers: localhost:9092
   topic1:
     name: create_instance
+  topic2:
+    name: project_deletion_exception
 
 consumers:
   bootstrap-servers: localhost:9092

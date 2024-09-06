@@ -25,7 +25,6 @@ public class DeleteProjectInputPort implements DeleteProjectUseCase {
     @Override
     public void deleteProject(Long projectId) throws JsonProcessingException {
         deleteProjectOutputPort.deleteProject(projectId);
-
         eventOutputPort.occurDeleteDeploymentInstance(new ProjectEvent(projectId));
     }
 
