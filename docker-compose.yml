@@ -173,17 +173,17 @@ services:
   #     - eureka-server
   #     - gateway-service
 
-  project-service:
-    container_name: project-service
-    build: project-service
-    depends_on:
-      - db
-      - redis
-      - elasticsearch
-      - kibana
-      - logstash
-      - eureka-server
-      - gateway-service
+  # project-service:
+  #   container_name: project-service
+  #   build: project-service
+  #   depends_on:
+  #     - db
+  #     - redis
+  #     - elasticsearch
+  #     - kibana
+  #     - logstash
+  #     - eureka-server
+  #     - gateway-service
 
 volumes:
   elasticsearch_data: 

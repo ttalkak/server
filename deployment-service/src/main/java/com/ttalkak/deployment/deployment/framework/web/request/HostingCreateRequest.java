@@ -1,5 +1,6 @@
 package com.ttalkak.deployment.deployment.framework.web.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class HostingCreateRequest {
 
+
+    @NotNull(message = "호스팅 포트는 필수입니다.")
     private int hostingPort;
 
 
