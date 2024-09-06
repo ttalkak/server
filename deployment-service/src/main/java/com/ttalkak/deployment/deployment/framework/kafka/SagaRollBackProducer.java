@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class SagaRollBackProducer {
 
-    @Value("${producers.topic2.name}")
+    @Value("${producers.topic.project-deletion-exception.name}")
     private String TOPIC_ROllBACK_INSTANCE;
 
     private final KafkaTemplate<String, DeleteDeploymentsEvent> kafkaTemplate;

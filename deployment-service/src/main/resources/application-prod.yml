@@ -13,10 +13,11 @@ hosts:
 
 producers:
   bootstrap-servers: 10.178.0.6:9092
-  topic1:
-    name: create_instance
-  topic2:
-    name: project_deletion_exception
+  topic:
+    create-instance:
+      name: create_instance
+    project-deletion-exception:
+      name: project_deletion_exception
 
 
 consumers:
@@ -25,14 +26,14 @@ consumers:
     save-hosting:
       name: save_hosting
     update-deployment-status:
-      name: project_deletion_initiated
+      name: update_deployment_status
     delete-deployment:
       name: project_deletion_initiated
   groupid:
     save-hosting:
       name: save_hosting
     update-deployment-status:
-      name: project_deletion_initiated
+      name: update_deployment_status
     delete-deployment:
       name: project_deletion_initiated
 

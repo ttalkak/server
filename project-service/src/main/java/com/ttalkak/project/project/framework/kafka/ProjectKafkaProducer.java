@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class ProjectKafkaProducer implements EventOutputPort {
 
-    @Value("${producers.topic1.name}")
+    @Value("${producers.topic.project-deletion-initiated.name}")
     private String TOPIC_DELETE_PROJECT;
 
     private final KafkaTemplate<String, ProjectEvent> kafkaTemplate1;

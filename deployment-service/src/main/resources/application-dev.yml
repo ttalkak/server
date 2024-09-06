@@ -15,22 +15,28 @@ hosts:
 
 producers:
   bootstrap-servers: localhost:9092
-  topic1:
-    name: create_instance
-  topic2:
-    name: project_deletion_exception
   topic:
     create-instance:
       name: create_instance
+    project-deletion-exception:
+      name: project_deletion_exception
 
 consumers:
   bootstrap-servers: localhost:9092
-  topic1:
-    name: save_hosting
-  topic2:
-    name: project_deletion_initiated
+  topic:
+    save-hosting:
+      name: save_hosting
+    update-deployment-status:
+      name: update_deployment_status
+    delete-deployment:
+      name: project_deletion_initiated
   groupid:
-    name: hosting
+    save-hosting:
+      name: save_hosting
+    update-deployment-status:
+      name: update_deployment_status
+    delete-deployment:
+      name: project_deletion_initiated
 
 subdomain:
   endpoint: http://localhost:8000
