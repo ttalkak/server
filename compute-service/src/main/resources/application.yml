@@ -4,3 +4,8 @@ server:
 spring:
   application:
     name: compute-service
+
+consumer:
+  topics:
+    user-create:
+      name: user-create

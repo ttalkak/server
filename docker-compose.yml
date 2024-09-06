@@ -162,28 +162,28 @@ services:
       - gateway-service
 
 
-  deployment-service:
-    container_name: deployment-service
-    build: deployment-service
-    depends_on:
-      - db
-      - elasticsearch
-      - kibana
-      - logstash
-      - eureka-server
-      - gateway-service
+  # deployment-service:
+  #   container_name: deployment-service
+  #   build: deployment-service
+  #   depends_on:
+  #     - db
+  #     - elasticsearch
+  #     - kibana
+  #     - logstash
+  #     - eureka-server
+  #     - gateway-service
 
-  project-service:
-    container_name: project-service
-    build: project-service
-    depends_on:
-      - db
-      - redis
-      - elasticsearch
-      - kibana
-      - logstash
-      - eureka-server
-      - gateway-service
+  # project-service:
+  #   container_name: project-service
+  #   build: project-service
+  #   depends_on:
+  #     - db
+  #     - redis
+  #     - elasticsearch
+  #     - kibana
+  #     - logstash
+  #     - eureka-server
+  #     - gateway-service
 
 volumes:
   elasticsearch_data: 
