@@ -2,6 +2,7 @@ package com.ttalkak.compute.compute.adapter.`in`.socket
 
 import com.ttalkak.compute.common.SocketAdapter
 import com.ttalkak.compute.compute.application.service.ConnectService
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.web.socket.messaging.SessionConnectEvent
@@ -13,12 +14,16 @@ import org.springframework.web.socket.messaging.SessionUnsubscribeEvent
 class SocketSubscribeEventListener(
     private val connectService: ConnectService
 ) {
+    private val log = KotlinLogging.logger {}
+
     @EventListener
     fun handleConnectEvent(event: SessionConnectEvent) {
         val headerAccessor = StompHeaderAccessor.wrap(event.message)
         val connectUserId = headerAccessor.getNativeHeader("X-USER-ID")?.first()?.toLong()
         val sessionId = headerAccessor.sessionId
-        println("connectUserId: $connectUserId, sessionId: $sessionId")
+        log.debug {
+            "connectUserId: $connectUserId, sessionId: $sessionId"
+        }
 
         if (connectUserId != null && sessionId != null) {
             connectService.connect(connectUserId, sessionId)

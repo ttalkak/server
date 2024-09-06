@@ -1,13 +1,17 @@
-FROM openjdk:17-ea-11-jdk-slim
-RUN apt-get update && apt-get install -y procps
-
+# 1. 빌드 환경 설정
+FROM gradle:8.8-jdk17 AS build
+WORKDIR /app
 COPY . .
 
+# 2. Gradle 빌드
+RUN gradle clean build --no-daemon
 
-RUN sh gradlew build
+# 3. 실제 서버 실행 환경 설정
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
 
-RUN chmod -R 777 build/libs/config-0.0.1.jar
+# 4. 빌드된 JAR 파일 복사
+COPY --from=build /app/build/libs/*.jar /app/app.jar
 
-EXPOSE 8888
-
-ENTRYPOINT ["java", "-jar", "build/libs/config-0.0.1.jar"]
+# 5. 스프링 부트 앱 실행
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

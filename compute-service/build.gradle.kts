@@ -37,6 +37,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("com.google.code.gson:gson:2.11.0")
     runtimeOnly("org.postgresql:postgresql")
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.kafka:spring-kafka-test")
