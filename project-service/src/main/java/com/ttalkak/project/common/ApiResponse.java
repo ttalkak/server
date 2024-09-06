@@ -1,12 +1,14 @@
-package com.ttalkak.project.project.framework.web.response;
+package com.ttalkak.project.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ApiResponse<T> {
     private boolean success;
     private String message;

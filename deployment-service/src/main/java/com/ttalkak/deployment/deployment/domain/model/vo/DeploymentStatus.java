@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum DeploymentStatus {
-    READY, RUNNING, ERROR, DELETED;
+    STOP, RUNNING, ERROR, DELETED, PENDING;
 
 
     public static boolean isAlive(DeploymentStatus deploymentStatus) {

@@ -86,13 +86,14 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         deployment.addHostingEntity(savedHostingEntity);
 
         // 서버로 요청해서 도메인 키 받아오기
-        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(
-                new DomainRequest(
-                        savedHostingEntity.getId().toString(),
-                        savedHostingEntity.getDetailSubDomainName(),
-                        projectInfo.getDomainName()
-                ));
-        String detailSubDomainKey = domainKeyResponse.getKey();
+//        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(
+//                new DomainRequest(
+//                        savedHostingEntity.getId().toString(),
+//                        savedHostingEntity.getDetailSubDomainName(),
+//                        projectInfo.getDomainName()
+//                ));
+//        String detailSubDomainKey = domainKeyResponse.getKey();
+        String detailSubDomainKey = "tmp domain key";
 
         savedHostingEntity.setDetailSubDomainKey(detailSubDomainKey);
 
@@ -120,10 +121,10 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
             }
         }
 
-        HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), savedHostingEntity.getId(), null, savedHostingEntity.getHostingPort(), null,hosting.getDetailSubDomainName(), hosting.getDetailSubDomainKey());
-        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getEnv());
+        HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), savedHostingEntity.getId(), null, savedHostingEntity.getHostingPort(), null,projectInfo.getDomainName(), hosting.getDetailSubDomainKey());
+        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getEnv(), savedDeployment.getServiceType().toString());
         GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory());
-        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, databaseEvents, githubInfoEvent);
+        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent,databaseEvents);
         try {
             eventOutputPort.occurCreateInstance(createInstanceEvent);
         } catch (JsonProcessingException e) {

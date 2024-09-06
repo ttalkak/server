@@ -17,7 +17,6 @@ class ComputeCachePersistenceAdapter(
     ) {
         val compute = ComputeUserCache(
             userId = userId,
-            sessionId = "",
             usedCompute = 0,
             computeType = computeType,
             maxMemory = maxMemory

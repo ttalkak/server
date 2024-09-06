@@ -1,9 +1,11 @@
 package com.ttalkak.project.project.application.inputport;
 
 import com.ttalkak.project.common.UseCase;
+import com.ttalkak.project.project.application.outputport.DeploymentOutputPort;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
+import com.ttalkak.project.project.framework.deploymentadapter.dto.DeploymentResponse;
 import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +14,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional
 @UseCase
 @RequiredArgsConstructor
 public class GetProjectInputPort implements GetProjectUseCase {
 
     private final LoadProjectOutputPort loadProjectOutputPort;
+
+    private final DeploymentOutputPort deploymentOutputPort;
 
     /**
      * 프로젝트 단건 조회
@@ -28,7 +34,9 @@ public class GetProjectInputPort implements GetProjectUseCase {
     @Override
     public ProjectResponse getProject(Long projectId) {
         ProjectEntity result = loadProjectOutputPort.findById(projectId);
-        return ProjectResponse.mapToResponse(result);
+        ProjectResponse projectResponse = ProjectResponse.mapToResponse(result);
+        projectResponse.setDeployments(deploymentOutputPort.getDeployments(projectId));
+        return projectResponse;
     }
 
     /**

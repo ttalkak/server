@@ -15,4 +15,6 @@ public class DeploymentEvent {
     private Long projectId;
 
     private String env;
+
+    private String serviceType;
 }

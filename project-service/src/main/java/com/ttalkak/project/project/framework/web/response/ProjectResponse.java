@@ -1,11 +1,13 @@
 package com.ttalkak.project.project.framework.web.response;
 
 import com.ttalkak.project.project.domain.model.ProjectEntity;
+import com.ttalkak.project.project.framework.deploymentadapter.dto.DeploymentResponse;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @Data
@@ -23,6 +25,8 @@ public class ProjectResponse {
 
     private LocalDateTime updatedAt;
 
+    private List<DeploymentResponse> deployments;
+
     @Builder
     private ProjectResponse(Long id, Long userId, String projectName, String domainName, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
@@ -31,6 +35,7 @@ public class ProjectResponse {
         this.domainName = domainName;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.deployments = deployments;
     }
 
     public static ProjectResponse mapToResponse(ProjectEntity projectEntity) {
@@ -42,6 +47,10 @@ public class ProjectResponse {
                 .createdAt(projectEntity.getCreatedAt())
                 .updatedAt(projectEntity.getUpdatedAt())
                 .build();
+    }
+
+    public void setDeployments(List<DeploymentResponse> deployments) {
+        this.deployments = deployments;
     }
 
 }
