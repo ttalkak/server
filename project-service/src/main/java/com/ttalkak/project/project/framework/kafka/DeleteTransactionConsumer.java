@@ -21,7 +21,12 @@ public class DeleteTransactionConsumer {
 
     private final DeleteProjectUseCase deleteProjectUseCase;
 
-    @KafkaListener(topics = "${consumers.topic1.name}", groupId = "${consumers.groupid.name}")
+    /**
+     * 프로젝트 삭제 과정중에 에러 발생시 롤백 처리한다.
+     * @param record
+     * @throws IOException
+     */
+    @KafkaListener(topics = "${consumers.topic.project-deletion-exception.name}", groupId = "${consumers.groupid.name}")
     public void consumeRollBack(ConsumerRecord<String, String> record) throws IOException {
         log.info("consume roll back:{}", record.value());
         DeletedEvent deletedEvent = objectMapper.readValue(record.value(), DeletedEvent.class);

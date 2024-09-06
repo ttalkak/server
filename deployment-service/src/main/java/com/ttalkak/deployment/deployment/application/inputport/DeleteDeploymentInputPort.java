@@ -16,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
 
-
     private final DeploymentOutputPort deploymentOutputPort;
 
     @Override
@@ -27,9 +26,8 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
         deploymentOutputPort.save(deploymentEntity);
     }
 
-
     @Override
-    public void deleteDeploymentByProject(Long projectId) {
+    public void deleteDeploymentByProject(Long projectId) throws Exception {
         List<DeploymentEntity> deploymentEntities = deploymentOutputPort.findAllByProjectId(projectId);
         for(DeploymentEntity deploymentEntity : deploymentEntities) {
             deploymentEntity.deleteDeployment();

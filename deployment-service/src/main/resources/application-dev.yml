@@ -11,8 +11,6 @@ eureka:
 hosts:
   logstash: localhost
 
-
-
 producers:
   bootstrap-servers: localhost:9092
 

@@ -17,6 +17,5 @@ producers:
 consumers:
   bootstrap-servers: 10.178.0.6:9092
 
-
 subdomain:
   endpoint: http://10.178.0.6:8000

@@ -19,11 +19,16 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class ProjectKafkaProducer implements EventOutputPort {
 
-    @Value("${producers.topic1.name}")
+    @Value("${producers.topic.project-deletion-initiated.name}")
     private String TOPIC_DELETE_PROJECT;
 
     private final KafkaTemplate<String, ProjectEvent> kafkaTemplate1;
 
+    /**
+     * Deployment service에  배포 엔티티 삭제를 요청
+     * @param projectEvent
+     * @throws JsonProcessingException
+     */
     @Override
     public void occurDeleteDeploymentInstance(ProjectEvent projectEvent) throws JsonProcessingException {
         CompletableFuture<SendResult<String, ProjectEvent>> future = kafkaTemplate1.send(TOPIC_DELETE_PROJECT, projectEvent);
