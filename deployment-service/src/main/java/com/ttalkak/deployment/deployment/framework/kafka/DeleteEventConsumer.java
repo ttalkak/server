@@ -17,7 +17,7 @@ public class DeleteEventConsumer {
 
     private final DeleteDeploymentInputPort deleteDeploymentInputPort;
 
-    @KafkaListener(topics = "${consumers.topic2.name}", groupId = "project-deletion-service")
+    @KafkaListener(topics = "${consumers.topic.delete-deployment.name}", groupId = "${consumers.groupid.delete-deployment.name}")
     public void deleteConsumer(ConsumerRecord<String, String> record) throws IOException {
         DeleteDeploymentsEvent deleteDeploymentsEvent = objectMapper.readValue(record.value(), DeleteDeploymentsEvent.class);
         deleteDeploymentInputPort.deleteDeploymentByProject(deleteDeploymentsEvent.getProjectId());

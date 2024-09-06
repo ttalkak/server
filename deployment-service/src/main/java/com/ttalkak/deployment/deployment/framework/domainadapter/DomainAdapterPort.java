@@ -16,6 +16,5 @@ public class DomainAdapterPort implements DomainOutputPort {
     @Override
     public DomainKeyResponse makeDomainKey(DomainRequest domainRequest) {
         return domainFeignClient.getDomainKey(domainRequest);
-
     }
 }
