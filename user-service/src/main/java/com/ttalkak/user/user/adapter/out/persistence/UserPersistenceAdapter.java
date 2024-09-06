@@ -41,4 +41,11 @@ public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort {
         UserEntity entity = new UserEntity(username, password, email, UserRole.PROVIDER, providerId, githubToken);
         return userJpaRepository.save(entity);
     }
+
+    @Override
+    public void saveGithubToken(String username, String accessToken) {
+        userJpaRepository.findByUsername(username).ifPresent(userEntity -> {
+            userJpaRepository.updateGithubToken(username, accessToken);
+        });
+    }
 }

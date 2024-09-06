@@ -55,8 +55,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			return UserEntityMapper.toUser(entity);
 		});
 
-		if (!StringUtils.hasText(user.getAccessToken())) {
-			user.setAccessToken(githubToken.getTokenValue());
+		if (StringUtils.hasText(githubToken.getTokenValue())) {
+			saveUserPort.saveGithubToken(user.getUsername(), githubToken.getTokenValue());
 		}
 
 		if (isNewUser.get()) {

@@ -5,6 +5,4 @@ COPY . .
 
 RUN sh gradlew build
 
-WORKDIR /app/build/libs
-
 ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "build/libs/user-service-0.0.1.jar"]

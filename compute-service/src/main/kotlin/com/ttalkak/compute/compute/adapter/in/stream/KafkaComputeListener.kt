@@ -8,13 +8,9 @@ import org.springframework.kafka.annotation.KafkaListener
 class KafkaComputeListener(
     private val redisTemplate: RedisTemplate<String, String>
 ) {
-    companion object {
-        const val COMPUTE_TOPIC = "create-compute"
+    @KafkaListener(topics = ["\${consumer.topics.user-create.name}"], groupId = "\${spring.kafka.consumer.group-id}")
+    fun listen(message: String) {
+        redisTemplate.convertAndSend("", message)
+        println("KafkaComputeListener: $message")
     }
-    
-//    @KafkaListener(topics = [COMPUTE_TOPIC])
-//    fun listen(message: String) {
-//        redisTemplate.convertAndSend(COMPUTE_TOPIC, message)
-//        println("KafkaComputeListener: $message")
-//    }
 }

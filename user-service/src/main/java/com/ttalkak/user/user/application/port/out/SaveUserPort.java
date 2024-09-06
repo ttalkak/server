@@ -22,4 +22,12 @@ public interface SaveUserPort {
      * @return 저장된 사용자 정보
      */
     UserEntity save(String username, String password, String email, String providerId, String accessToken);
+
+    /**
+     * 사용자의 Github Token을 저장한다.
+     *
+     * @param username 사용자 ID
+     * @param accessToken Github Token
+     */
+     void saveGithubToken(String username, String accessToken);
 }
