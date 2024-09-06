@@ -10,3 +10,27 @@ spring:
     consumer:
       properties:
         spring.json.trusted.packages: "*"
+
+
+producers:
+  topic:
+    create-instance:
+      name: create_instance
+    project-deletion-exception:
+      name: project_deletion_exception
+
+consumers:
+  topic:
+    save-hosting:
+      name: save_hosting
+    update-deployment-status:
+      name: update_deployment_status
+    delete-deployment:
+      name: project_deletion_initiated
+  groupid:
+    save-hosting:
+      name: save_hosting
+    update-deployment-status:
+      name: update_deployment_status
+    delete-deployment:
+      name: project_deletion_initiated

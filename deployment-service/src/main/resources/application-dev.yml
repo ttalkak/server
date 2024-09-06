@@ -11,21 +11,11 @@ eureka:
 hosts:
   logstash: localhost
 
-
-
 producers:
   bootstrap-servers: localhost:9092
-  topic1:
-    name: create_instance
 
 consumers:
   bootstrap-servers: localhost:9092
-  topic1:
-    name: save_hosting
-  topic2:
-    name: project_deletion_initiated
-  groupid:
-    name: hosting
 
 subdomain:
-  endpoint: http://localhost:8000
+  endpoint: http://localhost:8001

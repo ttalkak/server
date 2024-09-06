@@ -12,16 +12,16 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 
-//@Service
-//@RequiredArgsConstructor
-//public class ChangeStatusConsumer {
-//    private final ObjectMapper objectMapper = new ObjectMapper();
-//
-//    private final UpdateDeploymentStatusUsecase updateDeploymentStatusUsecase;
-//
-//    @KafkaListener(topics = "${consumers.topic.update-deployment-status}", groupId = "consumers-groupid-name")
-//    public void deleteConsumer(ConsumerRecord<String, String> record) throws IOException {
-//        DeploymentUpdateStatusRequest deploymentUpdateStatusRequest = objectMapper.readValue(record.value(), DeploymentUpdateStatusRequest.class);
-//        updateDeploymentStatusUsecase.updateDeploymentStatus(deploymentUpdateStatusRequest);
-//    }
-//}
+@Service
+@RequiredArgsConstructor
+public class ChangeStatusConsumer {
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final UpdateDeploymentStatusUsecase updateDeploymentStatusUsecase;
+
+    @KafkaListener(topics = "${consumers.topic.update-deployment-status.name}", groupId = "${consumers.groupid.update-deployment-status.name}")
+    public void deleteConsumer(ConsumerRecord<String, String> record) throws IOException {
+        DeploymentUpdateStatusRequest deploymentUpdateStatusRequest = objectMapper.readValue(record.value(), DeploymentUpdateStatusRequest.class);
+        updateDeploymentStatusUsecase.updateDeploymentStatus(deploymentUpdateStatusRequest);
+    }
+}

@@ -13,13 +13,20 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 public class DeleteEventConsumer {
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     private final DeleteDeploymentInputPort deleteDeploymentInputPort;
 
-    @KafkaListener(topics = "${consumers.topic2.name}", groupId = "project-deletion-service")
-    public void deleteConsumer(ConsumerRecord<String, String> record) throws IOException {
-        DeleteDeploymentsEvent deleteDeploymentsEvent = objectMapper.readValue(record.value(), DeleteDeploymentsEvent.class);
-        deleteDeploymentInputPort.deleteDeploymentByProject(deleteDeploymentsEvent.getProjectId());
+    private final SagaRollBackProducer sagaRollBackProducer;
+
+    @KafkaListener(topics = "${consumers.topic.delete-deployment.name}", groupId = "project-deletion-service")
+    public void deleteConsumer(ConsumerRecord<String, String> record) {
+        DeleteDeploymentsEvent deleteDeploymentsEvent = null;
+        try {
+            deleteDeploymentsEvent = objectMapper.readValue(record.value(), DeleteDeploymentsEvent.class);
+            deleteDeploymentInputPort.deleteDeploymentByProject(deleteDeploymentsEvent.getProjectId());
+        } catch (Exception e) {
+            sagaRollBackProducer.rollbackDeleteStatus(deleteDeploymentsEvent);
+        }
     }
 }

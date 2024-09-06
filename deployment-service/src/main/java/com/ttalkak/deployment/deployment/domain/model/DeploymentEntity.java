@@ -72,11 +72,9 @@ public class DeploymentEntity extends BaseEntity {
         this.hostingEntities.add(hostingEntity);
     }
 
-
     public void addDatabaseEntity(DatabaseEntity databaseEntity){
         this.dataBaseEntities.add(databaseEntity);
     }
-
 
     public void deleteDeployment(){
         this.status = DeploymentStatus.DELETED;

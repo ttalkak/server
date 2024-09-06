@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class DeploymentUpdateStatusRequest {
 
-    private Long deploymentId;
+    private String deploymentId;
 
     private String status;
 }
