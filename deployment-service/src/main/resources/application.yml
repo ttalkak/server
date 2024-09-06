@@ -22,13 +22,13 @@ consumers:
     save-hosting:
       name: save_hosting
     update-deployment-status:
-      name: project_deletion_initiated
+      name: deployment_update_change
     delete-deployment:
       name: project_deletion_initiated
   groupid:
     save-hosting:
       name: save_hosting
     update-deployment-status:
-      name: project_deletion_initiated
+      name: deployment_update_change
     delete-deployment:
       name: project_deletion_initiated

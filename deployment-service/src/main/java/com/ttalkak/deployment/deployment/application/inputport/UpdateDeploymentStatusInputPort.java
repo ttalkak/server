@@ -18,7 +18,7 @@ public class UpdateDeploymentStatusInputPort implements UpdateDeploymentStatusUs
 
     @Override
     public void updateDeploymentStatus(DeploymentUpdateStatusRequest deploymentUpdateStatusRequest) {
-        DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentUpdateStatusRequest.getDeploymentId())
+        DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(Long.valueOf(deploymentUpdateStatusRequest.getDeploymentId()))
                 .orElseThrow(() -> new IllegalArgumentException("해당 배포아이디는 존재하지 않습니다."));
         deploymentEntity.setStatus(DeploymentStatus.valueOf(deploymentUpdateStatusRequest.getStatus()));
         deploymentOutputPort.save(deploymentEntity);
