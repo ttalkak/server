@@ -21,13 +21,20 @@ producers:
 
 consumers:
   bootstrap-servers: 10.178.0.6:9092
-  topic1:
-    name: save_hosting
-  topic2:
-    name: project_deletion_initiated
-
+  topic:
+    save-hosting:
+      name: save_hosting
+    update-deployment-status:
+      name: project_deletion_initiated
+    delete-deployment:
+      name: project_deletion_initiated
   groupid:
-    name: hosting
+    save-hosting:
+      name: save_hosting
+    update-deployment-status:
+      name: project_deletion_initiated
+    delete-deployment:
+      name: project_deletion_initiated
 
 
 subdomain:

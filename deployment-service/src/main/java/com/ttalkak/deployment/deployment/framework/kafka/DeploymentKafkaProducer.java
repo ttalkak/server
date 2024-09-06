@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class DeploymentKafkaProducer implements EventOutputPort {
 
-    @Value("${producers.topic1.name}")
+    @Value("${producers.topic.create-instance.name}")
     private String TOPIC_CREATE_INSTANCE;
 
     private final KafkaTemplate<String, CreateInstanceEvent> kafkaTemplate;

@@ -1,5 +1,5 @@
 # 1. 빌드 환경 설정
-FROM gradle:7.3.3-jdk17 AS build
+FROM gradle:8.8-jdk17 AS build
 WORKDIR /app
 COPY . .
 

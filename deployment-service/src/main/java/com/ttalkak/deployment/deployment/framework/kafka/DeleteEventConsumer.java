@@ -1,6 +1,5 @@
 package com.ttalkak.deployment.deployment.framework.kafka;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ttalkak.deployment.deployment.application.inputport.DeleteDeploymentInputPort;
 import com.ttalkak.deployment.deployment.domain.event.DeleteDeploymentsEvent;

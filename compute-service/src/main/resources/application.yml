@@ -2,10 +2,16 @@ server:
   port: 0
 
 spring:
+  profiles:
+    include: kafka
   application:
     name: compute-service
+  kafka:
+    consumer:
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
 
 consumer:
   topics:
-    user-create:
-      name: user-create
+    compute-create:
+      name: compute-create
