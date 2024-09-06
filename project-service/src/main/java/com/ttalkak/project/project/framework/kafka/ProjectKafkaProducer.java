@@ -22,14 +22,14 @@ public class ProjectKafkaProducer implements EventOutputPort {
     @Value("${producers.topic1.name}")
     private String TOPIC_DELETE_PROJECT;
 
-    private final KafkaTemplate<String, ProjectEvent> kafkaTemplate1;
+    private final KafkaTemplate<String, String> kafkaTemplate1;
 
     @Override
     public void occurDeleteDeploymentInstance(ProjectEvent projectEvent) throws JsonProcessingException {
-        CompletableFuture<SendResult<String, ProjectEvent>> future = kafkaTemplate1.send(TOPIC_DELETE_PROJECT, projectEvent);
+        CompletableFuture<SendResult<String, String>> future = kafkaTemplate1.send(TOPIC_DELETE_PROJECT, projectEvent.toString());
         future.thenAccept(result -> {
-            ProjectEvent value = result.getProducerRecord().value();
-            log.info("Sent message=[{}] with offset=[{}]", value.getProjectId(), result.getRecordMetadata().offset());
+            String value = result.getProducerRecord().value();
+            log.info("Sent message=[{}] with offset=[{}]", value, result.getRecordMetadata().offset());
         }).exceptionally(ex ->{
             throw new IllegalArgumentException(ex);
         });

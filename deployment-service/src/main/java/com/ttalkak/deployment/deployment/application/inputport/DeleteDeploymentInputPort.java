@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -22,5 +24,14 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
                 .orElseThrow(() -> new IllegalArgumentException("해당 배포아이디는 존재하지 않습니다."));
         deploymentEntity.deleteDeployment();
         deploymentOutputPort.save(deploymentEntity);
+    }
+
+
+    @Override
+    public void deleteDeploymentByProject(Long projectId) {
+        List<DeploymentEntity> deploymentEntities = deploymentOutputPort.findAllByProjectId(projectId);
+        for(DeploymentEntity deploymentEntity : deploymentEntities) {
+            deploymentEntity.deleteDeployment();
+        }
     }
 }

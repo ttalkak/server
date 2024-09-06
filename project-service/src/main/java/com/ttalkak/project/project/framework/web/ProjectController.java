@@ -58,9 +58,22 @@ public class ProjectController {
      * @return
      */
     @GetMapping("/project/{projectId}")
-    public ResponseEntity<ProjectResponse> getProject(@PathVariable Long projectId) {
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectResponse getProject(@PathVariable Long projectId) {
         ProjectResponse projectResponse = getProjectUseCase.getProject(projectId);
-        return ResponseEntity.ok(projectResponse);
+        return projectResponse;
+    }
+
+    /**
+     * 프로젝트 페인 단건 조회
+     * @param projectId
+     * @return
+     */
+    @GetMapping("/project/feign/{projectId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectResponse getFeignProject(@PathVariable Long projectId) {
+        ProjectResponse projectResponse = getProjectUseCase.getFeignProject(projectId);
+        return projectResponse;
     }
 
     /**

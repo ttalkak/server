@@ -2,11 +2,11 @@ server:
   port: 0
 
 spring:
-  application:
-    name: deployment-service
-
----
-
-spring:
   profiles:
     include: kafka
+  application:
+    name: deployment-service
+  kafka:
+    consumer:
+      properties:
+        spring.json.trusted.packages: "*"

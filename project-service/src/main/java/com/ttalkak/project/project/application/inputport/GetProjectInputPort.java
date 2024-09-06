@@ -30,12 +30,18 @@ public class GetProjectInputPort implements GetProjectUseCase {
      * @param projectId
      * @return
      */
-
     @Override
     public ProjectResponse getProject(Long projectId) {
         ProjectEntity result = loadProjectOutputPort.findById(projectId);
         ProjectResponse projectResponse = ProjectResponse.mapToResponse(result);
         projectResponse.setDeployments(deploymentOutputPort.getDeployments(projectId));
+        return projectResponse;
+    }
+
+    @Override
+    public ProjectResponse getFeignProject(Long projectId) {
+        ProjectEntity result = loadProjectOutputPort.findById(projectId);
+        ProjectResponse projectResponse = ProjectResponse.mapToResponse(result);
         return projectResponse;
     }
 

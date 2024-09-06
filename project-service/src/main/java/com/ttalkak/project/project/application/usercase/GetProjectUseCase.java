@@ -9,6 +9,8 @@ public interface GetProjectUseCase {
 
     ProjectResponse getProject(Long projectId);
 
+    ProjectResponse getFeignProject(Long projectId);
+
     Page<ProjectResponse> getProjects(Pageable pageable, String searchKeyword, Long userId);
 
     Boolean isDuplicateDomainName(DomainNameRequest domainNameRequest);
