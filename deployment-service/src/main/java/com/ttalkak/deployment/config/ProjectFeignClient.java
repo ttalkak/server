@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "PROJECT-SERVICE")
 public interface ProjectFeignClient {
 
-    @GetMapping("/v1/project/{projectId}")
+    @GetMapping("/v1/project/feign/{projectId}")
     ProjectInfoResponse getProjectInfo(@PathVariable("projectId")Long projectId);
 }

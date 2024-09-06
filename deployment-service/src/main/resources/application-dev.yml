@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:configserver:http://localhost:8888
+    import: configserver:http://localhost:8888
     name: deployment-service
 
 eureka:
@@ -22,6 +22,8 @@ consumers:
   bootstrap-servers: localhost:9092
   topic1:
     name: save_hosting
+  topic2:
+    name: project_deletion_initiated
   groupid:
     name: hosting
 

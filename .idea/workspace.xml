@@ -4,28 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="도커 컴포즈 수정">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentStatusInputPort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/usecase/UpdateDeploymentStatusUsecase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/kafka/ChangeStatusConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/request/DeploymentUpdateStatusRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/CreateDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/CreateDeploymentInputPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentInputPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateHostingInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateHostingInputPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/outputport/DeploymentOutputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/outputport/DeploymentOutputPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/CreateInstanceEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/CreateInstanceEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/DeploymentEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/DeploymentEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/HostingEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/HostingEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/DeploymentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/DeploymentEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/HostingEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/HostingEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/vo/DeploymentStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/vo/DeploymentStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/jpaadapter/adapter/DeploymentAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/jpaadapter/adapter/DeploymentAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/kafka/DeploymentKafkaProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/kafka/DeploymentKafkaProducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/DeploymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/DeploymentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/test/java/com/ttalkak/deployment/deployment/framework/web/DeploymentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/test/java/com/ttalkak/deployment/deployment/framework/web/DeploymentControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +59,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Project/ddalkak/user-service/build.gradle",
+    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Project/ddalkak/project-service",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -95,13 +75,6 @@
   <component name="RunManager" selected="Docker.docker-compose-prod.yml.gateway-service: Compose Deployment">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="ddalkak" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="ddalkak" />
-      <option name="filePath" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

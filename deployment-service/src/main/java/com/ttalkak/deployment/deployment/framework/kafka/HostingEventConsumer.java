@@ -19,8 +19,7 @@ public class HostingEventConsumer {
     private final UpdateHostingUsecase updateHostingUsecase;
 
     @KafkaListener(topics = "${consumers.topic1.name}", groupId = "${consumers.groupid.name}")
-    public void consumeRental(ConsumerRecord<String, String> record) throws IOException {
-        System.out.println("rental_rent:" + record.value());
+    public void consumeHosting(ConsumerRecord<String, String> record) throws IOException {
         HostingEvent hostingEvent = objectMapper.readValue(record.value(), HostingEvent.class);
         updateHostingUsecase.updateHosting(hostingEvent);
     }

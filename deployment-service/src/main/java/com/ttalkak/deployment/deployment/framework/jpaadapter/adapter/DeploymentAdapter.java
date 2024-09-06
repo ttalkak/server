@@ -43,4 +43,9 @@ public class DeploymentAdapter implements DeploymentOutputPort {
     public void delete(DeploymentEntity deploymentEntity) {
         deploymentRepository.delete(deploymentEntity);
     }
+
+    @Override
+    public void saveAll(List<DeploymentEntity> deploymentEntities) {
+        deploymentRepository.saveAll(deploymentEntities);
+    }
 }
