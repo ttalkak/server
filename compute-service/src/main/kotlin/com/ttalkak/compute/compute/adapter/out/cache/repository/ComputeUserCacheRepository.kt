@@ -9,14 +9,14 @@ import java.util.Optional
 @Repository
 class ComputeUserCacheRepository{
     @Resource(name = "redisTemplate")
-    private lateinit var hashOperations: HashOperations<String, Long, ComputeUserCache>
+    private lateinit var hashOperations: HashOperations<String, String, ComputeUserCache>
 
     companion object {
         const val COMPUTE_CACHE_KEY = "computeUserCache"
     }
 
     fun save(computeUser: ComputeUserCache) {
-        hashOperations.put(COMPUTE_CACHE_KEY, computeUser.userId, computeUser)
+        hashOperations.put(COMPUTE_CACHE_KEY, computeUser.userId.toString(), computeUser)
     }
 
     fun findById(userId: Long): Optional<ComputeUserCache> {
