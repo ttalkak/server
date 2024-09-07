@@ -3,7 +3,7 @@ package com.ttalkak.compute.compute.application.service
 import com.ttalkak.compute.common.UseCase
 import com.ttalkak.compute.compute.application.port.out.LoadStatusPort
 import com.ttalkak.compute.compute.application.port.out.SaveStatusPort
-import com.ttalkak.compute.compute.application.port.out.StatusCommand
+import com.ttalkak.compute.compute.application.port.`in`.StatusCommand
 import com.ttalkak.compute.compute.domain.UserStatus
 import org.springframework.transaction.annotation.Transactional
 

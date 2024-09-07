@@ -14,7 +14,9 @@ interface SaveComputePort {
     fun saveCompute(
         userId: Long,
         computeType: ComputerType,
-        maxMemory: Int
+        usedCompute: Int,
+        usedMemory: Int,
+        usedCPU: Double
     )
 
     /**

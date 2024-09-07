@@ -1,27 +1,79 @@
 package com.ttalkak.compute.compute.adapter.`in`.socket
 
 import com.ttalkak.compute.common.SocketAdapter
-import com.ttalkak.compute.compute.adapter.`in`.socket.request.CreateComputeRequest
+import com.ttalkak.compute.compute.adapter.`in`.socket.request.ComputeStatusRequest
 import com.ttalkak.compute.compute.application.port.`in`.ConnectCommand
+import com.ttalkak.compute.compute.application.port.`in`.DeploymentCommand
 import com.ttalkak.compute.compute.application.service.ComputeService
+import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.RequestMapping
 
 @SocketAdapter
 @Controller
 class ComputeSocketController(
-    private val computeListener: ComputeService
+    private val computeService: ComputeService
 ) {
     @MessageMapping("/compute/connect")
-    fun compute(@Payload request: CreateComputeRequest) {
+    fun compute(@Payload request: ComputeStatusRequest) {
         val command = ConnectCommand(
             userId = request.userId,
-            computeType = request.computeType,
-            maxMemory = request.maxMemory
+            computeType = request.computerType,
+            usedCompute = request.usedCompute,
+            usedMemory = request.usedMemory,
+            usedCPU = request.usedCPU,
         )
 
-        computeListener.connect(command)
+        computeService.connect(command)
+    }
+
+    /**
+     * Compute 상태를 확인하는 ping 요청을 처리
+     *
+     * @param request Compute 상태 요청
+     */
+    @MessageMapping("/compute/ping")
+    fun ping(@Payload request: ComputeStatusRequest) {
+        val command = ConnectCommand(
+            userId = request.userId,
+            computeType = request.computerType,
+            usedCompute = request.usedCompute,
+            usedMemory = request.usedMemory,
+            usedCPU = request.usedCPU,
+        )
+
+        val deploymentCommands = request.deployments.map {
+            DeploymentCommand(
+                deploymentId = it.deploymentId,
+                status = it.status,
+                useMemory = it.useMemory,
+                useCPU = it.useCPU,
+                runningTime = it.runningTime,
+                diskRead = it.diskRead,
+                diskWrite = it.diskWrite,
+            )
+        }
+
+//        computeListener.ping(command)
+    }
+
+    /**
+     * 신규 인스턴스 생성 요청에 대한 응답을 처리
+     *
+     * @param request Compute 상태 요청
+     */
+    @MessageMapping("/compute/{deploymentId}/status")
+    fun status(
+        @DestinationVariable deploymentId: Long,
+        @Payload request: ComputeStatusRequest
+    ) {
+        val command = ConnectCommand(
+            userId = request.userId,
+            computeType = request.computerType,
+            usedCompute = request.usedCompute,
+            usedMemory = request.usedMemory,
+            usedCPU = request.usedCPU,
+        )
     }
 }

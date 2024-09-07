@@ -22,6 +22,7 @@ public class UserCreateProducer implements UserCreatePort {
 
     @Override
     public void createUser(UserCreateEvent userCreateEvent) {
+        log.debug("유저 생성 이벤트 발행: {}", userCreateEvent);
         CompletableFuture<SendResult<String, UserCreateEvent>> future = kafkaTemplate.send(topic, userCreateEvent);
         future.thenAccept(response -> {
             UserCreateEvent value = response.getProducerRecord().value();
