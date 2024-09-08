@@ -10,7 +10,7 @@ eureka:
   client:
     service-url:
       defaultZone: http://eureka-server:8761/eureka/
-
+      
 hosts:
   logstash: 10.178.0.6
 
