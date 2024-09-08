@@ -12,7 +12,6 @@ public class DatabaseCreateRequest {
     @NotNull(message = "데이터베이스 이름을 필수입니다.")
     private String databaseName;
 
-
     @NotNull(message = "10000~20000의 포트넘버를 입력해주세요.")
     private int databasePort;
 

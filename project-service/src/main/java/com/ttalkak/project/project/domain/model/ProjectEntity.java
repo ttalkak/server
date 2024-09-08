@@ -1,5 +1,6 @@
 package com.ttalkak.project.project.domain.model;
 
+import com.ttalkak.project.project.domain.model.vo.ProjectEditor;
 import com.ttalkak.project.project.domain.model.vo.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -44,8 +45,8 @@ public class ProjectEntity extends BaseEntity {
     }
 
     public void edit(ProjectEditor projectEditor) {
-        this.projectName = projectEditor.projectName;
-        this.domainName = projectEditor.domainName;
+        this.projectName = projectEditor.getProjectName();
+        this.domainName = projectEditor.getDomainName();
     }
 
     public void rollbackDeletedStatus() {

@@ -80,4 +80,12 @@ public class HostingEntity {
         this.detailSubDomainKey = detailSubDomainKey;
     }
 
+    public void setHostingPort(int hostingPort) {
+        this.hostingPort = hostingPort;
+    }
+
+    public void updateDomainName(String domainName, String serviceType) {
+        this.detailSubDomainName = changeDetailDomainName(domainName, serviceType);
+    }
+
 }

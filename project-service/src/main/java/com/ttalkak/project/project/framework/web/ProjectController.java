@@ -82,11 +82,12 @@ public class ProjectController {
      * @return
      */
     @GetMapping("/project/search")
-    public ResponseEntity<Page<ProjectResponse>> getProjectsByPageable(
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ProjectResponse> getProjectsByPageable(
             @PageableDefault(page = 0, size = 9, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = true) String searchKeyword,
             @RequestParam(required = true) Long userId) {
-            return ResponseEntity.ok(getProjectUseCase.getProjects(pageable, searchKeyword, userId));
+            return getProjectUseCase.getProjects(pageable, searchKeyword, userId);
     }
 
     /**
@@ -96,8 +97,9 @@ public class ProjectController {
      * @return
      */
     @PatchMapping("/project/{projectId}")
-    public ResponseEntity<ProjectResponse> updateProject(@PathVariable Long projectId, @RequestBody ProjectUpdateRequest projectUpdateRequest) {
-        return ResponseEntity.ok(updateProjectUseCase.updateProject(projectId, projectUpdateRequest));
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectResponse updateProject(@PathVariable Long projectId, @RequestBody ProjectUpdateRequest projectUpdateRequest) {
+        return updateProjectUseCase.updateProject(projectId, projectUpdateRequest);
     }
 
     /**
@@ -117,7 +119,8 @@ public class ProjectController {
      * @return
      */
     @PostMapping("/project/domain/check")
-    public ResponseEntity<DomainNameResponse> isDuplicateDomainName(@RequestBody DomainNameRequest request) {
+    @ResponseStatus(HttpStatus.OK)
+    public DomainNameResponse isDuplicateDomainName(@RequestBody DomainNameRequest request) {
         DomainNameResponse.DomainNameResponseBuilder responseBuilder = DomainNameResponse.builder();
         if(!getProjectUseCase.isDuplicateDomainName(request)) {
             responseBuilder.canMake(true).message("생성할 수 있는 도메인입니다.");
@@ -125,7 +128,7 @@ public class ProjectController {
             responseBuilder.canMake(false).message("이미 존재하는 도메인입니다.");
         }
 
-        return ResponseEntity.ok(responseBuilder.build());
+        return responseBuilder.build();
 
     }
 

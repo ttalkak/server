@@ -1,5 +1,6 @@
 package com.ttalkak.deployment.deployment.domain.model;
 
+import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseEditor;
 import jakarta.persistence.*;
 import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseType;
 import lombok.AccessLevel;
@@ -52,5 +53,18 @@ public class DatabaseEntity {
                 .password(password)
                 .build();
 
+    }
+
+    public DatabaseEditor.DatabaseEditorBuilder toEditor() {
+        return DatabaseEditor.builder()
+                .username(this.username)
+                .password(this.password)
+                .port(this.port);
+    }
+
+    public void edit(DatabaseEditor databaseEditor) {
+        this.username = databaseEditor.getUsername();
+        this.password = databaseEditor.getPassword();
+        this.port = databaseEditor.getPort();
     }
 }
