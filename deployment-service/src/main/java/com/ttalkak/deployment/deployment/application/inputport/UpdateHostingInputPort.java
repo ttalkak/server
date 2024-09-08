@@ -32,16 +32,16 @@ public class UpdateHostingInputPort implements UpdateHostingUsecase {
 
     @Override
     public void updateHostingDomainName(Long projectId, String newDomainName) {
-        throw new IllegalArgumentException("호스팅명 변경 중에 에러 발생");
-//        List<DeploymentEntity> deploymentEntities = deploymentOutputPort.findAllByProjectId(projectId);
-//        deploymentEntities.forEach(
-//                deploymentEntity -> {
-//                    deploymentEntity.getHostingEntities().forEach(
-//                            hostingEntity -> {
-//                                hostingEntity.updateDomainName(newDomainName, String.valueOf(deploymentEntity.getServiceType()));
-//                            }
-//                    );
-//                }
-//        );
+
+        List<DeploymentEntity> deploymentEntities = deploymentOutputPort.findAllByProjectId(projectId);
+        deploymentEntities.forEach(
+                deploymentEntity -> {
+                    deploymentEntity.getHostingEntities().forEach(
+                            hostingEntity -> {
+                                hostingEntity.updateDomainName(newDomainName, String.valueOf(deploymentEntity.getServiceType()));
+                            }
+                    );
+                }
+        );
     }
 }
