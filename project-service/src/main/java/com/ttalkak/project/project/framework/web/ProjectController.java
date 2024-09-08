@@ -1,6 +1,7 @@
 package com.ttalkak.project.project.framework.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.project.common.ApiResponse;
 import com.ttalkak.project.common.WebAdapter;
 import com.ttalkak.project.project.application.usercase.CreateProjectUseCase;
 import com.ttalkak.project.project.application.usercase.DeleteProjectUseCase;
@@ -46,10 +47,10 @@ public class ProjectController {
      */
     @PostMapping("/project")
     @ResponseStatus(HttpStatus.OK)
-    public ProjectResponse createProject(
+    public ApiResponse<ProjectResponse> createProject(
             @RequestHeader("X-USER-ID") Long userId,
             @RequestBody ProjectCreateRequest projectCreateRequest) {
-        return createProjectUseCase.createProject(userId, projectCreateRequest);
+        return ApiResponse.success(createProjectUseCase.createProject(userId, projectCreateRequest));
     }
 
     /**
@@ -59,9 +60,9 @@ public class ProjectController {
      */
     @GetMapping("/project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
-    public ProjectResponse getProject(@PathVariable Long projectId) {
+    public ApiResponse<ProjectResponse> getProject(@PathVariable Long projectId) {
         ProjectResponse projectResponse = getProjectUseCase.getProject(projectId);
-        return projectResponse;
+        return ApiResponse.success(projectResponse);
     }
 
     /**
@@ -71,9 +72,9 @@ public class ProjectController {
      */
     @GetMapping("/project/feign/{projectId}")
     @ResponseStatus(HttpStatus.OK)
-    public ProjectResponse getFeignProject(@PathVariable Long projectId) {
+    public ApiResponse<ProjectResponse> getFeignProject(@PathVariable Long projectId) {
         ProjectResponse projectResponse = getProjectUseCase.getFeignProject(projectId);
-        return projectResponse;
+        return ApiResponse.success(projectResponse);
     }
 
     /**
@@ -83,12 +84,12 @@ public class ProjectController {
      */
     @GetMapping("/project/search")
     @ResponseStatus(HttpStatus.OK)
-    public Page<ProjectResponse> getProjectsByPageable(
+    public ApiResponse<Page<ProjectResponse>> getProjectsByPageable(
             @PageableDefault(page = 0, size = 9, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = true) String searchKeyword,
             @RequestHeader("X-USER-ID") Long userId) {
 
-            return getProjectUseCase.getProjects(pageable, searchKeyword, userId);
+            return ApiResponse.success(getProjectUseCase.getProjects(pageable, searchKeyword, userId));
     }
 
     /**
@@ -99,8 +100,8 @@ public class ProjectController {
      */
     @PatchMapping("/project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
-    public ProjectResponse updateProject(@PathVariable Long projectId, @RequestBody ProjectUpdateRequest projectUpdateRequest) {
-        return updateProjectUseCase.updateProject(projectId, projectUpdateRequest);
+    public ApiResponse<ProjectResponse> updateProject(@PathVariable Long projectId, @RequestBody ProjectUpdateRequest projectUpdateRequest) {
+        return ApiResponse.success(updateProjectUseCase.updateProject(projectId, projectUpdateRequest));
     }
 
     /**
@@ -109,9 +110,9 @@ public class ProjectController {
      * @return
      */
     @DeleteMapping("/project/{projectId}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) throws JsonProcessingException {
+    public ApiResponse<Void> deleteProject(@PathVariable Long projectId) throws JsonProcessingException {
         deleteProjectUseCase.deleteProject(projectId);
-        return ResponseEntity.ok().build();
+        return ApiResponse.success();
     }
     
     /**
@@ -121,7 +122,7 @@ public class ProjectController {
      */
     @PostMapping("/project/domain/check")
     @ResponseStatus(HttpStatus.OK)
-    public DomainNameResponse isDuplicateDomainName(@RequestBody DomainNameRequest request) {
+    public ApiResponse<DomainNameResponse> isDuplicateDomainName(@RequestBody DomainNameRequest request) {
         DomainNameResponse.DomainNameResponseBuilder responseBuilder = DomainNameResponse.builder();
         if(!getProjectUseCase.isDuplicateDomainName(request)) {
             responseBuilder.canMake(true).message("생성할 수 있는 도메인입니다.");
@@ -129,7 +130,7 @@ public class ProjectController {
             responseBuilder.canMake(false).message("이미 존재하는 도메인입니다.");
         }
 
-        return responseBuilder.build();
+        return ApiResponse.success(responseBuilder.build());
 
     }
 
