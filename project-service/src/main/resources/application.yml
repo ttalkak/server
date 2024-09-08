@@ -14,17 +14,17 @@ producers:
   bootstrap-servers: 10.178.0.6:9092
   topic:
     project-deletion-initiated:
-      name: project_deletion_initiated
+      name: project-deletion-initiated
     update-domain-name:
-      name: update_domain_name
+      name: update-domain-name
 
 consumers:
   bootstrap-servers: 10.178.0.6:9092
   topic:
     project-deletion-exception:
-      name: project_deletion_exception
+      name: project-deletion-exception
     update-domain-name-exception:
-      name: update_domain_name_exception
+      name: update-domain-name-exception
   groupid:
     project-deletion-group:
       name: project_deletion_group
