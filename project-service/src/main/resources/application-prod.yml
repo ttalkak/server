@@ -6,20 +6,6 @@ spring:
     import: optional:configserver:http://config-server:8888
     name: project-service
 
-producers:
-  bootstrap-servers: 10.178.0.6:9092
-  topic:
-    project-deletion-initiated:
-      name: project_deletion_initiated
-
-consumers:
-  bootstrap-servers: 10.178.0.6:9092
-  topic:
-    project-deletion-exception:
-      name: project_deletion_exception
-  groupid:
-    name: project-deletion-group
-
 hosts:
   logstash: 10.178.0.6
 

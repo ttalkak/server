@@ -26,10 +26,9 @@ public class SagaRollBackProducer {
         CompletableFuture<SendResult<String, DeleteDeploymentsEvent>> future = kafkaTemplate.send(TOPIC_ROllBACK_INSTANCE, deleteDeploymentsEvent);
 
         future.thenAccept(result -> {
-            log.info("Rollback deleted deployments event: {}", deleteDeploymentsEvent.getProjectId());
+            log.info("롤백 - 프로젝트 ID {} 배포 삭제 실패", deleteDeploymentsEvent.getProjectId());
         }).exceptionally(ex -> {
-            log.error("Rollback deleted deployments event: {}", deleteDeploymentsEvent.getProjectId(), ex);
-            return null;
+            throw new IllegalArgumentException(ex);
         });
     }
 }

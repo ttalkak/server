@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 public class ProjectEditor {
-    String projectName;
-    String domainName;
+    private final String projectName;
+    private final String domainName;
 
     @Builder
     public ProjectEditor(String projectName, String domainName) {

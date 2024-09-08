@@ -3,6 +3,7 @@ package com.ttalkak.project.project.framework.kafka;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ttalkak.project.project.application.inputport.DeleteProjectInputPort;
 import com.ttalkak.project.project.application.outputport.EventOutputPort;
+import com.ttalkak.project.project.domain.event.DomainNameEvent;
 import com.ttalkak.project.project.domain.event.ProjectEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,19 @@ public class ProjectKafkaProducer implements EventOutputPort {
     @Value("${producers.topic.project-deletion-initiated.name}")
     private String TOPIC_DELETE_PROJECT;
 
-    private final KafkaTemplate<String, ProjectEvent> kafkaTemplate1;
+    @Value("${producers.topic.update-domain-name.name}")
+    private String TOPIC_UPDATE_DOMAIN_NAME;
+
+    private final KafkaTemplate<String, ProjectEvent> kafkaTemplateDeleteDeployment;
+
+    private final KafkaTemplate<String, DomainNameEvent> kafkaTemplateUpdateDomainName;
+
+    /**
+     * CompletableFuture 란 자바의 동시성 프로그래밍을 위한 클래스로
+     * 비동기 프로그래밍을 더 쉽고 효율적으로 만들어주는 기능을 제공한다.
+     * 비동기 작업, 예외 처리, 콜백 지원, 스레드 풀(ForkJoinPool)을 사용
+     */
+
 
     /**
      * Deployment service에  배포 엔티티 삭제를 요청
@@ -31,12 +44,28 @@ public class ProjectKafkaProducer implements EventOutputPort {
      */
     @Override
     public void occurDeleteDeploymentInstance(ProjectEvent projectEvent) throws JsonProcessingException {
-        CompletableFuture<SendResult<String, ProjectEvent>> future = kafkaTemplate1.send(TOPIC_DELETE_PROJECT, projectEvent);
+        CompletableFuture<SendResult<String, ProjectEvent>> future = kafkaTemplateDeleteDeployment.send(TOPIC_DELETE_PROJECT, projectEvent);
         future.thenAccept(result -> {
             String value = String.valueOf(result.getProducerRecord().value().getProjectId());
-            log.info("Sent message=[{}] with offset=[{}]", value, result.getRecordMetadata().offset());
+            log.info("프로젝트 ID가 {}인 배포 정보를 삭제했습니다. offset=[{}]", value, result.getRecordMetadata().offset());
         }).exceptionally(ex ->{
             throw new IllegalArgumentException(ex);
         });
+    }
+
+    /**
+     * Deployment service에 호스팅 엔티티 도메인명 변경 요청
+     * @param domainNameEvent
+     */
+    @Override
+    public void occurUpdateHostingDomainName(DomainNameEvent domainNameEvent) {
+        CompletableFuture<SendResult<String, DomainNameEvent>> future = kafkaTemplateUpdateDomainName.send(TOPIC_UPDATE_DOMAIN_NAME, domainNameEvent);
+        future.thenAccept(result -> {
+            String value = String.valueOf(result.getProducerRecord().value().getProjectId());
+            log.info("프로젝트 ID가 {}인 호스팅 도메인명을 변경했습니다. offset=[{}]", value, result.getRecordMetadata().offset());
+        }).exceptionally(ex -> {
+            throw new IllegalArgumentException(ex);
+        });
+
     }
 }
