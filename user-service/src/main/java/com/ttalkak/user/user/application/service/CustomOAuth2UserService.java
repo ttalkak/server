@@ -59,6 +59,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			saveUserPort.saveGithubToken(user.getUsername(), githubToken.getTokenValue());
 		}
 
+		log.debug("신규 사용자 여부: {}", isNewUser.get());
 		if (isNewUser.get()) {
 			userCreatePort.createUser(UserCreateEvent.of(
 					user.getId(),

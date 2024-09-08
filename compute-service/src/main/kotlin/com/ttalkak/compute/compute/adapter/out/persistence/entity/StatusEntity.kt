@@ -20,6 +20,14 @@ data class StatusEntity(
     @ColumnDefault("0")
     var maxCompute: Int = 0,
 
+    @Column(name = "max_memory", nullable = false)
+    @ColumnDefault("0")
+    var maxMemory: Int = 0,
+
+    @Column(name = "max_cpu", nullable = false)
+    @ColumnDefault("0.0")
+    var maxCPU: Double = 0.0,
+
     @Column(name = "available_port_start", nullable = false)
     @ColumnDefault("10000")
     var availablePortStart: Int = 10000,

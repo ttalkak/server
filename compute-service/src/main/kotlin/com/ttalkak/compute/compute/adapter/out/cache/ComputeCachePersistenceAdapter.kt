@@ -11,18 +11,21 @@ import java.util.*
 
 @PersistenceAdapter
 class ComputeCachePersistenceAdapter(
-    private val computeUserCacheRepository: ComputeUserCacheRepository
+    private val computeUserCacheRepository: ComputeUserCacheRepository,
 ): SaveComputePort, LoadComputePort {
     override fun saveCompute(
         userId: Long,
         computeType: ComputerType,
-        maxMemory: Int
+        usedCompute: Int,
+        usedMemory: Int,
+        usedCPU: Double
     ) {
         val compute = ComputeUserCache(
             userId = userId,
             usedCompute = 0,
             computeType = computeType,
-            maxMemory = maxMemory
+            usedMemory = usedMemory,
+            usedCPU = usedCPU
         )
 
         computeUserCacheRepository.save(compute)
@@ -33,12 +36,14 @@ class ComputeCachePersistenceAdapter(
     }
 
     override fun loadCompute(userId: Long): Optional<ComputeUser> {
+        // TODO: 해당 부분 수정 필요함.
         return computeUserCacheRepository.findById(userId).map {
                 ComputeUser(
                     userId = it.userId,
-                    remainCompute = it.usedCompute,
                     computeType = it.computeType,
-                    remainMemory = it.maxMemory
+                    remainCompute = it.usedCompute,
+                    remainMemory = it.usedMemory,
+                    remainCPU = it.usedCPU
                 )
             }
     }
@@ -47,9 +52,10 @@ class ComputeCachePersistenceAdapter(
         return computeUserCacheRepository.findAll().map {
             ComputeUser(
                 userId = it.userId,
-                remainCompute = it.usedCompute,
                 computeType = it.computeType,
-                remainMemory = it.maxMemory
+                remainCompute = it.usedCompute,
+                remainMemory = it.usedMemory,
+                remainCPU = it.usedCPU
             )
         }
     }
