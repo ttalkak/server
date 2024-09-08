@@ -6,9 +6,6 @@ spring:
     include: kafka
   application:
     name: project-service
-  config:
-    import: optional:configserver:http://localhost:8888
-    name: project-service
 
 producers:
   topics:
