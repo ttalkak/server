@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 public class UserCreateProducer implements UserCreatePort {
     private final KafkaTemplate<String, UserCreateEvent> kafkaTemplate;
 
-    @Value("${producer.topics.user-create.name}")
+    @Value("${producer.topics.create-user.name}")
     private String topic;
 
     @Override

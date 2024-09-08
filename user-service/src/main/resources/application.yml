@@ -6,8 +6,3 @@ spring:
     include: kafka
   application:
     name: user-service
-
-producer:
-  topics:
-    user-create:
-      name: user-create
