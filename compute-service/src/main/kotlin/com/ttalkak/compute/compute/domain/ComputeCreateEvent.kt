@@ -3,7 +3,6 @@ package com.ttalkak.compute.compute.domain
 data class ComputeCreateEvent(
     val deploymentId: Long,
     val env: String,
-    val deployerId: Long,
     val subdomainName: String,
     val subdomainKey: String,
     val serviceType: ServiceType,
