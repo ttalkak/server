@@ -86,7 +86,8 @@ public class ProjectController {
     public Page<ProjectResponse> getProjectsByPageable(
             @PageableDefault(page = 0, size = 9, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = true) String searchKeyword,
-            @RequestParam(required = true) Long userId) {
+            @RequestHeader("X-USER-ID") Long userId) {
+
             return getProjectUseCase.getProjects(pageable, searchKeyword, userId);
     }
 
