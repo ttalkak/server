@@ -19,7 +19,7 @@ public class HostingDomainNameEventConsumer {
 
     private final SagaRollBackDomainNameProducer sagaRollBackDomainNameProducer;
 
-    @KafkaListener(topics = "${consumers.topic.update-domain-name.name}", groupId = "${consumers.groupid.update-hosting-status.name}")
+    @KafkaListener(topics = "${consumers.topics.update-domain-name.name}", groupId = "${consumers.group-id.update-hosting-status.name}")
     public void updateConsumer(ConsumerRecord<String, String> record) {
         DomainNameEvent domainNameEvent = null;
         try {

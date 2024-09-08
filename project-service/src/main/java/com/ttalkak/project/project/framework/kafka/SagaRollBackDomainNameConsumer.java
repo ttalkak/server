@@ -20,7 +20,7 @@ public class SagaRollBackDomainNameConsumer {
 
     private final UpdateProjectUseCase updateProjectUseCase;
 
-    @KafkaListener(topics = "${consumers.topic.update-domain-name-exception.name}", groupId = "${consumers.groupid.update-hosting-status.name}")
+    @KafkaListener(topics = "${consumers.topics.update-domain-name-exception.name}", groupId = "${consumers.group-id.update-hosting-status.name}")
     public void consumeRollBack(ConsumerRecord<String, String> record) throws IOException {
         log.info("consume roll back:{}", record.value());
         DomainNameEvent domainNameEvent = objectMapper.readValue(record.value(), DomainNameEvent.class);

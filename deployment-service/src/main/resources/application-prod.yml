@@ -11,11 +11,5 @@ eureka:
 hosts:
   logstash: 10.178.0.6
 
-producers:
-  bootstrap-servers: 10.178.0.6:9092
-
-consumers:
-  bootstrap-servers: 10.178.0.6:9092
-
 subdomain:
   endpoint: http://10.178.0.121:8000

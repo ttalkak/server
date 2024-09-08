@@ -11,21 +11,19 @@ spring:
     name: project-service
 
 producers:
-  bootstrap-servers: 10.178.0.6:9092
-  topic:
-    project-deletion-initiated:
-      name: project-deletion-initiated
+  topics:
+    delete-deployment:
+      name: delete-deployment
     update-domain-name:
       name: update-domain-name
 
 consumers:
-  bootstrap-servers: 10.178.0.6:9092
-  topic:
-    project-deletion-exception:
-      name: project-deletion-exception
+  topics:
+    delete-project-exception:
+      name: delete-project-exception
     update-domain-name-exception:
       name: update-domain-name-exception
-  groupid:
+  group-id:
     project-deletion-group:
       name: project_deletion_group
     update-hosting-status:

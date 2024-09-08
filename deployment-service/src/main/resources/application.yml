@@ -13,26 +13,26 @@ spring:
 
 
 producers:
-  topic:
-    create-instance:
-      name: create-instance
-    project-deletion-exception:
-      name: project-deletion-exception
+  topics:
+    create-compute:
+      name: create-compute
+    delete-project-exception:
+      name: delete-project-exception
     update-domain-name-exception:
       name: update-domain-name-exception
 
 consumers:
-  topic:
-    save-hosting:
-      name: save-hosting
+  topics:
+    create-hosting:
+      name: create-hosting
     update-deployment-status:
       name: update-deployment-status
     delete-deployment:
-      name: project-deletion-initiated
+      name: delete-deployment
     update-domain-name:
       name: update-domain-name
 
-  groupid:
+  group-id:
     save-hosting:
       name: save_hosting
     update-deployment-status:

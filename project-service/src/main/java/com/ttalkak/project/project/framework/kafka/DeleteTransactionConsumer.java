@@ -26,7 +26,7 @@ public class DeleteTransactionConsumer {
      * @param record
      * @throws IOException
      */
-    @KafkaListener(topics = "${consumers.topic.project-deletion-exception.name}", groupId = "${consumers.topic.project-deletion-exception.name}")
+    @KafkaListener(topics = "${consumers.topics.delete-project-exception.name}", groupId = "${consumers.group-id.project-deletion-group.name}")
     public void consumeRollBack(ConsumerRecord<String, String> record) throws IOException {
         log.info("consume roll back:{}", record.value());
         DeletedEvent deletedEvent = objectMapper.readValue(record.value(), DeletedEvent.class);

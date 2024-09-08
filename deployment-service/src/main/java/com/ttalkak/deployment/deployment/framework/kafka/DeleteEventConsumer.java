@@ -19,7 +19,7 @@ public class DeleteEventConsumer {
 
     private final SagaRollBackProducer sagaRollBackProducer;
 
-    @KafkaListener(topics = "${consumers.topic.delete-deployment.name}", groupId = "${consumers.groupid.delete-deployment.name}")
+    @KafkaListener(topics = "${consumers.topics.delete-deployment.name}", groupId = "${consumers.group-id.delete-deployment.name}")
     public void deleteConsumer(ConsumerRecord<String, String> record) {
         DeleteDeploymentsEvent deleteDeploymentsEvent = null;
         try {

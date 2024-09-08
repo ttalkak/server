@@ -19,7 +19,7 @@ public class ChangeStatusConsumer {
 
     private final UpdateDeploymentStatusUsecase updateDeploymentStatusUsecase;
 
-    @KafkaListener(topics = "${consumers.topic.update-deployment-status.name}", groupId = "${consumers.groupid.update-deployment-status.name}")
+    @KafkaListener(topics = "${consumers.topics.update-deployment-status.name}", groupId = "${consumers.group-id.update-deployment-status.name}")
     public void deleteConsumer(ConsumerRecord<String, String> record) throws IOException {
         DeploymentUpdateStatusRequest deploymentUpdateStatusRequest = objectMapper.readValue(record.value(), DeploymentUpdateStatusRequest.class);
         updateDeploymentStatusUsecase.updateDeploymentStatus(deploymentUpdateStatusRequest);

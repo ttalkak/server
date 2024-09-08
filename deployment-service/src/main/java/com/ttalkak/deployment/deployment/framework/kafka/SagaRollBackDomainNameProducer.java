@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class SagaRollBackDomainNameProducer {
 
-    @Value("${producers.topic.update-domain-name-exception.name}")
+    @Value("${producers.topics.update-domain-name-exception.name}")
     private String TOPIC_ROLLBACK_INSTANCE;
 
     private final KafkaTemplate<String, DomainNameEvent> kafkaTemplate;
