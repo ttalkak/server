@@ -33,6 +33,8 @@ public class GithubRepositoryRequest {
     @NotNull(message = "깃허브 레포지토리 루트 디렉토리는 필수입니다.")
     private String rootDirectory;
 
+    private String branch;
+
     @Builder
     private GithubRepositoryRequest(String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, String rootDirectory) {
         this.repositoryName = repositoryName;
@@ -41,5 +43,6 @@ public class GithubRepositoryRequest {
         this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
         this.repositoryLastCommitUserName = repositoryLastCommitUserName;
         this.rootDirectory = rootDirectory;
+        this.branch = null;
     }
 }

@@ -23,6 +23,6 @@ public class HostingEvent implements Serializable {
 
     private String subdomainName;
 
-    private String detailSubDomainKey;
+    private String subdomainKey;
 
 }

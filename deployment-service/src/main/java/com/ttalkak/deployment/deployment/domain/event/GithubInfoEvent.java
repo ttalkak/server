@@ -13,4 +13,10 @@ public class GithubInfoEvent {
 
     private String rootDirectory;
 
+    private String branch;
+
+    public GithubInfoEvent(String repositoryUrl, String rootDirectory) {
+        this.repositoryUrl = repositoryUrl;
+        this.rootDirectory = rootDirectory;
+    }
 }
