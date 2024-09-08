@@ -10,3 +10,24 @@ spring:
     import: optional:configserver:http://localhost:8888
     name: project-service
 
+producers:
+  bootstrap-servers: 10.178.0.6:9092
+  topic:
+    project-deletion-initiated:
+      name: project_deletion_initiated
+    update-domain-name:
+      name: update_domain_name
+
+consumers:
+  bootstrap-servers: 10.178.0.6:9092
+  topic:
+    project-deletion-exception:
+      name: project_deletion_exception
+    update-domain-name-exception:
+      name: update_domain_name_exception
+  groupid:
+    project-deletion-group:
+      name: project_deletion_group
+    update-hosting-status:
+      name: update_hosting_status
+

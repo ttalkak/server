@@ -18,6 +18,8 @@ producers:
       name: create_instance
     project-deletion-exception:
       name: project_deletion_exception
+    update-domain-name-exception:
+      name: update_domain_name_exception
 
 consumers:
   topic:
@@ -27,6 +29,9 @@ consumers:
       name: update_deployment_status
     delete-deployment:
       name: project_deletion_initiated
+    update-domain-name:
+      name: update_domain_name
+
   groupid:
     save-hosting:
       name: save_hosting
@@ -34,3 +39,5 @@ consumers:
       name: update_deployment_status
     delete-deployment:
       name: project_deletion_initiated
+    update-hosting-status:
+      name: update_hosting_status

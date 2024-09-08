@@ -39,7 +39,7 @@ public class ProjectEntity extends BaseEntity {
 
     public ProjectEditor.ProjectEditorBuilder toEditor() {
         return ProjectEditor.builder()
-                .projectName(this.domainName)
+                .projectName(this.projectName)
                 .domainName(this.domainName);
 
     }
