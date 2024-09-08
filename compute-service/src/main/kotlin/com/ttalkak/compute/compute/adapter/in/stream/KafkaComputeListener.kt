@@ -34,7 +34,7 @@ class KafkaComputeListener(
         redisMessageListenerContainer.addMessageListener(computeSocketListener, computeChannel)
     }
 
-    @KafkaListener(topics = ["\${consumer.topics.compute-create.name}"], groupId = "\${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = ["\${consumer.topics.create-compute.name}"], groupId = "\${spring.kafka.consumer.group-id}")
     fun createCompute(@Payload record: String) {
         val response = Json.deserialize(record, ComputeCreateEvent::class.java)
         log.info {
@@ -43,7 +43,7 @@ class KafkaComputeListener(
         redisTemplate.convertAndSend(computeChannel.topic, Json.serialize(response))
     }
 
-    @KafkaListener(topics = ["\${consumer.topics.user-create.name}"], groupId = "\${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = ["\${consumer.topics.create-user.name}"], groupId = "\${spring.kafka.consumer.group-id}")
     fun createUser(@Payload record: String) {
         val response = Json.deserialize(record, UserCreateEvent::class.java)
         log.info {
