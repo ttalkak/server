@@ -4,7 +4,7 @@ import com.ttalkak.project.common.UseCase;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.outputport.SaveProjectOutputPort;
 import com.ttalkak.project.project.application.usercase.UpdateProjectUseCase;
-import com.ttalkak.project.project.domain.model.ProjectEditor;
+import com.ttalkak.project.project.domain.model.vo.ProjectEditor;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.framework.web.request.ProjectUpdateRequest;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;

@@ -1,4 +1,4 @@
-package com.ttalkak.project.project.domain.model;
+package com.ttalkak.project.project.domain.model.vo;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -59,7 +59,7 @@ public class DeploymentController {
         return deployments;
     }
 
-    // 배포 수정 - 배포생성을 완료한 이후에 다시 손봐야할듯.
+    // 배포 수정
     @PatchMapping("/deployment")
     @ResponseStatus(HttpStatus.OK)
     public DeploymentResponse updateDeployment(@RequestBody DeploymentUpdateRequest deploymentUpdateRequest){

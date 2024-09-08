@@ -1,5 +1,6 @@
 package com.ttalkak.deployment.deployment.domain.model;
 
+import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentEditor;
 import jakarta.persistence.*;
 import com.ttalkak.deployment.common.BaseEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
@@ -87,4 +88,20 @@ public class DeploymentEntity extends BaseEntity {
     public void stopDeployment(){
         this.status = DeploymentStatus.STOP;
     }
+
+    public DeploymentEditor.DeploymentEditorBuilder toEditor() {
+        return DeploymentEditor.builder()
+                .githubInfo(this.githubInfo)
+                .env(this.env);
+    }
+
+    public void edit(DeploymentEditor deploymentEditor) {
+        this.githubInfo = deploymentEditor.getGithubInfo();
+        this.env = deploymentEditor.getEnv();
+
+
+    }
+
+
+
 }
