@@ -32,7 +32,7 @@ private val redisTemplate: RedisTemplate<String, String>,
         )
 
 //        val deployerId = allocateUseCase.allocate(command)
-        val deployerId = 5L
+        val deployerId = 2L
 
         val mainContainer = DockerContainer(
             hasDockerImage = false,

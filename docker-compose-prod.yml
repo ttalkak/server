@@ -9,7 +9,12 @@ services:
       - 8761:8761
     networks:
       - spring-network
-  
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 256M
+
   config-server:
     container_name: config-server
     build: config-server
@@ -17,6 +22,11 @@ services:
       - 8888:8888
     networks:
       - spring-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 256M
 
   gateway-service:
     container_name: gateway-service
@@ -30,6 +40,11 @@ services:
     depends_on:
       - eureka-server
       - config-server
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
 
   compute-service:
     container_name: compute-service
@@ -42,7 +57,12 @@ services:
       - eureka-server
       - config-server
       - gateway-service
-  
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
   user-service:
     container_name: user-service
     build: 
@@ -52,10 +72,13 @@ services:
       - eureka-server
       - config-server
       - gateway-service
-
     networks:
       - spring-network
-
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
 
   deployment-service:
     container_name: deployment-service
@@ -66,9 +89,13 @@ services:
       - eureka-server
       - config-server
       - gateway-service
-
     networks:
       - spring-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
 
   project-service:
     container_name: project-service
@@ -79,11 +106,13 @@ services:
       - eureka-server
       - config-server
       - gateway-service
-
     networks:
       - spring-network
-
-
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
 
 networks:
   spring-network:
