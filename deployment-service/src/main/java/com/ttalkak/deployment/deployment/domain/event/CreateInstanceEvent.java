@@ -27,13 +27,13 @@ public class CreateInstanceEvent implements Serializable {
 
     private String projectId;
 
-    private String detailSubDomainName;
+    private String subdomainName;
 
-    private String detailSubDomainKey;
+    private String subdomainKey;
 
     private String serviceType;
 
-
+    private String branch;
     private String repositoryUrl;
 
     private String rootDirectory;
@@ -47,9 +47,10 @@ public class CreateInstanceEvent implements Serializable {
         this.hostingPort = String.valueOf(hosting.getHostingPort());
         this.deployerId = String.valueOf(hosting.getDeploymentId());
         this.projectId = String.valueOf(deployment.getProjectId());
-        this.detailSubDomainName = hosting.getSubdomainName();
-        this.detailSubDomainKey = hosting.getDetailSubDomainKey();
+        this.subdomainName = hosting.getSubdomainName();
+        this.subdomainKey = hosting.getSubdomainKey();
         this.serviceType = deployment.getServiceType();
+        this.branch = githubInfo.getBranch();
         this.repositoryUrl = githubInfo.getRepositoryUrl();
         this.rootDirectory = githubInfo.getRepositoryUrl();
         this.database = database;

@@ -13,4 +13,5 @@ public class GithubInfoEvent {
 
     private String rootDirectory;
 
+    private String branch;
 }

@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 public class DatabaseEvent implements Serializable {
-    private Long id;
+    private Long databaseId;
 
     private String databaseType;
 
