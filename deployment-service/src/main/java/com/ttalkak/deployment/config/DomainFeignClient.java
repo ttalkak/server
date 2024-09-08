@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "DOMAIN-SERVICE", url="http://localhost:8001")
+@FeignClient(name = "DOMAIN-SERVICE", url="${subdomain.endpoint}")
 public interface DomainFeignClient {
 
     @PostMapping("/create")
