@@ -25,9 +25,9 @@ public class ProjectFeignController {
      */
     @GetMapping("/project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ProjectResponse> getFeignProject(@PathVariable Long projectId) {
+    public ProjectResponse getFeignProject(@PathVariable Long projectId) {
         ProjectResponse projectResponse = getProjectUseCase.getFeignProject(projectId);
-        return ApiResponse.success(projectResponse);
+        return projectResponse;
     }
 
 }
