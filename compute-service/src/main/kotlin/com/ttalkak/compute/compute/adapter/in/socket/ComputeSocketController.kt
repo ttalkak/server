@@ -1,9 +1,11 @@
 package com.ttalkak.compute.compute.adapter.`in`.socket
 
 import com.ttalkak.compute.common.SocketAdapter
+import com.ttalkak.compute.compute.adapter.`in`.socket.request.ComputeRunningRequest
 import com.ttalkak.compute.compute.adapter.`in`.socket.request.ComputeStatusRequest
 import com.ttalkak.compute.compute.application.port.`in`.ConnectCommand
 import com.ttalkak.compute.compute.application.port.`in`.DeploymentCommand
+import com.ttalkak.compute.compute.application.port.`in`.RunningCommand
 import com.ttalkak.compute.compute.application.service.ComputeService
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
@@ -55,7 +57,7 @@ class ComputeSocketController(
             )
         }
 
-//        computeListener.ping(command)
+        computeService.update(command, deploymentCommands)
     }
 
     /**
@@ -66,14 +68,14 @@ class ComputeSocketController(
     @MessageMapping("/compute/{deploymentId}/status")
     fun status(
         @DestinationVariable deploymentId: Long,
-        @Payload request: ComputeStatusRequest
+        @Payload request: ComputeRunningRequest
     ) {
-        val command = ConnectCommand(
-            userId = request.userId,
-            computeType = request.computerType,
-            usedCompute = request.usedCompute,
-            usedMemory = request.usedMemory,
-            usedCPU = request.usedCPU,
+        val command = RunningCommand(
+            deploymentId = deploymentId,
+            status = request.status,
+            message = request.message
         )
+
+//        computeService.status(command)
     }
 }
