@@ -10,6 +10,3 @@ eureka:
 
 hosts:
   logstash: 34.64.124.245
-
-subdomain:
-  endpoint: http://10.178.0.121:8000
