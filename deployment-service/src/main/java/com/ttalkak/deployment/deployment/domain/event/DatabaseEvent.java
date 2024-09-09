@@ -11,7 +11,6 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class DatabaseEvent implements Serializable {
     private Long databaseId;
 

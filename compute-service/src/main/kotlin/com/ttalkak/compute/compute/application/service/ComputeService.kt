@@ -13,7 +13,7 @@ class ComputeService (
     private val removeConnectPort: RemoveConnectPort,
     private val loadComputePort: LoadComputePort,
     private val saveDeploymentStatusPort: SaveDeploymentStatusPort
-): ComputeUseCase, AllocateUseCase, ComputeStatusUseCase {
+): ComputeUseCase, AllocateUseCase, ComputeStatusUseCase, CreateRunningUseCase {
     override fun connect(command: ConnectCommand) {
         saveComputePort.saveCompute(
             userId = command.userId,
@@ -54,5 +54,14 @@ class ComputeService (
                 diskWrite = it.diskWrite
             )
         }
+    }
+
+    override fun createRunning(runningCommand: RunningCommand) {
+//        saveDeploymentStatusPort.saveDeploymentStatus(
+//            userId = runningCommand.deploymentId,
+//            deploymentId = runningCommand.deploymentId,
+//            status = runningCommand.status.toString(),
+//            message = runningCommand.message
+//        )
     }
 }

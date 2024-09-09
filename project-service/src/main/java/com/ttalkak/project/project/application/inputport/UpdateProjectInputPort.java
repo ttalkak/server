@@ -1,6 +1,8 @@
 package com.ttalkak.project.project.application.inputport;
 
 import com.ttalkak.project.common.UseCase;
+import com.ttalkak.project.global.error.ErrorCode;
+import com.ttalkak.project.global.exception.BusinessException;
 import com.ttalkak.project.project.application.outputport.EventOutputPort;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.outputport.SaveProjectOutputPort;
@@ -34,6 +36,16 @@ public class UpdateProjectInputPort implements UpdateProjectUseCase {
     @Override
     public ProjectResponse updateProject(Long projectId, ProjectUpdateRequest projectUpdateRequest) {
         ProjectEntity projectEntity = loadProjectOutputPort.findById(projectId);
+
+        // 도메인명 중복 체크
+        if(projectUpdateRequest.getDomainName() != null && !"".equals(projectUpdateRequest.getDomainName())) {
+            ProjectEntity findProjectEntityByDomainName = loadProjectOutputPort.findByDomainName(projectUpdateRequest.getDomainName());
+
+            if(findProjectEntityByDomainName != null && projectEntity.getId() != findProjectEntityByDomainName.getId()) {
+                throw new BusinessException(ErrorCode.ALREADY_EXISTS_DOMAIN_NAME);
+            }
+        }
+
         String orgDomainName = projectEntity.getDomainName();
 
         ProjectEditor.ProjectEditorBuilder projectEditorBuilder = projectEntity.toEditor();

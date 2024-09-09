@@ -5,6 +5,8 @@ import com.ttalkak.deployment.deployment.application.usecase.InquiryUsecase;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
+import com.ttalkak.deployment.global.error.ErrorCode;
+import com.ttalkak.deployment.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,8 @@ public class InquiryInputPort implements InquiryUsecase {
     @Override
     public DeploymentResponse getDeployment(Long deploymentId) {
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 배포내역이 존재하지 않습니다."));
+                // 배포 이력이 존재하지 않은 경우
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
         return DeploymentResponse.mapToDTO(deploymentEntity);
     }
 
