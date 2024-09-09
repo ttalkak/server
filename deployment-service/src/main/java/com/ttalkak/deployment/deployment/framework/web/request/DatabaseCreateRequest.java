@@ -1,6 +1,5 @@
 package com.ttalkak.deployment.deployment.framework.web.request;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 public class DomainNameEvent {
 
     Long projectId;
+
     String orgDomainName;
+
     String newDomainName;
 }

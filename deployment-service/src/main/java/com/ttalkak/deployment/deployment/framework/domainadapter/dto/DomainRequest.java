@@ -9,8 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DomainRequest {
+
     private String identifier;
+
     @JsonProperty("display_name")
     private String displayName;
+
     private String subdomain;
 }

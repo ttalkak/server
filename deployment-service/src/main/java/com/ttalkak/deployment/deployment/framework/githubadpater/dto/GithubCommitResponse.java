@@ -3,7 +3,6 @@ package com.ttalkak.deployment.deployment.framework.githubadpater.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
-
 @Getter
 public class GithubCommitResponse {
 

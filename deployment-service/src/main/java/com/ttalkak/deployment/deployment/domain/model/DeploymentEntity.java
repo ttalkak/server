@@ -56,8 +56,6 @@ public class DeploymentEntity extends BaseEntity {
         this.env = env;
     }
 
-
-
     // 배포 생성
     public static DeploymentEntity createDeployment(Long projectId, ServiceType ServiceType, GithubInfo githubInfo, String env){
         return DeploymentEntity.builder()
@@ -101,7 +99,4 @@ public class DeploymentEntity extends BaseEntity {
 
 
     }
-
-
-
 }

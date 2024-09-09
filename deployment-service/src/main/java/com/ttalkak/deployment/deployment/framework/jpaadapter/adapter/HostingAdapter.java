@@ -5,7 +5,6 @@ import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
 import com.ttalkak.deployment.deployment.framework.jpaadapter.repository.HostingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 
 @Repository

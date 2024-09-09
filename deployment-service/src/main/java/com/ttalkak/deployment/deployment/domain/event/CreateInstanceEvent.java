@@ -3,7 +3,6 @@ package com.ttalkak.deployment.deployment.domain.event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,16 +10,27 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateInstanceEvent implements Serializable {
+
     private String deploymentId;
+
     private String env;
+
     private String port;
+
     private String subdomainName;
+
     private String subdomainKey;
+
     private String serviceType;
+
     private String branch;
+
     private String repositoryUrl;
+
     private String rootDirectory;
+
     private List<DatabaseEvent> databases;
+
     public CreateInstanceEvent(DeploymentEvent deployment, HostingEvent hosting, GithubInfoEvent githubInfo, List<DatabaseEvent> database) {
         this.deploymentId = deployment.getDeploymentId().toString();
         this.env = deployment.getEnv();

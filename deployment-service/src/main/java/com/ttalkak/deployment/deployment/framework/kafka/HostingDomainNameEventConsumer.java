@@ -1,7 +1,6 @@
 package com.ttalkak.deployment.deployment.framework.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ttalkak.deployment.deployment.application.inputport.UpdateDeploymentInputPort;
 import com.ttalkak.deployment.deployment.application.inputport.UpdateHostingInputPort;
 import com.ttalkak.deployment.deployment.domain.event.DomainNameEvent;
 import lombok.RequiredArgsConstructor;

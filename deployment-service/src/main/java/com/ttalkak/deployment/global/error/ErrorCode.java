@@ -13,11 +13,10 @@ public enum ErrorCode {
 
     // 호스팅
     NOT_EXISTS_HOSTING(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), "호스팅 내역이 존재하지 않습니다")
-
-
     ;
-
     private final HttpStatus httpStatus;
+
     private final Integer statusCode;
+
     private final String message;
 }

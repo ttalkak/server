@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 public class GithubRepositoryResponse {
 
-
     @JsonProperty("name")
     private String repositoryName;
 

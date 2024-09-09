@@ -2,7 +2,6 @@ package com.ttalkak.deployment.deployment.framework.jpaadapter.adapter;
 
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
-import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
 import com.ttalkak.deployment.deployment.framework.jpaadapter.repository.DeploymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

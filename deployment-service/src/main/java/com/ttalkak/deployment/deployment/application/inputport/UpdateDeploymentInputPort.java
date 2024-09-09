@@ -1,19 +1,13 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
-import com.ttalkak.deployment.common.ApiResponse;
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
-import com.ttalkak.deployment.deployment.application.outputport.GithubOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.ProjectOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUsecase;
-import com.ttalkak.deployment.deployment.domain.model.DatabaseEntity;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
-import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
-import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
-import com.ttalkak.deployment.deployment.framework.web.request.DatabaseCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;

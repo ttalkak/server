@@ -21,7 +21,6 @@ public class InquiryInputPort implements InquiryUsecase {
 
     private final DeploymentOutputPort deploymentOutputPort;
 
-
     // 배포이력 상세조회
     @Override
     public DeploymentResponse getDeployment(Long deploymentId) {

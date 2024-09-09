@@ -2,7 +2,6 @@ package com.ttalkak.deployment.deployment.application.usecase;
 
 
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
-
 import java.util.List;
 
 public interface InquiryUsecase {

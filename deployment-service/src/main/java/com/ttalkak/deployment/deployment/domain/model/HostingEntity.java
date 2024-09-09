@@ -18,7 +18,6 @@ public class HostingEntity {
 
     private int hostingPort;
 
-
     // 처음 호스팅객체가 생성되었을때는 제공자와 호스팅아이피가 null값이어야함.
     @Column(name = "user_id", nullable = true)
     private Long deployerId;
@@ -33,9 +32,6 @@ public class HostingEntity {
     private String detailSubDomainName;
 
     private String detailSubDomainKey;
-
-
-
 
     @Builder
     private HostingEntity(int hostingPort, Long deployerId, DeploymentEntity deploymentEntity, ServiceType serviceType, String detailSubDomainName, String detailSubDomainKey) {
@@ -71,7 +67,6 @@ public class HostingEntity {
         throw new IllegalArgumentException("ServiceType이 잘못 입력되었습니다.");
     }
 
-
     public void setDeployerId(Long deployerId){
         this.deployerId = deployerId;
     }
@@ -87,5 +82,4 @@ public class HostingEntity {
     public void updateDomainName(String domainName, String serviceType) {
         this.detailSubDomainName = changeDetailDomainName(domainName, serviceType);
     }
-
 }

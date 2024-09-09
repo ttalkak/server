@@ -6,7 +6,6 @@ import lombok.Getter;
 public enum DeploymentStatus {
     STOP, RUNNING, ERROR, DELETED, PENDING;
 
-
     public static boolean isAlive(DeploymentStatus deploymentStatus) {
         if(deploymentStatus == DELETED){
             return false;

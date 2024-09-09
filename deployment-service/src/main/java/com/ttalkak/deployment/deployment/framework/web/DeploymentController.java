@@ -4,12 +4,10 @@ import com.ttalkak.deployment.common.ApiResponse;
 import com.ttalkak.deployment.deployment.application.usecase.*;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentDeleteRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
-import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateStatusRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +18,11 @@ import java.util.List;
 public class DeploymentController {
 
     private final CreateDeploymentUsecase createDeploymentUsecase;
+
     private final UpdateDeploymentUsecase updateDeploymentUsecase;
+
     private final DeleteDeploymentUsecase deleteDeploymentUsecase;
+
     private final InquiryUsecase inquiryUsecase;
 
     // 배포 등록

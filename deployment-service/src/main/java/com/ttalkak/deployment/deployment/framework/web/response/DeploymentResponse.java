@@ -2,7 +2,6 @@ package com.ttalkak.deployment.deployment.framework.web.response;
 
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import lombok.*;
-
 import java.util.List;
 
 @NoArgsConstructor
@@ -31,8 +30,6 @@ public class DeploymentResponse {
     private String branch;
 
     private List<HostingResponse> hostingResponses;
-
-
 
     @Builder
     private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, String branch) {
@@ -66,5 +63,4 @@ public class DeploymentResponse {
                 .branch(deploymentEntity.getGithubInfo().getBranch())
                 .build();
     }
-
 }

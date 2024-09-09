@@ -1,7 +1,6 @@
 package com.ttalkak.deployment.deployment.application.outputport;
 
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
-import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

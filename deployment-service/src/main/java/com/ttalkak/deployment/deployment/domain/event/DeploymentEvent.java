@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DeploymentEvent {
 
-
     private Long deploymentId;
 
     private Long projectId;

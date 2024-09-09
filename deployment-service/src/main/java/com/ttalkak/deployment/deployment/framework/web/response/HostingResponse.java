@@ -1,10 +1,6 @@
 package com.ttalkak.deployment.deployment.framework.web.response;
 
-import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
-import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +15,7 @@ public class HostingResponse {
 
     private String detailDomainName;
 
-
     private String serviceType;
-
 
     private int hostingPort;
 
@@ -41,5 +35,4 @@ public class HostingResponse {
                 .hostingPort(hostingEntity.getHostingPort())
                 .build();
     }
-
 }

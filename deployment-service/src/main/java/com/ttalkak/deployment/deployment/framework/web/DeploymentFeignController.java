@@ -17,6 +17,7 @@ import java.util.List;
 public class DeploymentFeignController {
 
     private final InquiryUsecase inquiryUsecase;
+
     private final UpdateDeploymentStatusUsecase updateDeploymentStatusUsecase;
 
     // 하나의 프로젝트에 포함되는 배포이력 전체조회
@@ -32,5 +33,4 @@ public class DeploymentFeignController {
         updateDeploymentStatusUsecase.updateDeploymentStatus(deploymentUpdateStatusRequest);
         return ApiResponse.success(null);
     }
-
 }
