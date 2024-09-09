@@ -58,7 +58,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         // 호스팅 정보 수정
         deploymentEntity.getHostingEntities().forEach(hostingEntity -> {
                             // 포트 업데이트
-                            hostingEntity.setHostingPort(deploymentUpdateRequest.getHostingUpdateRequest().getHostingPort());
+                            hostingEntity.setHostingPort(deploymentUpdateRequest.getHostingPort());
                             // 도메인명 업데이트
                             hostingEntity.updateDomainName(domainName, String.valueOf(deploymentEntity.getServiceType()));
                         });

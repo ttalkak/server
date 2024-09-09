@@ -16,22 +16,25 @@ public class DeploymentUpdateRequest {
     @NotNull(message = "배포 아이디는 필수입니다.")
     private Long deploymentId;;
 
+    @NotNull(message = "호스팅 포트는 필수입니다.")
+    private int hostingPort;
+
     private GithubRepositoryRequest githubRepositoryRequest;
 
     private List<DatabaseUpdateRequest> databaseUpdateRequests;
 
-    private HostingUpdateRequest hostingUpdateRequest;
+
 
     private String env;
 
     @Builder
     private DeploymentUpdateRequest(Long deploymentId, GithubRepositoryRequest githubRepositoryRequest,
-                                    List<DatabaseUpdateRequest> databaseUpdateRequests, HostingUpdateRequest hostingUpdateRequest, String env) {
+                                    List<DatabaseUpdateRequest> databaseUpdateRequests, int hostingPort, String env) {
         this.deploymentId = deploymentId;
         this.deploymentId = 0L;
         this.githubRepositoryRequest = githubRepositoryRequest;
         this.databaseUpdateRequests = databaseUpdateRequests;
-        this.hostingUpdateRequest = hostingUpdateRequest;
+        this.hostingPort = hostingPort;
         this.env = env;
     }
 

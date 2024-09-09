@@ -23,17 +23,19 @@ public class DeploymentCreateRequest {
 
     private List<DatabaseCreateRequest> databaseCreateRequests;
 
-    private HostingCreateRequest hostingCreateRequest;
+
+    @NotNull(message = "호스팅 포트는 필수입니다.")
+    private int hostingPort;
 
     private String env;
 
     @Builder
-    private DeploymentCreateRequest(Long projectId, String serviceType, GithubRepositoryRequest githubRepositoryRequest, List<DatabaseCreateRequest> databaseCreateRequests, HostingCreateRequest hostingCreateRequest, String env) {
+    private DeploymentCreateRequest(Long projectId, String serviceType, GithubRepositoryRequest githubRepositoryRequest, List<DatabaseCreateRequest> databaseCreateRequests, int hostingPort, String env) {
         this.projectId = projectId;
         this.serviceType = serviceType;
         this.githubRepositoryRequest = githubRepositoryRequest;
         this.databaseCreateRequests = databaseCreateRequests;
-        this.hostingCreateRequest = hostingCreateRequest;
+        this.hostingPort = hostingPort;
         this.env = env;
     }
 }
