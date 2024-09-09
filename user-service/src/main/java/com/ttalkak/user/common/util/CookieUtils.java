@@ -38,6 +38,15 @@ public class CookieUtils {
         response.addCookie(cookie);
     }
 
+    public static void addCookie(HttpServletResponse response, String domain, String name, String value, int maxAge, boolean httpOnly) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath("/");
+        cookie.setDomain(domain);
+        cookie.setHttpOnly(httpOnly);
+        cookie.setMaxAge(maxAge);
+        response.addCookie(cookie);
+    }
+
     public static void removeCookie(HttpServletResponse response, String name) {
         Cookie cookie = new Cookie(name, null);
         cookie.setPath("/");

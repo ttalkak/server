@@ -45,9 +45,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         log.debug("User {} logged in", customUserDetails.user());
 
         JwtToken jwtToken = jwtTokenProvider.generate(customUserDetails.user().getId(), customUserDetails.getAuthorities());
-        CookieUtils.addCookie(response, REFRESH_TOKEN_COOKIE, jwtToken.getRefreshToken(), refreshExpire, true);
 
         String redirectURI = determineTargetUrl(request, response, authentication);
+        if (redirectURI.contains("localhost")) {
+            CookieUtils.addCookie(response, "localhost", REFRESH_TOKEN_COOKIE, jwtToken.getRefreshToken(), refreshExpire, true);
+        }
         getRedirectStrategy().sendRedirect(request, response, getRedirectUrl(redirectURI, jwtToken));
     }
 
