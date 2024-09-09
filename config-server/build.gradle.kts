@@ -5,7 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
 }
 
-group = "kr.kro.ddalkak"
+group = "com.ddalkak"
 version = "0.0.1"
 
 java {
@@ -16,6 +16,7 @@ java {
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 extra["springCloudVersion"] = "2023.0.3"
