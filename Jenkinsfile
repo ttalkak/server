@@ -28,7 +28,7 @@ pipeline {
                                 dockerImage.push()
                             }
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose up -d --no-deps --build eureka-server'
+                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build eureka-server'
                         }
                     }
                 }
@@ -45,7 +45,7 @@ pipeline {
                                 dockerImage.push()
                             }
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose up -d --no-deps --build config-server'
+                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build config-server'
                         }
                     }
                 }
@@ -62,7 +62,7 @@ pipeline {
                                 dockerImage.push()
                             }
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose up -d --no-deps --build gateway-service'
+                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build gateway-service'
                         }
                     }
                 }
@@ -79,7 +79,7 @@ pipeline {
                                 dockerImage.push()
                             }
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose up -d --no-deps --build user-service'
+                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build user-service'
                         }
                     }
                 }
@@ -96,7 +96,7 @@ pipeline {
                                 dockerImage.push()
                             }
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose up -d --no-deps --build compute-service'
+                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build compute-service'
                         }
                     }
                 }
@@ -114,7 +114,7 @@ pipeline {
                                 dockerImage.push()
                             }
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose up -d --no-deps --build deployment-service'
+                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build deployment-service'
                         }
                     }
                 }
@@ -133,7 +133,7 @@ pipeline {
                                 dockerImage.push()
                             }
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose up -d --no-deps --build project-service'
+                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build project-service'
                         }
                     }
                 }
