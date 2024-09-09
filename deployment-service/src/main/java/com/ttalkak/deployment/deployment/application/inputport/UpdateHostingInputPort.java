@@ -6,6 +6,8 @@ import com.ttalkak.deployment.deployment.application.usecase.UpdateHostingUsecas
 import com.ttalkak.deployment.deployment.domain.event.HostingEvent;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
+import com.ttalkak.deployment.global.error.ErrorCode;
+import com.ttalkak.deployment.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,7 @@ public class UpdateHostingInputPort implements UpdateHostingUsecase {
     @Override
     public void updateHosting(HostingEvent hostingEvent) {
         HostingEntity findHosting = hostingOutputPort.findById(hostingEvent.getHostingId())
-                .orElseThrow(() -> new IllegalArgumentException("호스팅 객체를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_HOSTING));
 
         findHosting.setDeployerId(hostingEvent.getDeployerId());
         hostingOutputPort.save(findHosting);

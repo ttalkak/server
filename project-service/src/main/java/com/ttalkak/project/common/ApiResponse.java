@@ -34,4 +34,8 @@ public class ApiResponse<T> {
     public static ApiResponse<Map<String, String>> fails(String message, int status, Map<String, String> errors) {
         return new ApiResponse<>(false, message, status, errors);
     }
+
+    public static ApiResponse<Map<String, String>> fail(String message, int status, Map<String, String> errors) {
+        return new ApiResponse<>(false, message, status, errors);
+    }
 }

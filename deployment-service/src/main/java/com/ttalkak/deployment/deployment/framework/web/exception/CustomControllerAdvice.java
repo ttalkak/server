@@ -1,7 +1,7 @@
-package com.ttalkak.project.project.framework.web.exception;
+package com.ttalkak.deployment.deployment.framework.web.exception;
 
-import com.ttalkak.project.common.ApiResponse;
-import com.ttalkak.project.global.exception.BusinessException;
+import com.ttalkak.deployment.common.ApiResponse;
+import com.ttalkak.deployment.global.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

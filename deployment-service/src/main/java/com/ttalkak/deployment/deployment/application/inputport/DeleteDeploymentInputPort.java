@@ -4,6 +4,8 @@ import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutput
 import com.ttalkak.deployment.deployment.application.usecase.DeleteDeploymentUsecase;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentDeleteRequest;
+import com.ttalkak.deployment.global.error.ErrorCode;
+import com.ttalkak.deployment.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +23,7 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
     @Override
     public void deleteDeployment(DeploymentDeleteRequest deploymentDeleteRequest) {
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentDeleteRequest.getDeploymentId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 배포아이디는 존재하지 않습니다."));
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
         deploymentEntity.deleteDeployment();
         deploymentOutputPort.save(deploymentEntity);
     }

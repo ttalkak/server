@@ -30,15 +30,15 @@ public class DeploymentController {
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<DeploymentResponse> createDeployment(@RequestBody DeploymentCreateRequest deploymentCreateRequest){
         DeploymentResponse deployment = createDeploymentUsecase.createDeployment(deploymentCreateRequest);
-        return ApiResponse.success(deployment);
+        return new ApiResponse(true, null, 201, deployment);
     }
 
     // 하나의 프로젝트에 포함되는 배포이력 전체조회
     @GetMapping("/deployment/feign/project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<DeploymentResponse>> getAllDeploymentByProjectId(@PathVariable("projectId") Long projectId){
+    public List<DeploymentResponse> getAllDeploymentByProjectId(@PathVariable("projectId") Long projectId){
         List<DeploymentResponse> deployments = inquiryUsecase.getDeploymentsByProjectId(projectId);
-        return ApiResponse.success(deployments);
+        return deployments;
     }
 
     // 배포 상세조회
@@ -70,14 +70,14 @@ public class DeploymentController {
 
     // 배포 삭제
     @DeleteMapping("/deployment")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteDeployment(@RequestBody DeploymentDeleteRequest deploymentDeleteRequest){
+    public ApiResponse deleteDeployment(@RequestBody DeploymentDeleteRequest deploymentDeleteRequest){
         deleteDeploymentUsecase.deleteDeployment(deploymentDeleteRequest);
+        return ApiResponse.success(null);
     }
 
     @PostMapping("/deployment/feign/status")
-    @ResponseStatus(HttpStatus.OK)
-    public void updateDeploymentStatus(@RequestBody DeploymentUpdateStatusRequest deploymentUpdateStatusRequest){
+    public ApiResponse updateDeploymentStatus(@RequestBody DeploymentUpdateStatusRequest deploymentUpdateStatusRequest){
         updateDeploymentStatusUsecase.updateDeploymentStatus(deploymentUpdateStatusRequest);
+        return ApiResponse.success(null);
     }
 }

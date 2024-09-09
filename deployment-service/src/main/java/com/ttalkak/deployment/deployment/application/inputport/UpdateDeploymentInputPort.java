@@ -1,5 +1,6 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
+import com.ttalkak.deployment.common.ApiResponse;
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.GithubOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.ProjectOutputPort;
@@ -16,6 +17,8 @@ import com.ttalkak.deployment.deployment.framework.web.request.DatabaseCreateReq
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
+import com.ttalkak.deployment.global.error.ErrorCode;
+import com.ttalkak.deployment.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +39,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
     public DeploymentResponse updateDeployment(DeploymentUpdateRequest deploymentUpdateRequest) {
 
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentUpdateRequest.getDeploymentId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 배포아이디는 존재하지 않습니다."));
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
 
         // 깃허브 관련 정보 객체 생성
         GithubInfo newGithubInfo = GithubInfo.create(

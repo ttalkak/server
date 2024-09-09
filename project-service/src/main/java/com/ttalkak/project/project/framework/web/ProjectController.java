@@ -50,7 +50,7 @@ public class ProjectController {
     public ApiResponse<ProjectResponse> createProject(
             @RequestHeader("X-USER-ID") Long userId,
             @RequestBody ProjectCreateRequest projectCreateRequest) {
-        return ApiResponse.success(createProjectUseCase.createProject(userId, projectCreateRequest));
+        return new ApiResponse<>(true, "", 201, createProjectUseCase.createProject(userId, projectCreateRequest));
     }
 
     /**
@@ -101,6 +101,8 @@ public class ProjectController {
     @PatchMapping("/project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<ProjectResponse> updateProject(@PathVariable Long projectId, @RequestBody ProjectUpdateRequest projectUpdateRequest) {
+
+
         return ApiResponse.success(updateProjectUseCase.updateProject(projectId, projectUpdateRequest));
     }
 
