@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "DOMAIN-SERVICE", url="${subdomain.endpoint}")
 public interface DomainFeignClient {
-
     @PostMapping("/create")
-    public DomainKeyResponse getDomainKey(@RequestBody DomainRequest domainRequest);
+    DomainKeyResponse getDomainKey(@RequestBody DomainRequest domainRequest);
 }

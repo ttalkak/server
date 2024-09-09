@@ -45,8 +45,6 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
 
     @Override
     public DeploymentResponse createDeployment(DeploymentCreateRequest deploymentCreateRequest) {
-
-
         // 깃허브 관련 정보 객체 생성
         GithubInfo githubInfo = GithubInfo.create(
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryName(),
@@ -68,7 +66,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deployment);
 
 
-        // OpenFeign을 이용하여 프로젝트서비스로부터 프로젝트정보(도메인 이름)받아오기
+        // OpenFeign 을 이용하여 프로젝트서비스로부터 프로젝트정보(도메인 이름)받아오기
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
         String domainName = projectInfo.getDomainName();
 
@@ -86,22 +84,19 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         deployment.addHostingEntity(savedHostingEntity);
 
         // 서버로 요청해서 도메인 키 받아오기
-//        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(
-//                new DomainRequest(
-//                        savedHostingEntity.getId().toString(),
-//                        projectInfo.getDomainName() + " " + savedHostingEntity.getServiceType().toString(),
-//                        savedHostingEntity.getDetailSubDomainName()
-//                ));
-//        String detailSubDomainKey = domainKeyResponse.getKey();
-        String detailSubDomainKey = "tmp domain key";
+        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(
+                new DomainRequest(
+                        savedHostingEntity.getId().toString(),
+                        projectInfo.getDomainName() + " " + savedHostingEntity.getServiceType().toString(),
+                        savedHostingEntity.getDetailSubDomainName()
+                ));
+        String detailSubDomainKey = domainKeyResponse.getKey();
 
         savedHostingEntity.setDetailSubDomainKey(detailSubDomainKey);
 
         // 백엔드 서버면? =>  데이터베이스가 존재한다.
-        List<DatabaseEvent> databaseEvents = null;
+        List<DatabaseEvent> databaseEvents = new ArrayList<>();
         if(ServiceType.isBackendType(deploymentCreateRequest.getServiceType())){
-
-            databaseEvents = new ArrayList<>();
             for(DatabaseCreateRequest databaseCreateRequest : deploymentCreateRequest.getDatabaseCreateRequests()) {
                 DatabaseEntity database = DatabaseEntity.createDatabase(
                         savedDeployment,
@@ -124,7 +119,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), savedHostingEntity.getId(), null, savedHostingEntity.getHostingPort(), null,projectInfo.getDomainName(), hosting.getDetailSubDomainKey());
         DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getEnv(), savedDeployment.getServiceType().toString());
         GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory(), "main");
-        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent,databaseEvents);
+        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, databaseEvents);
         try {
             eventOutputPort.occurCreateInstance(createInstanceEvent);
         } catch (JsonProcessingException e) {

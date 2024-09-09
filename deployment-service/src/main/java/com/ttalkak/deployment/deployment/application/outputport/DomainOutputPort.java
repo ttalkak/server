@@ -5,5 +5,5 @@ import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainReque
 
 public interface DomainOutputPort {
 
-    public DomainKeyResponse makeDomainKey(DomainRequest domainRequest);
+    DomainKeyResponse makeDomainKey(DomainRequest domainRequest);
 }

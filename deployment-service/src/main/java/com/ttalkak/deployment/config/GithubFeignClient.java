@@ -13,11 +13,13 @@ public interface GithubFeignClient {
     @GetMapping("/repos/{owner}/{repo}")
     GithubRepositoryResponse getRepositoryDetails(
             @PathVariable("owner") String owner,
-            @PathVariable("repo") String repo);
+            @PathVariable("repo") String repo
+    );
 
     @GetMapping("/repos/{owner}/{repo}/commits")
     List<GithubCommitResponse> getLastCommitDetails(
             @PathVariable("owner") String owner,
             @PathVariable("repo") String repo,
-            @RequestParam("per_page") int perPage);
+            @RequestParam("per_page") int perPage
+    );
 }
