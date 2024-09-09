@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface DeploymentOutputPort {
 
-    public void deleteDeployment(Long projectId);
+    // feign 예시
+    //public void deleteDeployment(Long projectId);
 
     public List<DeploymentResponse> getDeployments(Long projectId);
 }

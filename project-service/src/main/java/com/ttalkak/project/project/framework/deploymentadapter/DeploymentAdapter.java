@@ -14,10 +14,11 @@ public class DeploymentAdapter implements DeploymentOutputPort {
 
     private final DeploymentFeignClient deploymentFeignClient;
 
-    @Override
-    public void deleteDeployment(Long projectId) {
-        deploymentFeignClient.deleteDeployment(projectId);
-    }
+    // feign 예시
+//    @Override
+//    public void deleteDeployment(Long projectId) {
+//        deploymentFeignClient.deleteDeployment(projectId);
+//    }
 
     @Override
     public List<DeploymentResponse> getDeployments(Long projectId) {

@@ -12,11 +12,12 @@ import java.util.List;
 
 @FeignClient(name = "DEPLOYMENT-SERVICE")
 public interface DeploymentFeignClient {
+    
+    // feign 예시
+//    @DeleteMapping("/feign/deployment/{projectId}")
+//    void deleteDeployment(@PathVariable("projectId")Long projectId);
 
-    @DeleteMapping("/v1/deployment/{projectId}")
-    void deleteDeployment(@PathVariable("projectId")Long projectId);
-
-    @GetMapping("/v1/deployment/feign/project/{projectId}")
+    @GetMapping("/feign/deployment/project/{projectId}")
     List<DeploymentResponse> getDeployments(@PathVariable("projectId")Long projectId);
 
 }

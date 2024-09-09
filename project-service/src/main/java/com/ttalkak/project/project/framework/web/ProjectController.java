@@ -66,18 +66,6 @@ public class ProjectController {
     }
 
     /**
-     * 프로젝트 페인 단건 조회
-     * @param projectId
-     * @return
-     */
-    @GetMapping("/project/feign/{projectId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ProjectResponse> getFeignProject(@PathVariable Long projectId) {
-        ProjectResponse projectResponse = getProjectUseCase.getFeignProject(projectId);
-        return ApiResponse.success(projectResponse);
-    }
-
-    /**
      * 프로젝트 페이징 조회
      * @param pageable
      * @return

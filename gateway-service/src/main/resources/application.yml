@@ -23,6 +23,7 @@ spring:
           uri: lb://PROJECT-SERVICE
           predicates:
             - Path=/v1/project/**
+            - Path=/feign/project/**
           filters:
             - AuthenticationHeaderFilter
 
@@ -42,5 +43,6 @@ spring:
           uri: lb://DEPLOYMENT-SERVICE
           predicates:
             - Path=/v1/deployment/**
+            - Path=/feign/deployment/**
           filters:
             - AuthenticationHeaderFilter

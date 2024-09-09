@@ -22,7 +22,6 @@ public class DeploymentController {
     private final CreateDeploymentUsecase createDeploymentUsecase;
     private final UpdateDeploymentUsecase updateDeploymentUsecase;
     private final DeleteDeploymentUsecase deleteDeploymentUsecase;
-    private final UpdateDeploymentStatusUsecase updateDeploymentStatusUsecase;
     private final InquiryUsecase inquiryUsecase;
 
     // 배포 등록
@@ -31,14 +30,6 @@ public class DeploymentController {
     public ApiResponse<DeploymentResponse> createDeployment(@RequestBody DeploymentCreateRequest deploymentCreateRequest){
         DeploymentResponse deployment = createDeploymentUsecase.createDeployment(deploymentCreateRequest);
         return new ApiResponse(true, null, 201, deployment);
-    }
-
-    // 하나의 프로젝트에 포함되는 배포이력 전체조회
-    @GetMapping("/deployment/feign/project/{projectId}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<DeploymentResponse> getAllDeploymentByProjectId(@PathVariable("projectId") Long projectId){
-        List<DeploymentResponse> deployments = inquiryUsecase.getDeploymentsByProjectId(projectId);
-        return deployments;
     }
 
     // 배포 상세조회
@@ -75,9 +66,4 @@ public class DeploymentController {
         return ApiResponse.success(null);
     }
 
-    @PostMapping("/deployment/feign/status")
-    public ApiResponse updateDeploymentStatus(@RequestBody DeploymentUpdateStatusRequest deploymentUpdateStatusRequest){
-        updateDeploymentStatusUsecase.updateDeploymentStatus(deploymentUpdateStatusRequest);
-        return ApiResponse.success(null);
-    }
 }
