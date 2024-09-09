@@ -19,30 +19,42 @@ spring:
           filters:
             - AuthenticationHeaderFilter
 
-        - id: project-service
+        - id: project-service-api
           uri: lb://PROJECT-SERVICE
           predicates:
             - Path=/v1/project/**
+          filters:
+            - AuthenticationHeaderFilter
+
+        - id: project-service-feign
+          uri: lb://PROJECT-SERVICE
+          predicates:
             - Path=/feign/project/**
           filters:
             - AuthenticationHeaderFilter
 
-        - id: compute-service
+        - id: compute-service-ws
           uri: lb:ws://COMPUTE-SERVICE
           predicates:
-              - Path=/ws/**
+            - Path=/ws/**
 
-        - id: compute-service
+        - id: compute-service-api
           uri: lb://COMPUTE-SERVICE
           predicates:
             - Path=/v1/compute/**
           filters:
             - AuthenticationHeaderFilter
 
-        - id: deployment-service
+        - id: deployment-service-api
           uri: lb://DEPLOYMENT-SERVICE
           predicates:
             - Path=/v1/deployment/**
+          filters:
+            - AuthenticationHeaderFilter
+
+        - id: deployment-service-feign
+          uri: lb://DEPLOYMENT-SERVICE
+          predicates:
             - Path=/feign/deployment/**
           filters:
             - AuthenticationHeaderFilter
