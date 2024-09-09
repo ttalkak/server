@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class CreateInstanceEvent implements Serializable {
 
 
@@ -34,11 +33,14 @@ public class CreateInstanceEvent implements Serializable {
     private String serviceType;
 
     private String branch;
+
     private String repositoryUrl;
 
     private String rootDirectory;
 
-    private List<DatabaseEvent> database;
+    private Long databaseId;
+
+    private List<DatabaseEvent> databases;
 
     public CreateInstanceEvent(DeploymentEvent deployment, HostingEvent hosting, GithubInfoEvent githubInfo, List<DatabaseEvent> database) {
         this.deploymentId = deployment.getDeploymentId().toString();
@@ -53,7 +55,7 @@ public class CreateInstanceEvent implements Serializable {
         this.branch = githubInfo.getBranch();
         this.repositoryUrl = githubInfo.getRepositoryUrl();
         this.rootDirectory = githubInfo.getRepositoryUrl();
-        this.database = database;
+        this.databases = database;
     }
 
 

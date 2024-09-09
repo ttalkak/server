@@ -95,7 +95,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
 
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deploymentEntity);
 
-        // 업데이트 내역 알림 ===============================================
+        // 업데이트 내역 알림 민준수 ===============================================
 
 
         return DeploymentResponse.mapToDTO(savedDeployment);
