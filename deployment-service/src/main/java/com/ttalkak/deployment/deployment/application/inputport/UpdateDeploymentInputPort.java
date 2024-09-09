@@ -48,7 +48,8 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
-                deploymentUpdateRequest.getGithubRepositoryRequest().getRootDirectory()
+                deploymentUpdateRequest.getGithubRepositoryRequest().getRootDirectory(),
+                deploymentUpdateRequest.getGithubRepositoryRequest().getBranch()
         );
 
         // 프로젝트의 도메인명 가져오기

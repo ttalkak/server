@@ -52,7 +52,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRootDirectory()
+                deploymentCreateRequest.getGithubRepositoryRequest().getRootDirectory(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getBranch()
         );
 
        // 배포 객체 생성

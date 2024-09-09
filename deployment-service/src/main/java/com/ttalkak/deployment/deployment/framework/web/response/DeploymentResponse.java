@@ -28,12 +28,14 @@ public class DeploymentResponse {
 
     private String repositoryLastCommitUserName;
 
+    private String branch;
+
     private List<HostingResponse> hostingResponses;
 
 
 
     @Builder
-    private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses) {
+    private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, String branch) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
@@ -44,6 +46,7 @@ public class DeploymentResponse {
         this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
         this.repositoryLastCommitUserName = repositoryLastCommitUserName;
         this.hostingResponses = hostingResponses;
+        this.branch = branch;
     }
 
     public static DeploymentResponse mapToDTO(DeploymentEntity deploymentEntity){
@@ -60,6 +63,7 @@ public class DeploymentResponse {
                 .hostingResponses(deploymentEntity.getHostingEntities().stream()
                         .map(HostingResponse::mapToDTO)
                         .toList())
+                .branch(deploymentEntity.getGithubInfo().getBranch())
                 .build();
     }
 

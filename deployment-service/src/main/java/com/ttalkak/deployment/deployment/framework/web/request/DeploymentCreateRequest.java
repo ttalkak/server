@@ -14,18 +14,15 @@ public class DeploymentCreateRequest {
     @NotNull(message = "프로젝트 아이디는 필수입니다.")
     private Long projectId;
 
-
     @NotNull(message = "서비스타입은 필수입니다.")
     private String serviceType;
 
+    @NotNull(message = "호스팅 포트는 필수입니다.")
+    private int hostingPort;
 
     private GithubRepositoryRequest githubRepositoryRequest;
 
     private List<DatabaseCreateRequest> databaseCreateRequests;
-
-
-    @NotNull(message = "호스팅 포트는 필수입니다.")
-    private int hostingPort;
 
     private String env;
 

@@ -30,8 +30,10 @@ public class GithubInfo {
     @Column(nullable = false)
     private String rootDirectory;
 
+    @Column(nullable = false)
+    private String branch;
 
-    public static GithubInfo create(String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserName, String repositoryLastCommitUserProfile, String rootDirectory) {
+    public static GithubInfo create(String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserName, String repositoryLastCommitUserProfile, String rootDirectory, String branch) {
         GithubInfo githubInfo = new GithubInfo();
         githubInfo.repositoryLastCommitMessage = repositoryLastCommitMessage;
         githubInfo.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
@@ -39,6 +41,7 @@ public class GithubInfo {
         githubInfo.repositoryName = repositoryName;
         githubInfo.repositoryUrl = repositoryUrl;
         githubInfo.rootDirectory = rootDirectory;
+        githubInfo.branch = branch;
         return githubInfo;
     }
 }

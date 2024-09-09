@@ -1,7 +1,5 @@
 package com.ttalkak.deployment.deployment.framework.web.request;
 
-import com.ttalkak.deployment.deployment.domain.model.DatabaseEntity;
-import com.ttalkak.deployment.deployment.framework.web.response.HostingResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,8 +20,6 @@ public class DeploymentUpdateRequest {
     private GithubRepositoryRequest githubRepositoryRequest;
 
     private List<DatabaseUpdateRequest> databaseUpdateRequests;
-
-
 
     private String env;
 
