@@ -137,7 +137,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
                 deploymentCreateRequest.getProjectId(),
                 ServiceType.valueOf(deploymentCreateRequest.getServiceType()),
                 githubInfo,
-                deploymentCreateRequest.getEnv()
+                deploymentCreateRequest.getEnv(),
+                deploymentCreateRequest.getFramework()
         );
         return deployment;
     }

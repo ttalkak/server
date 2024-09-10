@@ -25,13 +25,16 @@ public class DeploymentCreateRequest {
 
     private String env;
 
+    private String framework;
+
     @Builder
-    private DeploymentCreateRequest(Long projectId, String serviceType, GithubRepositoryRequest githubRepositoryRequest, List<DatabaseCreateRequest> databaseCreateRequests, int hostingPort, String env) {
+    private DeploymentCreateRequest(Long projectId, String serviceType, GithubRepositoryRequest githubRepositoryRequest, List<DatabaseCreateRequest> databaseCreateRequests, int hostingPort, String env, String framework) {
         this.projectId = projectId;
         this.serviceType = serviceType;
         this.githubRepositoryRequest = githubRepositoryRequest;
         this.databaseCreateRequests = databaseCreateRequests;
         this.hostingPort = hostingPort;
         this.env = env;
+        this.framework = framework;
     }
 }

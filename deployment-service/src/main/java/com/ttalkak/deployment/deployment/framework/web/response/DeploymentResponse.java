@@ -29,10 +29,12 @@ public class DeploymentResponse {
 
     private String branch;
 
+    private String framework;
+
     private List<HostingResponse> hostingResponses;
 
     @Builder
-    private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, String branch) {
+    private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, String branch, String framework) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
@@ -44,6 +46,7 @@ public class DeploymentResponse {
         this.repositoryLastCommitUserName = repositoryLastCommitUserName;
         this.hostingResponses = hostingResponses;
         this.branch = branch;
+        this.framework = framework;
     }
 
     public static DeploymentResponse mapToDTO(DeploymentEntity deploymentEntity){
@@ -61,6 +64,7 @@ public class DeploymentResponse {
                         .map(HostingResponse::mapToDTO)
                         .toList())
                 .branch(deploymentEntity.getGithubInfo().getBranch())
+                .framework(deploymentEntity.getFramework())
                 .build();
     }
 }
