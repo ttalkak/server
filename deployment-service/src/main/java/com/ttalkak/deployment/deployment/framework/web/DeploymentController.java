@@ -2,11 +2,8 @@ package com.ttalkak.deployment.deployment.framework.web;
 
 import com.ttalkak.deployment.common.ApiResponse;
 import com.ttalkak.deployment.deployment.application.usecase.*;
-import com.ttalkak.deployment.deployment.framework.web.request.DeploymentDeleteRequest;
-import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
-import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateStatusRequest;
+import com.ttalkak.deployment.deployment.framework.web.request.*;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
-import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +21,8 @@ public class DeploymentController {
 
     private final UpdateDeploymentStatusUsecase updateDeploymentStatusUsecase;
 
+    private final CommandDeploymentStatusUsecase commandDeploymentStatusUsecase;
+
     private final DeleteDeploymentUsecase deleteDeploymentUsecase;
 
     private final InquiryUsecase inquiryUsecase;
@@ -37,10 +36,10 @@ public class DeploymentController {
     }
 
     // 배포 상태 변경
-    @PostMapping("/deployment")
+    @PostMapping("/deployment/status")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<Void> updateDeploymentStatus(@RequestBody DeploymentUpdateStatusRequest deploymentUpdateStatusRequest){
-        updateDeploymentStatusUsecase.updateDeploymentStatus(deploymentUpdateStatusRequest);
+    public ApiResponse<Void> updateDeploymentStatus(@RequestBody DeploymentCommandStatusRequest deploymentCommandStatusRequest){
+        commandDeploymentStatusUsecase.commandDeploymentStatus(deploymentCommandStatusRequest);
         return ApiResponse.success();
     }
 

@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
+      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/CommandDeploymentStatusInputPort.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/usecase/CommandDeploymentStatusUsecase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/request/DeploymentCommandStatusRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentStatusInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentStatusInputPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/usecase/UpdateDeploymentStatusUsecase.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/usecase/UpdateDeploymentStatusUsecase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/UpdateDeploymentStatusEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/UpdateDeploymentStatusEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/DeploymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/DeploymentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/request/DeploymentUpdateStatusRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/request/DeploymentUpdateStatusRequest.java" afterDir="false" />
     </list>
@@ -92,7 +97,7 @@
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Jun/ddalkak/deployment-service/build.gradle",
+    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Jun/ddalkak",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -216,7 +221,7 @@
       <workItem from="1725804362113" duration="2576000" />
       <workItem from="1725860080969" duration="4118000" />
       <workItem from="1725878610693" duration="902000" />
-      <workItem from="1725928750145" duration="8478000" />
+      <workItem from="1725928750145" duration="9188000" />
     </task>
     <task id="LOCAL-00001" summary="도커 컴포즈 수정">
       <option name="closed" value="true" />

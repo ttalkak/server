@@ -13,9 +13,5 @@ public class UpdateDeploymentStatusEvent implements Serializable {
 
     private String deploymentId;
 
-    private String status;
-
     private String command;
-
-    private String updateFrom;
 }
