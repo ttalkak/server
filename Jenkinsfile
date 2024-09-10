@@ -26,12 +26,16 @@ pipeline {
 
                             // 기존 eureka-server 컨테이너 중지 및 삭제
                             sh """
+                            cd ${env.WORKSPACE}
+
                             docker-compose -f docker-compose-prod.yml stop eureka-server || true
                             docker-compose -f docker-compose-prod.yml rm -f eureka-server || true
                             """
 
                             // 해당 컨테이너만 재시작
                             sh """
+                            cd ${env.WORKSPACE}
+                            
                             docker-compose -f docker-compose-prod.yml up -d --no-deps --build eureka-server
                             """
                         }
@@ -85,12 +89,19 @@ pipeline {
 
                             // 기존 user-service 컨테이너 중지 및 삭제
                             sh """
+                            pwd
+                            cd ${env.WORKSPACE}
+
                             sudo docker-compose -f docker-compose-prod.yml stop user-service || true
                             sudo docker-compose -f docker-compose-prod.yml rm -f user-service || true
                             """
 
                             // 해당 컨테이너만 재시작
-                            sh 'sudo docker-compose -f docker-compose-prod.yml up -d --no-deps --build user-service'
+                            sh """
+                            cd ${env.WORKSPACE}
+
+                            sudo docker-compose -f docker-compose-prod.yml up -d --no-deps --build user-service
+                            """
                         }
                     }
                 }
