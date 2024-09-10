@@ -85,12 +85,16 @@ pipeline {
 
                             // 기존 user-service 컨테이너 중지 및 삭제
                             sh """
-                            docker-compose -f docker-compose-prod.yml stop user-service || true
-                            docker-compose -f docker-compose-prod.yml rm -f user-service || true
+                            docker stop user-service || true
+                            docker rm user-service || true
+                            docker rmi user-service || true
                             """
 
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build user-service'
+                            sh """
+                            docker build -f user-service/Dockerfile.prod -t user-service
+                            docker run -d --name user-service --network spring-network --cpus="0.5" --memory="512m" user-service
+                            """
                         }
                     }
                 }
