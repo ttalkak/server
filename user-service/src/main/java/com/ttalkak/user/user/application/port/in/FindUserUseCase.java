@@ -1,7 +1,6 @@
 package com.ttalkak.user.user.application.port.in;
 
 import com.ttalkak.user.user.domain.LoginUser;
-import com.ttalkak.user.user.domain.User;
 
 public interface FindUserUseCase {
     /**
