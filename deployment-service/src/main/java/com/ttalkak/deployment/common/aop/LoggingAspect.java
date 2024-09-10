@@ -1,4 +1,4 @@
-package com.ttalkak.project.global.aop;
+package com.ttalkak.deployment.common.aop;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,18 +13,18 @@ import java.util.Arrays;
 @Slf4j
 public class LoggingAspect {
 
-    @Around("within(com.ttalkak.project..application.inputport.*InputPort)")
+    @Around("within(com.ttalkak.deployment.deployment.application.inputport.*InputPort)")
     public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
         // 메서드 정보 가져오기
         String methodName = joinPoint.getSignature().getName();
-        String className = joinPoint.getTarget().getClass().getName();
+        String className = joinPoint.getTarget().getClass().getSimpleName();
 
         // 파라미터 정보 가져오기
         Object[] args = joinPoint.getArgs();
         String params = Arrays.toString(args);
 
         // 메서드 실행 전 로그
-        log.info("Entering: {}.{} with parameters {}", className, methodName, params);
+        log.info("============ 시작: {}.{} :: parameters {}", className, methodName, params);
 
         long start = System.currentTimeMillis();
         Object result = null;
@@ -32,8 +32,8 @@ public class LoggingAspect {
             result = joinPoint.proceed();
             return result;
         } finally {
-            long executionTime = System.currentTimeMillis() - start;
-            log.info("Exiting: {}.{} with parameters {} {}", className, methodName, params, executionTime);
+            double executionTime = (System.currentTimeMillis() - start) / 1000.0;
+            log.info("============ 종료: {}.{} :: executionTime : {}", className, methodName, executionTime);
         }
     }
 }

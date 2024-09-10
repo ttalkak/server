@@ -1,8 +1,8 @@
 package com.ttalkak.project.project.application.inputport;
 
 import com.ttalkak.project.common.UseCase;
-import com.ttalkak.project.global.error.ErrorCode;
-import com.ttalkak.project.global.exception.BusinessException;
+import com.ttalkak.project.common.error.ErrorCode;
+import com.ttalkak.project.common.exception.BusinessException;
 import com.ttalkak.project.project.application.outputport.EventOutputPort;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.outputport.SaveProjectOutputPort;
