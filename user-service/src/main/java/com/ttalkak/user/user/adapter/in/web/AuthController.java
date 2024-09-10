@@ -75,7 +75,6 @@ public class AuthController {
         Cookie cookie = CookieUtils.getCookie(request, REFRESH_TOKEN_COOKIE).orElseThrow(
                 () -> new IllegalStateException("리프레시 토큰이 없습니다.")
         );
-
         JwtToken refresh = refreshTokenUseCase.refresh(cookie.getValue());
 
         CookieUtils.removeCookie(response, REFRESH_TOKEN_COOKIE);
