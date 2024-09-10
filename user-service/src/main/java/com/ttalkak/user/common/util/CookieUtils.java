@@ -38,7 +38,7 @@ public class CookieUtils {
                 .httpOnly(httpOnly)
                 .secure(true)
                 .path("/")
-                 .build();
+                .build();
         response.addHeader("Set-Cookie", cookie.toString());
     }
 
