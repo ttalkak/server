@@ -96,11 +96,13 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
 
     private List<EnvEvent> createEnvs(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity deployment, DeploymentEntity savedDeployment) {
         List<EnvEvent> envs = new ArrayList<>();
-        for(EnvCreateRequest envCreateRequest : deploymentCreateRequest.getEnvs()){
-            EnvEntity env = EnvEntity.create(envCreateRequest.getKey(), envCreateRequest.getValue(), deployment);
-            EnvEntity savedEnv = envOutputPort.save(env);
-            savedDeployment.createEnv(savedEnv);
-            envs.add(new EnvEvent(envCreateRequest.getKey(), envCreateRequest.getValue()));
+        if(deploymentCreateRequest.getEnvs().size() > 0) {
+            for (EnvCreateRequest envCreateRequest : deploymentCreateRequest.getEnvs()) {
+                EnvEntity env = EnvEntity.create(envCreateRequest.getKey(), envCreateRequest.getValue(), deployment);
+                EnvEntity savedEnv = envOutputPort.save(env);
+                savedDeployment.createEnv(savedEnv);
+                envs.add(new EnvEvent(envCreateRequest.getKey(), envCreateRequest.getValue()));
+            }
         }
         return envs;
     }

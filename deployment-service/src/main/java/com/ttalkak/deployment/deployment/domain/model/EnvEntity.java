@@ -2,10 +2,12 @@ package com.ttalkak.deployment.deployment.domain.model;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class EnvEntity {
 
     @Id

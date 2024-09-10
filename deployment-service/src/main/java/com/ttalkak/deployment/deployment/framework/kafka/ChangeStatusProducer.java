@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 @RequiredArgsConstructor
 public class ChangeStatusProducer {
-    @Value("${producers.topics.update-deployment-status.name}")
+    @Value("${producers.topics.command-deployment-status.name}")
     private String TOPIC_CREATE_INSTANCE;
 
     private final KafkaTemplate<String, UpdateDeploymentStatusEvent> kafkaTemplate;
