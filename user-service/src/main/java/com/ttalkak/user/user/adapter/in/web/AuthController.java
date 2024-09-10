@@ -56,15 +56,15 @@ public class AuthController {
     @PostMapping("/sign-in")
     public ApiResponse<JwtToken> loadUser(
             @RequestBody @Validated SignInRequest request,
-            Errors errors
+            Errors errors,
+            HttpServletResponse response
         ) {
         if (errors.hasErrors()) {
             throw new CustomValidationException("입력값이 올바르지 않습니다.", errors);
         }
-
-        return ApiResponse.success(
-                authenticationUseCase.signIn(request.getUsername(), request.getPassword())
-        );
+        JwtToken token = authenticationUseCase.signIn(request.getUsername(), request.getPassword());
+        CookieUtils.addCookie(response, REFRESH_TOKEN_COOKIE, token.getRefreshToken(), refreshExpire, true);
+        return ApiResponse.success(token);
     }
 
     @PostMapping("/refresh")
@@ -77,7 +77,6 @@ public class AuthController {
         );
 
         JwtToken refresh = refreshTokenUseCase.refresh(cookie.getValue());
-
         
         CookieUtils.removeCookie(response, REFRESH_TOKEN_COOKIE);
         CookieUtils.addCookie(response, REFRESH_TOKEN_COOKIE, refresh.getRefreshToken(), refreshExpire, true);
