@@ -3,13 +3,17 @@ package com.ttalkak.deployment.deployment.application.inputport;
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.ProjectOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUsecase;
+import com.ttalkak.deployment.deployment.domain.event.EnvEvent;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
+import com.ttalkak.deployment.deployment.domain.model.EnvEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
+import com.ttalkak.deployment.deployment.framework.web.request.EnvCreateRequest;
+import com.ttalkak.deployment.deployment.framework.web.request.EnvUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
 import com.ttalkak.deployment.global.error.ErrorCode;
 import com.ttalkak.deployment.global.exception.EntityNotFoundException;
@@ -17,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +33,8 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
     private final DeploymentOutputPort deploymentOutputPort;
 
     private final ProjectOutputPort projectOutputPort;
+
+    private final EnvOutputPort envOutputPort;
 
     @Override
     public DeploymentResponse updateDeployment(DeploymentUpdateRequest deploymentUpdateRequest) {
@@ -79,11 +86,21 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
                     }));
         });
 
+//        Env 데이터 수정 (수정작업을 나중에 하기로해서 보류상태 - 24.09.10 - 15:47)
+//        List<EnvEvent> envs = new ArrayList<>();
+//        deploymentEntity.clearEnvs();
+//        for(EnvUpdateRequest envUpdateRequest : deploymentUpdateRequest.getEnvs()){
+//            EnvEntity env = EnvEntity.create(envUpdateRequest.getKey(), envUpdateRequest.getValue(), deploymentEntity);
+//            EnvEntity savedEnv = envOutputPort.save(env);
+//            deploymentEntity.createEnv(savedEnv);
+//            envs.add(new EnvEvent(envUpdateRequest.getKey(), envUpdateRequest.getValue()));
+//        }
+
         // 배포 객체 수정
         DeploymentEditor.DeploymentEditorBuilder deploymentEditorBuilder = deploymentEntity.toEditor();
 
         DeploymentEditor deploymentEditor = deploymentEditorBuilder.githubInfo(newGithubInfo)
-                .env(deploymentUpdateRequest.getEnv())
+                .envs(deploymentEntity.getEnvs())
                 .build();
 
         deploymentEntity.edit(deploymentEditor);

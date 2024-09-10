@@ -10,6 +10,7 @@ import com.ttalkak.deployment.deployment.domain.event.HostingEvent;
 import com.ttalkak.deployment.deployment.domain.event.*;
 import com.ttalkak.deployment.deployment.domain.model.DatabaseEntity;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
+import com.ttalkak.deployment.deployment.domain.model.EnvEntity;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
@@ -18,6 +19,7 @@ import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainReque
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
+import com.ttalkak.deployment.deployment.framework.web.request.EnvCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
 
     private final DatabaseOutputPort databaseOutputPort;
 
+    private final EnvOutputPort envOutputPort;
+
     private final ProjectOutputPort projectOutputPort;
 
     private final DomainOutputPort domainOutputPort;
@@ -52,6 +56,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         DeploymentEntity deployment = createDeployment(deploymentCreateRequest, githubInfo);
         // 배포 객체 저장
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deployment);
+
 
         // 프로젝트 서비스로부터 도메인 이름 받아오기
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
@@ -73,11 +78,13 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         // 백엔드 서버면? =>  데이터베이스가 존재한다.
         List<DatabaseEvent> databaseEvents = createDatabaseEvents(deploymentCreateRequest, savedDeployment);
 
+        // 환경변수 생성
+        List<EnvEvent> envs = createEnvs(deploymentCreateRequest, deployment, savedDeployment);
         // Kafka Event 객체 생성
         HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), savedHostingEntity.getId(), null, savedHostingEntity.getHostingPort(), null,projectInfo.getDomainName(), hosting.getDetailSubDomainKey());
         DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getEnv(), savedDeployment.getServiceType().toString());
         GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory(), "main");
-        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, databaseEvents);
+        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envs, databaseEvents);
         try {
             eventOutputPort.occurCreateInstance(createInstanceEvent);
         } catch (JsonProcessingException e) {
@@ -85,6 +92,17 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         }
 
         return DeploymentResponse.mapToDTO(savedDeployment);
+    }
+
+    private List<EnvEvent> createEnvs(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity deployment, DeploymentEntity savedDeployment) {
+        List<EnvEvent> envs = new ArrayList<>();
+        for(EnvCreateRequest envCreateRequest : deploymentCreateRequest.getEnvs()){
+            EnvEntity env = EnvEntity.create(envCreateRequest.getKey(), envCreateRequest.getValue(), deployment);
+            EnvEntity savedEnv = envOutputPort.save(env);
+            savedDeployment.createEnv(savedEnv);
+            envs.add(new EnvEvent(envCreateRequest.getKey(), envCreateRequest.getValue()));
+        }
+        return envs;
     }
 
     private List<DatabaseEvent> createDatabaseEvents(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity savedDeployment) {
@@ -137,7 +155,6 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
                 deploymentCreateRequest.getProjectId(),
                 ServiceType.valueOf(deploymentCreateRequest.getServiceType()),
                 githubInfo,
-                deploymentCreateRequest.getEnv(),
                 deploymentCreateRequest.getFramework()
         );
         return deployment;

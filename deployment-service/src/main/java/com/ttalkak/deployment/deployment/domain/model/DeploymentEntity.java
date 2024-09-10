@@ -44,29 +44,28 @@ public class DeploymentEntity extends BaseEntity {
     @Embedded
     private GithubInfo githubInfo;
 
-    private String env;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deploymentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EnvEntity> envs = new ArrayList<>();
 
     private String framework;
 
     @Builder
-    private DeploymentEntity(Long id, Long projectId, DeploymentStatus status, ServiceType serviceType, GithubInfo githubInfo, String env, String framework) {
+    private DeploymentEntity(Long id, Long projectId, DeploymentStatus status, ServiceType serviceType, GithubInfo githubInfo, String framework) {
         this.id = id;
         this.projectId = projectId;
         this.status = status;
         this.serviceType = serviceType;
         this.githubInfo = githubInfo;
-        this.env = env;
         this.framework = framework;
     }
 
     // 배포 생성
-    public static DeploymentEntity createDeployment(Long projectId, ServiceType ServiceType, GithubInfo githubInfo, String env, String framework){
+    public static DeploymentEntity createDeployment(Long projectId, ServiceType ServiceType, GithubInfo githubInfo, String framework){
         return DeploymentEntity.builder()
                 .projectId(projectId)
                 .serviceType(ServiceType)
                 .status(DeploymentStatus.PENDING)
                 .githubInfo(githubInfo)
-                .env(env)
                 .framework(framework)
                 .build();
     }
@@ -94,13 +93,21 @@ public class DeploymentEntity extends BaseEntity {
     public DeploymentEditor.DeploymentEditorBuilder toEditor() {
         return DeploymentEditor.builder()
                 .githubInfo(this.githubInfo)
-                .env(this.env);
+                .envs(this.envs);
     }
 
     public void edit(DeploymentEditor deploymentEditor) {
         this.githubInfo = deploymentEditor.getGithubInfo();
-        this.env = deploymentEditor.getEnv();
+        this.envs = deploymentEditor.getEnvs();
 
 
+    }
+
+    public void createEnv(EnvEntity env) {
+        this.envs.add(env);
+    }
+
+    public void clearEnvs() {
+        this.envs = new ArrayList<>();
     }
 }

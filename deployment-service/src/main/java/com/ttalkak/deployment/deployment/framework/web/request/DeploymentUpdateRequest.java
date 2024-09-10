@@ -21,17 +21,17 @@ public class DeploymentUpdateRequest {
 
     private List<DatabaseUpdateRequest> databaseUpdateRequests;
 
-    private String env;
+    private List<EnvUpdateRequest> envs;
 
     @Builder
     private DeploymentUpdateRequest(Long deploymentId, GithubRepositoryRequest githubRepositoryRequest,
-                                    List<DatabaseUpdateRequest> databaseUpdateRequests, int hostingPort, String env) {
+                                    List<DatabaseUpdateRequest> databaseUpdateRequests, int hostingPort, List<EnvUpdateRequest> envs) {
         this.deploymentId = deploymentId;
         this.deploymentId = 0L;
         this.githubRepositoryRequest = githubRepositoryRequest;
         this.databaseUpdateRequests = databaseUpdateRequests;
         this.hostingPort = hostingPort;
-        this.env = env;
+        this.envs = envs;
     }
 
 }
