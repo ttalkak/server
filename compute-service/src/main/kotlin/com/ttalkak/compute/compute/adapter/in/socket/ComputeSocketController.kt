@@ -3,9 +3,7 @@ package com.ttalkak.compute.compute.adapter.`in`.socket
 import com.ttalkak.compute.common.SocketAdapter
 import com.ttalkak.compute.compute.adapter.`in`.socket.request.ComputeRunningRequest
 import com.ttalkak.compute.compute.adapter.`in`.socket.request.ComputeStatusRequest
-import com.ttalkak.compute.compute.application.port.`in`.ConnectCommand
-import com.ttalkak.compute.compute.application.port.`in`.DeploymentCommand
-import com.ttalkak.compute.compute.application.port.`in`.RunningCommand
+import com.ttalkak.compute.compute.application.port.`in`.*
 import com.ttalkak.compute.compute.application.service.ComputeService
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
@@ -15,7 +13,9 @@ import org.springframework.stereotype.Controller
 @SocketAdapter
 @Controller
 class ComputeSocketController(
-    private val computeService: ComputeService
+    private val computeUseCase: ComputeUseCase,
+    private val computeStatusUseCase: ComputeStatusUseCase,
+    private val createRunningUseCase: CreateRunningUseCase,
 ) {
     @MessageMapping("/compute/connect")
     fun compute(@Payload request: ComputeStatusRequest) {
@@ -27,7 +27,7 @@ class ComputeSocketController(
             usedCPU = request.usedCPU,
         )
 
-        computeService.connect(command)
+        computeUseCase.connect(command)
     }
 
     /**
@@ -57,7 +57,7 @@ class ComputeSocketController(
             )
         }
 
-        computeService.update(command, deploymentCommands)
+        computeStatusUseCase.update(command, deploymentCommands)
     }
 
     /**
