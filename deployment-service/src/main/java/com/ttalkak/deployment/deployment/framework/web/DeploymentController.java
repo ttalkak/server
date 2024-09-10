@@ -4,6 +4,7 @@ import com.ttalkak.deployment.common.ApiResponse;
 import com.ttalkak.deployment.deployment.application.usecase.*;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentDeleteRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
+import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateStatusRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ public class DeploymentController {
 
     private final UpdateDeploymentUsecase updateDeploymentUsecase;
 
+    private final UpdateDeploymentStatusUsecase updateDeploymentStatusUsecase;
+
     private final DeleteDeploymentUsecase deleteDeploymentUsecase;
 
     private final InquiryUsecase inquiryUsecase;
@@ -31,6 +34,14 @@ public class DeploymentController {
     public ApiResponse<DeploymentResponse> createDeployment(@RequestBody DeploymentCreateRequest deploymentCreateRequest){
         DeploymentResponse deployment = createDeploymentUsecase.createDeployment(deploymentCreateRequest);
         return new ApiResponse(true, null, 201, deployment);
+    }
+
+    // 배포 상태 변경
+    @PostMapping("/deployment")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<Void> updateDeploymentStatus(@RequestBody DeploymentUpdateStatusRequest deploymentUpdateStatusRequest){
+        updateDeploymentStatusUsecase.updateDeploymentStatus(deploymentUpdateStatusRequest);
+        return ApiResponse.success();
     }
 
     // 배포 상세조회
@@ -66,4 +77,6 @@ public class DeploymentController {
         deleteDeploymentUsecase.deleteDeployment(deploymentId);
         return ApiResponse.success(null);
     }
+
+
 }
