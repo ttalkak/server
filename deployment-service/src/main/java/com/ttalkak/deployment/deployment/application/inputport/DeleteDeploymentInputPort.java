@@ -21,8 +21,8 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
     private final DeploymentOutputPort deploymentOutputPort;
 
     @Override
-    public void deleteDeployment(DeploymentDeleteRequest deploymentDeleteRequest) {
-        DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentDeleteRequest.getDeploymentId())
+    public void deleteDeployment(Long deploymentId) {
+        DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
         deploymentEntity.deleteDeployment();
         deploymentOutputPort.save(deploymentEntity);

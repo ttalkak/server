@@ -61,9 +61,9 @@ public class DeploymentController {
     }
 
     // 배포 삭제
-    @DeleteMapping("/deployment")
-    public ApiResponse deleteDeployment(@RequestBody DeploymentDeleteRequest deploymentDeleteRequest){
-        deleteDeploymentUsecase.deleteDeployment(deploymentDeleteRequest);
+    @DeleteMapping("/deployment/{deploymentId}")
+    public ApiResponse deleteDeployment(@PathVariable("deploymentId") Long deploymentId){
+        deleteDeploymentUsecase.deleteDeployment(deploymentId);
         return ApiResponse.success(null);
     }
 
