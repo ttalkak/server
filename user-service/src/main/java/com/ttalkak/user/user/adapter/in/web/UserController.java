@@ -19,6 +19,7 @@ public class UserController {
     @GetMapping("/me")
     public ApiResponse<LoginUser> findUser(@RequestHeader("X-USER-ID") Long userId) {
         log.debug("User {} requested user information", userId);
+        
         return ApiResponse.success(findUserUseCase.findUser(userId));
     }
 }
