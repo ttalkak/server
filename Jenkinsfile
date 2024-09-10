@@ -32,6 +32,7 @@ pipeline {
 
                             // 해당 컨테이너만 재시작
                             sh """
+                            docker-compose -f docker-compose-prod.yml build --no-cache eureka-server
                             docker-compose -f docker-compose-prod.yml up -d --no-deps --build eureka-server
                             """
                         }
@@ -53,7 +54,8 @@ pipeline {
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build config-server'
+                            docker-compose -f docker-compose-prod.yml build --no-cache config-server
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build config-server
                             """
                         }
                     }
@@ -74,7 +76,8 @@ pipeline {
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build config-server'
+                            docker-compose -f docker-compose-prod.yml build --no-cache gateway-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build gateway-service
                             """
                         }
                     }
@@ -95,7 +98,8 @@ pipeline {
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build user-service'
+                            docker-compose -f docker-compose-prod.yml build --no-cache user-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build user-service
                             """
                         }
                     }
@@ -116,7 +120,8 @@ pipeline {
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build compute-service'
+                            docker-compose -f docker-compose-prod.yml build --no-cache compute-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build compute-service
                             """
                         }
                     }
@@ -138,7 +143,8 @@ pipeline {
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build deployment-service'
+                            docker-compose -f docker-compose-prod.yml build --no-cache deployment-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build deployment-service
                             """
                         }
                     }
@@ -161,7 +167,8 @@ pipeline {
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build project-service'
+                            docker-compose -f docker-compose-prod.yml build --no-cache project-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build project-service
                             """
                         }
                     }

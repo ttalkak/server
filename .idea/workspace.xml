@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +214,7 @@
       <workItem from="1725804362113" duration="2576000" />
       <workItem from="1725860080969" duration="4118000" />
       <workItem from="1725878610693" duration="902000" />
-      <workItem from="1725928750145" duration="4718000" />
+      <workItem from="1725928750145" duration="5414000" />
     </task>
     <task id="LOCAL-00001" summary="도커 컴포즈 수정">
       <option name="closed" value="true" />
