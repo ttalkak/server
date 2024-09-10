@@ -79,7 +79,7 @@ pipeline {
                             sh """
                             docker build -t gateway-service -f gateway-service/Dockerfile.prod ./gateway-service
                             docker rm gateway-service || true
-                            docker restart -d --name gateway-service --network spring-network --cpus="0.5" --memory="512m" gateway-service
+                            docker run -d --name gateway-service --network spring-network --cpus="0.5" --memory="512m" gateway-service
                             """
                         }
                     }
@@ -103,7 +103,7 @@ pipeline {
                             sh """
                             docker build -t user-service -f user-service/Dockerfile.prod ./user-service
                             docker rm user-service || true
-                            docker restart -d --name user-service --network spring-network --cpus="0.5" --memory="512m" user-service
+                            docker run -d --name user-service --network spring-network --cpus="0.5" --memory="512m" user-service
                             """
                         }
                     }
@@ -127,7 +127,7 @@ pipeline {
                             sh """
                                 docker build -t compute-service -f compute-service/Dockerfile.prod ./compute-service
                                 docker rm compute-service || true
-                                docker restart -d --name compute-service --network spring-network --cpus="0.5" --memory="512m" compute-service
+                                docker run -d --name compute-service --network spring-network --cpus="0.5" --memory="512m" compute-service
                             """
                         }
                     }
@@ -152,7 +152,7 @@ pipeline {
                             sh """
                                 docker build -t deployment-service -f deployment-service/Dockerfile.prod ./deployment-service
                                 docker rm deployment-service || true
-                                docker restart -d --name deployment-service --network spring-network --cpus="0.5" --memory="512m" deployment-service
+                                docker run -d --name deployment-service --network spring-network --cpus="0.5" --memory="512m" deployment-service
                             """
                         }
                     }
@@ -178,7 +178,7 @@ pipeline {
                             sh """
                                 docker build -t project-service -f project-service/Dockerfile.prod ./project-service
                                 docker rm project-service || true
-                                docker restart -d --name project-service --network spring-network --cpus="0.5" --memory="512m" project-service
+                                docker run -d --name project-service --network spring-network --cpus="0.5" --memory="512m" project-service
                             """
                         }
                     }
