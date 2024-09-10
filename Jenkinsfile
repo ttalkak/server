@@ -68,14 +68,19 @@ pipeline {
                     steps {
                         script {
 
-                            // 기존 gateway-service 컨테이너 중지 및 삭제
+                            // 기존 user-service 컨테이너 중지 및 삭제
                             sh """
-                            docker-compose -f docker-compose-prod.yml stop gateway-service || true
-                            docker-compose -f docker-compose-prod.yml rm -f gateway-service || true
+                            docker stop gateway-service || true
+                            docker rm gateway-service || true
+                            docker rmi gateway-service || true
                             """
 
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build gateway-service'
+                            sh """
+                            docker build -t gateway-service -f gateway-service/Dockerfile.prod ./gateway-service
+                            docker rm gateway-service || true
+                            docker restart -d --name gateway-service --network spring-network --cpus="0.5" --memory="512m" gateway-service
+                            """
                         }
                     }
                 }
@@ -89,18 +94,16 @@ pipeline {
 
                             // 기존 user-service 컨테이너 중지 및 삭제
                             sh """
-                            pwd
-                            cd ${env.WORKSPACE}
-
-                            sudo docker-compose -f docker-compose-prod.yml stop user-service || true
-                            sudo docker-compose -f docker-compose-prod.yml rm -f user-service || true
+                            docker stop user-service || true
+                            docker rm user-service || true
+                            docker rmi user-service || true
                             """
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            cd ${env.WORKSPACE}
-
-                            sudo docker-compose -f docker-compose-prod.yml up -d --no-deps --build user-service
+                            docker build -t user-service -f user-service/Dockerfile.prod ./user-service
+                            docker rm user-service || true
+                            docker restart -d --name user-service --network spring-network --cpus="0.5" --memory="512m" user-service
                             """
                         }
                     }
@@ -115,12 +118,17 @@ pipeline {
 
                             // 기존 compute-service 컨테이너 중지 및 삭제
                             sh """
-                            docker-compose -f docker-compose-prod.yml stop compute-service || true
-                            docker-compose -f docker-compose-prod.yml rm -f compute-service || true
+                                docker stop compute-service || true
+                                docker rm compute-service || true
+                                docker rmi compute-service || true
                             """
 
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build compute-service'
+                            sh """
+                                docker build -t compute-service -f compute-service/Dockerfile.prod ./compute-service
+                                docker rm compute-service || true
+                                docker restart -d --name compute-service --network spring-network --cpus="0.5" --memory="512m" compute-service
+                            """
                         }
                     }
                 }
@@ -133,14 +141,19 @@ pipeline {
                     steps {
                         script {
 
-                            // 기존 deployment-service 컨테이너 중지 및 삭제
+                            // 기존 compute-service 컨테이너 중지 및 삭제
                             sh """
-                            docker-compose -f docker-compose-prod.yml stop deployment-service || true
-                            docker-compose -f docker-compose-prod.yml rm -f deployment-service || true
+                                docker stop deployment-service || true
+                                docker rm deployment-service || true
+                                docker rmi deployment-service || true
                             """
 
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build deployment-service'
+                            sh """
+                                docker build -t deployment-service -f deployment-service/Dockerfile.prod ./deployment-service
+                                docker rm deployment-service || true
+                                docker restart -d --name deployment-service --network spring-network --cpus="0.5" --memory="512m" deployment-service
+                            """
                         }
                     }
                 }
@@ -156,12 +169,17 @@ pipeline {
 
                             // 기존 project-service 컨테이너 중지 및 삭제
                             sh """
-                            docker-compose -f docker-compose-prod.yml stop project-service || true
-                            docker-compose -f docker-compose-prod.yml rm -f project-service || true
+                                docker stop project-service || true
+                                docker rm project-service || true
+                                docker rmi project-service || true
                             """
 
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build project-service'
+                            sh """
+                                docker build -t project-service -f project-service/Dockerfile.prod ./project-service
+                                docker rm project-service || true
+                                docker restart -d --name project-service --network spring-network --cpus="0.5" --memory="512m" project-service
+                            """
                         }
                     }
                 }
