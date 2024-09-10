@@ -3,8 +3,6 @@ package com.ttalkak.project.project.application.outputport;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface LoadProjectOutputPort {
 

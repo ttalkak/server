@@ -46,24 +46,28 @@ public class DeploymentEntity extends BaseEntity {
 
     private String env;
 
+    private String framework;
+
     @Builder
-    private DeploymentEntity(Long id, Long projectId, DeploymentStatus status, ServiceType serviceType, GithubInfo githubInfo, String env) {
+    private DeploymentEntity(Long id, Long projectId, DeploymentStatus status, ServiceType serviceType, GithubInfo githubInfo, String env, String framework) {
         this.id = id;
         this.projectId = projectId;
         this.status = status;
         this.serviceType = serviceType;
         this.githubInfo = githubInfo;
         this.env = env;
+        this.framework = framework;
     }
 
     // 배포 생성
-    public static DeploymentEntity createDeployment(Long projectId, ServiceType ServiceType, GithubInfo githubInfo, String env){
+    public static DeploymentEntity createDeployment(Long projectId, ServiceType ServiceType, GithubInfo githubInfo, String env, String framework){
         return DeploymentEntity.builder()
                 .projectId(projectId)
                 .serviceType(ServiceType)
                 .status(DeploymentStatus.PENDING)
                 .githubInfo(githubInfo)
                 .env(env)
+                .framework(framework)
                 .build();
     }
 

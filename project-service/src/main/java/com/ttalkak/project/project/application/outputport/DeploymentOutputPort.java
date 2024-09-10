@@ -2,7 +2,6 @@ package com.ttalkak.project.project.application.outputport;
 
 
 import com.ttalkak.project.project.framework.deploymentadapter.dto.DeploymentResponse;
-
 import java.util.List;
 
 public interface DeploymentOutputPort {

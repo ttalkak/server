@@ -2,7 +2,6 @@ package com.ttalkak.deployment.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 import java.util.Map;
 
 @Data

@@ -18,7 +18,6 @@ public class BaseEntity {
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
-
     @LastModifiedBy
     private LocalDateTime updatedDate;
 }

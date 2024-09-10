@@ -46,56 +46,48 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
     @Override
     public DeploymentResponse createDeployment(DeploymentCreateRequest deploymentCreateRequest) {
         // 깃허브 관련 정보 객체 생성
-        GithubInfo githubInfo = GithubInfo.create(
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryName(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRootDirectory(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getBranch()
-        );
+        GithubInfo githubInfo = createGithubInfo(deploymentCreateRequest);
 
-       // 배포 객체 생성
-        DeploymentEntity deployment = DeploymentEntity.createDeployment(
-                deploymentCreateRequest.getProjectId(),
-                ServiceType.valueOf(deploymentCreateRequest.getServiceType()),
-                githubInfo,
-                deploymentCreateRequest.getEnv()
-        );
+        // 배포 객체 생성
+        DeploymentEntity deployment = createDeployment(deploymentCreateRequest, githubInfo);
         // 배포 객체 저장
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deployment);
 
-
-        // OpenFeign 을 이용하여 프로젝트서비스로부터 프로젝트정보(도메인 이름)받아오기
+        // 프로젝트 서비스로부터 도메인 이름 받아오기
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
         String domainName = projectInfo.getDomainName();
 
-
         // 호스팅 객체 생성
-        HostingEntity hosting = HostingEntity.createHosting(
-                savedDeployment,
-                deploymentCreateRequest.getHostingPort(),
-                deploymentCreateRequest.getServiceType(),
-                domainName
-        );
+        HostingEntity hosting = createHosting(deploymentCreateRequest, savedDeployment, domainName);
 
         // 호스팅 객체 저장
         HostingEntity savedHostingEntity = hostingOutputPort.save(hosting);
         deployment.addHostingEntity(savedHostingEntity);
 
-        // 서버로 요청해서 도메인 키 받아오기
-        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(
-                new DomainRequest(
-                        savedHostingEntity.getId().toString(),
-                        projectInfo.getDomainName() + " " + savedHostingEntity.getServiceType().toString(),
-                        savedHostingEntity.getDetailSubDomainName()
-                ));
-        String detailSubDomainKey = domainKeyResponse.getKey();
+        // 도메인 서비스로부터 도메인 키 생성
+        String detailSubDomainKey = makeSubDomainKey(savedHostingEntity, projectInfo);
 
+        // 도메인 키 저장
         savedHostingEntity.setDetailSubDomainKey(detailSubDomainKey);
 
         // 백엔드 서버면? =>  데이터베이스가 존재한다.
+        List<DatabaseEvent> databaseEvents = createDatabaseEvents(deploymentCreateRequest, savedDeployment);
+
+        // Kafka Event 객체 생성
+        HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), savedHostingEntity.getId(), null, savedHostingEntity.getHostingPort(), null,projectInfo.getDomainName(), hosting.getDetailSubDomainKey());
+        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getEnv(), savedDeployment.getServiceType().toString());
+        GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory(), "main");
+        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, databaseEvents);
+        try {
+            eventOutputPort.occurCreateInstance(createInstanceEvent);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
+        }
+
+        return DeploymentResponse.mapToDTO(savedDeployment);
+    }
+
+    private List<DatabaseEvent> createDatabaseEvents(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity savedDeployment) {
         List<DatabaseEvent> databaseEvents = new ArrayList<>();
         if(ServiceType.isBackendType(deploymentCreateRequest.getServiceType())){
             for(DatabaseCreateRequest databaseCreateRequest : deploymentCreateRequest.getDatabaseCreateRequests()) {
@@ -116,17 +108,51 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
                 ));
             }
         }
+        return databaseEvents;
+    }
 
-        HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), savedHostingEntity.getId(), null, savedHostingEntity.getHostingPort(), null,projectInfo.getDomainName(), hosting.getDetailSubDomainKey());
-        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getEnv(), savedDeployment.getServiceType().toString());
-        GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory(), "main");
-        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, databaseEvents);
-        try {
-            eventOutputPort.occurCreateInstance(createInstanceEvent);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
-        }
+    private String makeSubDomainKey(HostingEntity savedHostingEntity, ProjectInfoResponse projectInfo) {
+        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(
+                new DomainRequest(
+                        savedHostingEntity.getId().toString(),
+                        projectInfo.getDomainName() + " " + savedHostingEntity.getServiceType().toString(),
+                        savedHostingEntity.getDetailSubDomainName()
+                ));
+        String detailSubDomainKey = domainKeyResponse.getKey();
+        return detailSubDomainKey;
+    }
 
-        return DeploymentResponse.mapToDTO(savedDeployment);
+    private static HostingEntity createHosting(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity savedDeployment, String domainName) {
+        HostingEntity hosting = HostingEntity.createHosting(
+                savedDeployment,
+                deploymentCreateRequest.getHostingPort(),
+                deploymentCreateRequest.getServiceType(),
+                domainName
+        );
+        return hosting;
+    }
+
+    private static DeploymentEntity createDeployment(DeploymentCreateRequest deploymentCreateRequest, GithubInfo githubInfo) {
+        DeploymentEntity deployment = DeploymentEntity.createDeployment(
+                deploymentCreateRequest.getProjectId(),
+                ServiceType.valueOf(deploymentCreateRequest.getServiceType()),
+                githubInfo,
+                deploymentCreateRequest.getEnv(),
+                deploymentCreateRequest.getFramework()
+        );
+        return deployment;
+    }
+
+    private static GithubInfo createGithubInfo(DeploymentCreateRequest deploymentCreateRequest) {
+        GithubInfo githubInfo = GithubInfo.create(
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryName(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getRootDirectory(),
+                deploymentCreateRequest.getGithubRepositoryRequest().getBranch()
+        );
+        return githubInfo;
     }
 }

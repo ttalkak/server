@@ -26,16 +26,13 @@ pipeline {
 
                             // 기존 eureka-server 컨테이너 중지 및 삭제
                             sh """
-                            cd ${env.WORKSPACE}
-
                             docker-compose -f docker-compose-prod.yml stop eureka-server || true
                             docker-compose -f docker-compose-prod.yml rm -f eureka-server || true
                             """
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            cd ${env.WORKSPACE}
-                            
+                            docker-compose -f docker-compose-prod.yml build --no-cache eureka-server
                             docker-compose -f docker-compose-prod.yml up -d --no-deps --build eureka-server
                             """
                         }
@@ -56,7 +53,10 @@ pipeline {
                             """
 
                             // 해당 컨테이너만 재시작
-                            sh 'docker-compose -f docker-compose-prod.yml up -d --no-deps --build config-server'
+                            sh """
+                            docker-compose -f docker-compose-prod.yml build --no-cache config-server
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build config-server
+                            """
                         }
                     }
                 }
@@ -70,16 +70,14 @@ pipeline {
 
                             // 기존 user-service 컨테이너 중지 및 삭제
                             sh """
-                            docker stop gateway-service || true
-                            docker rm gateway-service || true
-                            docker rmi gateway-service || true
+                            docker-compose -f docker-compose-prod.yml stop gateway-service || true
+                            docker-compose -f docker-compose-prod.yml rm -f gateway-service || true
                             """
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            docker build -t gateway-service -f gateway-service/Dockerfile.prod ./gateway-service
-                            docker rm gateway-service || true
-                            docker run -d --name gateway-service --network spring-network --cpus="0.5" --memory="512m" gateway-service
+                            docker-compose -f docker-compose-prod.yml build --no-cache gateway-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build gateway-service
                             """
                         }
                     }
@@ -94,16 +92,14 @@ pipeline {
 
                             // 기존 user-service 컨테이너 중지 및 삭제
                             sh """
-                            docker stop user-service || true
-                            docker rm user-service || true
-                            docker rmi user-service || true
+                            docker-compose -f docker-compose-prod.yml stop user-service || true
+                            docker-compose -f docker-compose-prod.yml rm -f user-service || true
                             """
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            docker build -t user-service -f user-service/Dockerfile.prod ./user-service
-                            docker rm user-service || true
-                            docker run -d --name user-service --network spring-network --cpus="0.5" --memory="512m" user-service
+                            docker-compose -f docker-compose-prod.yml build --no-cache user-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build user-service
                             """
                         }
                     }
@@ -116,18 +112,16 @@ pipeline {
                     steps {
                         script {
 
-                            // 기존 compute-service 컨테이너 중지 및 삭제
+                            // 기존 user-service 컨테이너 중지 및 삭제
                             sh """
-                                docker stop compute-service || true
-                                docker rm compute-service || true
-                                docker rmi compute-service || true
+                            docker-compose -f docker-compose-prod.yml stop compute-service || true
+                            docker-compose -f docker-compose-prod.yml rm -f compute-service || true
                             """
 
                             // 해당 컨테이너만 재시작
                             sh """
-                                docker build -t compute-service -f compute-service/Dockerfile.prod ./compute-service
-                                docker rm compute-service || true
-                                docker run -d --name compute-service --network spring-network --cpus="0.5" --memory="512m" compute-service
+                            docker-compose -f docker-compose-prod.yml build --no-cache compute-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build compute-service
                             """
                         }
                     }
@@ -141,18 +135,16 @@ pipeline {
                     steps {
                         script {
 
-                            // 기존 compute-service 컨테이너 중지 및 삭제
+                            // 기존 user-service 컨테이너 중지 및 삭제
                             sh """
-                                docker stop deployment-service || true
-                                docker rm deployment-service || true
-                                docker rmi deployment-service || true
+                            docker-compose -f docker-compose-prod.yml stop deployment-service || true
+                            docker-compose -f docker-compose-prod.yml rm -f deployment-service || true
                             """
 
                             // 해당 컨테이너만 재시작
                             sh """
-                                docker build -t deployment-service -f deployment-service/Dockerfile.prod ./deployment-service
-                                docker rm deployment-service || true
-                                docker run -d --name deployment-service --network spring-network --cpus="0.5" --memory="512m" deployment-service
+                            docker-compose -f docker-compose-prod.yml build --no-cache deployment-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build deployment-service
                             """
                         }
                     }
@@ -167,18 +159,16 @@ pipeline {
                     steps {
                         script {
 
-                            // 기존 project-service 컨테이너 중지 및 삭제
+                            // 기존 user-service 컨테이너 중지 및 삭제
                             sh """
-                                docker stop project-service || true
-                                docker rm project-service || true
-                                docker rmi project-service || true
+                            docker-compose -f docker-compose-prod.yml stop project-service || true
+                            docker-compose -f docker-compose-prod.yml rm -f project-service || true
                             """
 
                             // 해당 컨테이너만 재시작
                             sh """
-                                docker build -t project-service -f project-service/Dockerfile.prod ./project-service
-                                docker rm project-service || true
-                                docker run -d --name project-service --network spring-network --cpus="0.5" --memory="512m" project-service
+                            docker-compose -f docker-compose-prod.yml build --no-cache project-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build project-service
                             """
                         }
                     }
