@@ -1,6 +1,5 @@
 package com.ttalkak.project.project.framework.web;
 
-import com.ttalkak.project.common.ApiResponse;
 import com.ttalkak.project.common.WebAdapter;
 import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;

@@ -7,7 +7,6 @@ import com.ttalkak.project.project.application.usercase.CreateProjectUseCase;
 import com.ttalkak.project.project.application.usercase.DeleteProjectUseCase;
 import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
 import com.ttalkak.project.project.application.usercase.UpdateProjectUseCase;
-import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
 import com.ttalkak.project.project.framework.web.request.ProjectCreateRequest;
 import com.ttalkak.project.project.framework.web.request.ProjectUpdateRequest;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

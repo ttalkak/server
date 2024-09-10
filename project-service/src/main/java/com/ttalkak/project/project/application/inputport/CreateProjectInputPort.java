@@ -6,13 +6,10 @@ import com.ttalkak.project.global.exception.BusinessException;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.outputport.SaveProjectOutputPort;
 import com.ttalkak.project.project.application.usercase.CreateProjectUseCase;
-import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.framework.web.request.ProjectCreateRequest;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -47,8 +44,6 @@ public class CreateProjectInputPort implements CreateProjectUseCase {
                 .build();
 
         ProjectEntity result = saveProjectOutputPort.save(projectEntity);
-
-
 
         return ProjectResponse.mapToResponse(result);
     }
