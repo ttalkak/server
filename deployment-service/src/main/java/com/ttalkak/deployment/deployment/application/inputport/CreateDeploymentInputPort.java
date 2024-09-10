@@ -82,7 +82,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         List<EnvEvent> envs = createEnvs(deploymentCreateRequest, deployment, savedDeployment);
         // Kafka Event 객체 생성
         HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), savedHostingEntity.getId(), null, savedHostingEntity.getHostingPort(), null,projectInfo.getDomainName(), hosting.getDetailSubDomainKey());
-        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), savedDeployment.getEnv(), savedDeployment.getServiceType().toString());
+        DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), envs, savedDeployment.getServiceType().toString());
         GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory(), "main");
         CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envs, databaseEvents);
         try {
