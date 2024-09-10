@@ -86,15 +86,15 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
                     }));
         });
 
-//        Env 데이터 수정 (수정작업을 나중에 하기로해서 보류상태 - 24.09.10 - 15:47)
-//        List<EnvEvent> envs = new ArrayList<>();
-//        deploymentEntity.clearEnvs();
-//        for(EnvUpdateRequest envUpdateRequest : deploymentUpdateRequest.getEnvs()){
-//            EnvEntity env = EnvEntity.create(envUpdateRequest.getKey(), envUpdateRequest.getValue(), deploymentEntity);
-//            EnvEntity savedEnv = envOutputPort.save(env);
-//            deploymentEntity.createEnv(savedEnv);
-//            envs.add(new EnvEvent(envUpdateRequest.getKey(), envUpdateRequest.getValue()));
-//        }
+//        Env 데이터 수정
+        List<EnvEvent> envs = new ArrayList<>();
+        deploymentEntity.getEnvs().clear();
+        for(EnvUpdateRequest envUpdateRequest : deploymentUpdateRequest.getEnvs()){
+            EnvEntity env = EnvEntity.create(envUpdateRequest.getKey(), envUpdateRequest.getValue(), deploymentEntity);
+            EnvEntity savedEnv = envOutputPort.save(env);
+            deploymentEntity.createEnv(savedEnv);
+            envs.add(new EnvEvent(envUpdateRequest.getKey(), envUpdateRequest.getValue()));
+        }
 
         // 배포 객체 수정
         DeploymentEditor.DeploymentEditorBuilder deploymentEditorBuilder = deploymentEntity.toEditor();
