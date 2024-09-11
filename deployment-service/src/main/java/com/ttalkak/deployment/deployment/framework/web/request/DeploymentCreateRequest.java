@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -21,9 +23,9 @@ public class DeploymentCreateRequest {
 
     private GithubRepositoryRequest githubRepositoryRequest;
 
-    private List<DatabaseCreateRequest> databaseCreateRequests;
+    private List<DatabaseCreateRequest> databaseCreateRequests = new ArrayList<>();
 
-    private List<EnvCreateRequest> envs;
+    private List<EnvCreateRequest> envs = new ArrayList<>();
 
     private String framework;
 
