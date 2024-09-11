@@ -44,7 +44,7 @@ class DeploymentControllerTest extends RestDocsSupport {
         return new DeploymentController(createDeploymentUsecase, updateDeploymentUsecase, commandDeploymentStatusUsecase, deleteDeploymentUsecase, inquiryUsecase);
     }
 
-    @DisplayName("배포 실행")
+    @DisplayName("배포 생성")
     @Test
     void createDeployment() throws Exception {
         //given
@@ -231,7 +231,20 @@ class DeploymentControllerTest extends RestDocsSupport {
                                 fieldWithPath("data.hostingResponses[].serviceType").type(JsonFieldType.STRING)
                                         .description("호스팅 서비스 타입"),
                                 fieldWithPath("data.hostingResponses[].detailDomainName").type(JsonFieldType.STRING)
-                                        .description("호스팅 서브 도메인 이름")
+                                        .description("호스팅 서브 도메인 이름"),
+                                // 추가된 부분
+                                fieldWithPath("data.databaseResponses").type(JsonFieldType.ARRAY).optional()
+                                        .description("데이터베이스 응답 목록"),
+                                fieldWithPath("data.databaseResponses[].databaseId").type(JsonFieldType.NUMBER).optional()
+                                        .description("데이터베이스 ID"),
+                                fieldWithPath("data.databaseResponses[].databaseType").type(JsonFieldType.STRING).optional()
+                                        .description("데이터베이스 타입"),
+                                fieldWithPath("data.databaseResponses[].username").type(JsonFieldType.STRING).optional()
+                                        .description("데이터베이스 사용자 이름"),
+                                fieldWithPath("data.databaseResponses[].password").type(JsonFieldType.STRING).optional()
+                                        .description("데이터베이스 비밀번호"),
+                                fieldWithPath("data.databaseResponses[].prot").type(JsonFieldType.NUMBER).optional()
+                                        .description("데이터베이스 포트번호")
                         )
                 ));
 
@@ -286,14 +299,15 @@ class DeploymentControllerTest extends RestDocsSupport {
                         responseFields(
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)
                                         .description("요청 성공 여부"),
-                                fieldWithPath("message").type(JsonFieldType.STRING).optional()
-                                        .description("응답 메시지"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .optional()
+                                        .description("응답 메시지 (예: 'OK')"),
                                 fieldWithPath("status").type(JsonFieldType.NUMBER)
-                                        .description("응답 코드"),
+                                        .description("응답 코드 (예: 201)"),
                                 fieldWithPath("data.deploymentId").type(JsonFieldType.NUMBER)
-                                        .description("배포 ID"),
+                                        .description("생성된 배포의 ID"),
                                 fieldWithPath("data.projectId").type(JsonFieldType.NUMBER)
-                                        .description("프로젝트 ID"),
+                                        .description("프로젝트의 ID"),
                                 fieldWithPath("data.status").type(JsonFieldType.STRING)
                                         .description("배포 상태 (예: READY, RUNNING, ERROR)"),
                                 fieldWithPath("data.serviceType").type(JsonFieldType.STRING)
@@ -312,24 +326,37 @@ class DeploymentControllerTest extends RestDocsSupport {
                                         .description("깃허브 브랜치"),
                                 fieldWithPath("data.framework").type(JsonFieldType.STRING)
                                         .description("사용된 프레임워크"),
-                                fieldWithPath("data.envs").type(JsonFieldType.ARRAY).optional()
+                                fieldWithPath("data.envs").type(JsonFieldType.ARRAY)
                                         .description("환경 변수 목록"),
-                                fieldWithPath("data.envs[].envId").type(JsonFieldType.NUMBER).optional()
+                                fieldWithPath("data.envs[].envId").type(JsonFieldType.NUMBER)
                                         .description("환경 변수 ID"),
-                                fieldWithPath("data.envs[].key").type(JsonFieldType.STRING).optional()
+                                fieldWithPath("data.envs[].key").type(JsonFieldType.STRING)
                                         .description("환경 변수 키"),
-                                fieldWithPath("data.envs[].value").type(JsonFieldType.STRING).optional()
+                                fieldWithPath("data.envs[].value").type(JsonFieldType.STRING)
                                         .description("환경 변수 값"),
-                                fieldWithPath("data.hostingResponses").type(JsonFieldType.ARRAY).optional()
+                                fieldWithPath("data.hostingResponses").type(JsonFieldType.ARRAY)
                                         .description("호스팅 응답 목록"),
-                                fieldWithPath("data.hostingResponses[].hostingId").type(JsonFieldType.NUMBER).optional()
+                                fieldWithPath("data.hostingResponses[].hostingId").type(JsonFieldType.NUMBER)
                                         .description("호스팅 ID"),
-                                fieldWithPath("data.hostingResponses[].hostingPort").type(JsonFieldType.NUMBER).optional()
+                                fieldWithPath("data.hostingResponses[].hostingPort").type(JsonFieldType.NUMBER)
                                         .description("호스팅 포트"),
-                                fieldWithPath("data.hostingResponses[].serviceType").type(JsonFieldType.STRING).optional()
+                                fieldWithPath("data.hostingResponses[].serviceType").type(JsonFieldType.STRING)
                                         .description("호스팅 서비스 타입"),
-                                fieldWithPath("data.hostingResponses[].detailDomainName").type(JsonFieldType.STRING).optional()
-                                        .description("호스팅 서브 도메인 이름")
+                                fieldWithPath("data.hostingResponses[].detailDomainName").type(JsonFieldType.STRING)
+                                        .description("호스팅 서브 도메인 이름"),
+                                // 추가된 부분
+                                fieldWithPath("data.databaseResponses").type(JsonFieldType.ARRAY).optional()
+                                        .description("데이터베이스 응답 목록"),
+                                fieldWithPath("data.databaseResponses[].databaseId").type(JsonFieldType.NUMBER).optional()
+                                        .description("데이터베이스 ID"),
+                                fieldWithPath("data.databaseResponses[].databaseType").type(JsonFieldType.STRING).optional()
+                                        .description("데이터베이스 타입"),
+                                fieldWithPath("data.databaseResponses[].username").type(JsonFieldType.STRING).optional()
+                                        .description("데이터베이스 사용자 이름"),
+                                fieldWithPath("data.databaseResponses[].password").type(JsonFieldType.STRING).optional()
+                                        .description("데이터베이스 비밀번호"),
+                                fieldWithPath("data.databaseResponses[].prot").type(JsonFieldType.NUMBER).optional()
+                                        .description("데이터베이스 포트번호")
                         )
                 ));
     }
@@ -378,8 +405,7 @@ class DeploymentControllerTest extends RestDocsSupport {
                                 parameterWithName("githubRepoName").description("검색할 깃허브 저장소 이름"),
                                 parameterWithName("page").optional().description("페이지 번호 (기본값: 0)"),
                                 parameterWithName("size").optional().description("페이지 크기 (기본값: 10)")
-                        ),
-                        responseFields(
+                        ),responseFields(
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)
                                         .description("요청 성공 여부"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).optional()
@@ -427,7 +453,19 @@ class DeploymentControllerTest extends RestDocsSupport {
                                 fieldWithPath("data[].hostingResponses[].serviceType").type(JsonFieldType.STRING).optional()
                                         .description("호스팅 서비스 타입"),
                                 fieldWithPath("data[].hostingResponses[].detailDomainName").type(JsonFieldType.STRING).optional()
-                                        .description("호스팅 서브 도메인 이름")
+                                        .description("호스팅 서브 도메인 이름"),
+                                fieldWithPath("data[].databaseResponses").type(JsonFieldType.ARRAY).optional()
+                                        .description("데이터베이스 응답 목록"),
+                                fieldWithPath("data[].databaseResponses[].databaseId").type(JsonFieldType.NUMBER).optional()
+                                        .description("데이터베이스 ID"),
+                                fieldWithPath("data[].databaseResponses[].databaseType").type(JsonFieldType.STRING).optional()
+                                        .description("데이터베이스 타입"),
+                                fieldWithPath("data[].databaseResponses[].username").type(JsonFieldType.STRING).optional()
+                                        .description("데이터베이스 사용자 이름"),
+                                fieldWithPath("data[].databaseResponses[].password").type(JsonFieldType.STRING).optional()
+                                        .description("데이터베이스 비밀번호"),
+                                fieldWithPath("data[].databaseResponses[].prot").type(JsonFieldType.NUMBER).optional()
+                                        .description("데이터베이스 포트번호")
                         )
                 ));
     }
@@ -442,15 +480,14 @@ class DeploymentControllerTest extends RestDocsSupport {
         //when
         ResultActions perform = mockMvc.perform(
                         delete("/v1/deployment/{deploymentId}", deploymentId)
+                                .header("X-USER-ID", 1L)  // 헤더 추가
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("deployment-delete",
-                        //JSON 이쁘게 만들기
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        //RestDoc 스니펫 정보
                         pathParameters(
                                 parameterWithName("deploymentId").description("배포 ID")
                         ),
