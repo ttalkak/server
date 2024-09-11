@@ -87,7 +87,7 @@ public class DeploymentEntity extends BaseEntity {
     }
 
     public void stopDeployment(){
-        this.status = DeploymentStatus.STOP;
+        this.status = DeploymentStatus.STOPPED;
     }
 
     public DeploymentEditor.DeploymentEditorBuilder toEditor() {

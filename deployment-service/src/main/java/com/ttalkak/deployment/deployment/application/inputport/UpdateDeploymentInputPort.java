@@ -12,9 +12,9 @@ import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
-import com.ttalkak.deployment.deployment.framework.web.request.EnvCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.EnvUpdateRequest;
-import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
+import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
+import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
 import com.ttalkak.deployment.common.global.error.ErrorCode;
 import com.ttalkak.deployment.common.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
     private final EnvOutputPort envOutputPort;
 
     @Override
-    public DeploymentResponse updateDeployment(Long userId, DeploymentUpdateRequest deploymentUpdateRequest) {
+    public DeploymentDetailResponse updateDeployment(Long userId, DeploymentUpdateRequest deploymentUpdateRequest) {
 
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentUpdateRequest.getDeploymentId())
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
@@ -114,6 +114,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         // 업데이트 내역 알림 민준수 ===============================================
 
 
-        return DeploymentResponse.mapToDTO(savedDeployment);
+        return DeploymentDetailResponse.mapToDTO(savedDeployment);
     }
 }

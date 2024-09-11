@@ -21,7 +21,6 @@ import com.ttalkak.deployment.deployment.framework.web.request.DatabaseCreateReq
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.EnvCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentCreateResponse;
-import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

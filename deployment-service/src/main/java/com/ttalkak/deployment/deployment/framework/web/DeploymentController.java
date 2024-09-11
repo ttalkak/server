@@ -4,7 +4,8 @@ import com.ttalkak.deployment.common.ApiResponse;
 import com.ttalkak.deployment.deployment.application.usecase.*;
 import com.ttalkak.deployment.deployment.framework.web.request.*;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentCreateResponse;
-import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
+import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
+import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -45,28 +46,28 @@ public class DeploymentController {
     // 배포 상세조회
     @GetMapping("/{deploymentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<DeploymentResponse> getDeployment(@PathVariable("deploymentId") Long deploymentId){
-        DeploymentResponse deployment = inquiryUsecase.getDeployment(deploymentId);
+    public ApiResponse<DeploymentDetailResponse> getDeployment(@PathVariable("deploymentId") Long deploymentId){
+        DeploymentDetailResponse deployment = inquiryUsecase.getDeployment(deploymentId);
         return ApiResponse.success(deployment);
     }
 
     // 배포 검색조회
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<DeploymentResponse>> searchDeploymentByGithubRepositoryName(
+    public ApiResponse<List<DeploymentPreviewResponse>> searchDeploymentByGithubRepositoryName(
             @RequestParam(value = "githubRepoName") String githubRepoName,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size
     ){
-        List<DeploymentResponse> deployments = inquiryUsecase.searchDeploymentByGithubRepositoryName(githubRepoName, page, size);
+        List<DeploymentPreviewResponse> deployments = inquiryUsecase.searchDeploymentByGithubRepositoryName(githubRepoName, page, size);
         return ApiResponse.success(deployments);
     }
 
     // 배포 수정
     @PatchMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<DeploymentResponse> updateDeployment(@RequestHeader("X-USER-ID") Long userId, @RequestBody DeploymentUpdateRequest deploymentUpdateRequest){
-        DeploymentResponse deployment = updateDeploymentUsecase.updateDeployment(userId, deploymentUpdateRequest);
+    public ApiResponse<DeploymentDetailResponse> updateDeployment(@RequestHeader("X-USER-ID") Long userId, @RequestBody DeploymentUpdateRequest deploymentUpdateRequest){
+        DeploymentDetailResponse deployment = updateDeploymentUsecase.updateDeployment(userId, deploymentUpdateRequest);
         return ApiResponse.success(deployment);
     }
 

@@ -4,7 +4,7 @@ import com.ttalkak.deployment.common.ApiResponse;
 import com.ttalkak.deployment.deployment.application.usecase.InquiryUsecase;
 import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentStatusUsecase;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateStatusRequest;
-import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
+import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class DeploymentFeignController {
     // 하나의 프로젝트에 포함되는 배포이력 전체조회
     @GetMapping("/deployment/project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<DeploymentResponse> getAllDeploymentByProjectId(@PathVariable("projectId") Long projectId){
+    public List<DeploymentPreviewResponse> getAllDeploymentByProjectId(@PathVariable("projectId") Long projectId){
         return inquiryUsecase.getDeploymentsByProjectId(projectId);
     }
 
