@@ -27,7 +27,7 @@ pipeline {
                             // Eureka Server 테스트 코드 실행
                             sh """
                             cd eureka-server
-                            chmod +x .gradlew
+                            chmod +x gradlew
                             ./gradlew test
                             """
                         }
@@ -43,7 +43,7 @@ pipeline {
                             // Config Server 테스트 코드 실행
                             sh """
                             cd config-server
-                            chmod +x .gradlew
+                            chmod +x gradlew
                             ./gradlew test
                             """
                         }
@@ -59,7 +59,7 @@ pipeline {
                             // Gateway Service 테스트 코드 실행
                             sh """
                             cd gateway-service
-                            chmod +x .gradlew
+                            chmod +x gradlew
                             ./gradlew test
                             """
                         }
@@ -75,7 +75,7 @@ pipeline {
                             // User Service 테스트 코드 실행
                             sh """
                             cd user-service
-                            chmod +x .gradlew
+                            chmod +x gradlew
                             ./gradlew test
                             """
                         }
@@ -91,7 +91,7 @@ pipeline {
                             // Compute Service 테스트 코드 실행
                             sh """
                             cd compute-service
-                            chmod +x .gradlew
+                            chmod +x gradlew
                             ./gradlew test
                             """
                         }
@@ -107,7 +107,7 @@ pipeline {
                             // Deployment Service 테스트 코드 실행
                             sh """
                             cd deployment-service
-                            chmod +x .gradlew
+                            chmod +x gradlew
                             ./gradlew test
                             """
                         }
@@ -123,7 +123,7 @@ pipeline {
                             // Project Service 테스트 코드 실행
                             sh """
                             cd project-service
-                            chmod +x .gradlew
+                            chmod +x gradlew
                             ./gradlew test
                             """
                         }
