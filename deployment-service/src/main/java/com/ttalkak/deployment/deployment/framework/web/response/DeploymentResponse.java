@@ -35,8 +35,10 @@ public class DeploymentResponse {
 
     private List<HostingResponse> hostingResponses;
 
+    private List<DatabaseResponse> databaseResponses;
+
     @Builder
-    private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, List<EnvResponse> envs, String branch, String framework) {
+    private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, List<EnvResponse> envs, String branch, String framework, List<DatabaseResponse> databaseResponses) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
@@ -50,6 +52,7 @@ public class DeploymentResponse {
         this.branch = branch;
         this.envs = envs;
         this.framework = framework;
+        this.databaseResponses = databaseResponses;
     }
 
     public static DeploymentResponse mapToDTO(DeploymentEntity deploymentEntity){
