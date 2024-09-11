@@ -1,6 +1,9 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
+import com.ttalkak.deployment.common.global.exception.EntityNotFoundException;
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.CommandDeploymentStatusUsecase;
 import com.ttalkak.deployment.deployment.domain.event.UpdateDeploymentStatusEvent;
@@ -8,10 +11,6 @@ import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
 import com.ttalkak.deployment.deployment.framework.kafka.ChangeStatusProducer;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCommandStatusRequest;
-import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateStatusRequest;
-import com.ttalkak.deployment.global.error.ErrorCode;
-import com.ttalkak.deployment.global.exception.BusinessException;
-import com.ttalkak.deployment.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
