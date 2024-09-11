@@ -13,28 +13,36 @@ public class DeploymentResponse {
 
     private Long projectId;
 
+    // TODO: Enum 으로 변경 (
+    //    RUNNING,
+    //    STOPPED,
+    //    DELETED,
+    //    PENDING
+    //   )
     private String status;
 
+    // TODO: Enum 으로 변경 (FRONTEND, BACKEND)
     private String serviceType;
 
+    // 상세 조회에는 필요한 정보
     private String repositoryName;
-
     private String repositoryUrl;
 
-    private String repositoryLastCommitMessage;
-
-    private String repositoryLastCommitUserProfile;
-
-    private String repositoryLastCommitUserName;
-
+    // 전체 조회 상세 조회 전부 필요함.
     private String branch;
+    private String repositoryLastCommitMessage;
+    private String repositoryLastCommitUserProfile;
+    private String repositoryLastCommitUserName;
 
     private String framework;
 
+    // 상세 조회에는 필요한 정보
     private List<EnvResponse> envs;
 
+    // 상세 조회에는 필요한 정보
     private List<HostingResponse> hostingResponses;
 
+    // 상세 조회에는 필요한 정보
     private List<DatabaseResponse> databaseResponses;
 
     @Builder

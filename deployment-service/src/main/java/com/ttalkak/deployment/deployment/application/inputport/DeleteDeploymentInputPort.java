@@ -13,25 +13,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
-
     private final DeploymentOutputPort deploymentOutputPort;
-
     private final ProjectOutputPort projectOutputPort;
+
     @Override
     public void deleteDeployment(Long userId, Long deploymentId) {
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
         Long projectId = deploymentEntity.getProjectId();
+
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(projectId);
-        if(userId != projectInfo.getUserId()){
-            throw new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT);
+
+        if(!Objects.equals(userId, projectInfo.getUserId())){
+            throw new EntityNotFoundException(ErrorCode.UN_AUTHORIZATION);
         }
+
         deploymentEntity.deleteDeployment();
         deploymentOutputPort.save(deploymentEntity);
     }
