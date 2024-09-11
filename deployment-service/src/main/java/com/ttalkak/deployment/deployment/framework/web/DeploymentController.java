@@ -70,8 +70,8 @@ public class DeploymentController {
 
     // 배포 삭제
     @DeleteMapping("/deployment/{deploymentId}")
-    public ApiResponse deleteDeployment(@PathVariable("deploymentId") Long deploymentId){
-        deleteDeploymentUsecase.deleteDeployment(deploymentId);
+    public ApiResponse deleteDeployment(@RequestHeader("X-USER-ID") Long userId, @PathVariable("deploymentId") Long deploymentId){
+        deleteDeploymentUsecase.deleteDeployment(userId, deploymentId);
         return ApiResponse.success(null);
     }
 

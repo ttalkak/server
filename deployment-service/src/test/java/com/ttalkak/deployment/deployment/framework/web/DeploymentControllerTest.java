@@ -8,6 +8,7 @@ import com.ttalkak.deployment.deployment.framework.web.response.HostingResponse;
 import com.ttalkak.deployment.deployment.support.RestDocsSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -19,9 +20,11 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class DeploymentControllerTest extends RestDocsSupport {
@@ -141,6 +144,10 @@ class DeploymentControllerTest extends RestDocsSupport {
                 .andExpect(status().isCreated())
                 // Documentation
                 .andDo(document("deployment-create",
+                        //JSON 이쁘게 만들기
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        //RestDoc 스니펫 정보
                         requestFields(
                                 fieldWithPath("projectId").type(JsonFieldType.NUMBER)
                                         .description("프로젝트 ID"),
@@ -167,6 +174,7 @@ class DeploymentControllerTest extends RestDocsSupport {
                                 fieldWithPath("databaseCreateRequests[].databasePort").type(JsonFieldType.NUMBER)
                                         .description("데이터베이스 포트"),
                                 fieldWithPath("databaseCreateRequests[].username").type(JsonFieldType.STRING)
+                                        .optional()
                                         .description("데이터베이스 사용자 이름"),
                                 fieldWithPath("databaseCreateRequests[].password").type(JsonFieldType.STRING)
                                         .description("데이터베이스 비밀번호"),
@@ -268,6 +276,10 @@ class DeploymentControllerTest extends RestDocsSupport {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("deployment-get",
+                        //JSON 이쁘게 만들기
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        //RestDoc 스니펫 정보
                         pathParameters(
                                 parameterWithName("deploymentId").description("조회할 배포의 ID")
                         ),
@@ -358,6 +370,10 @@ class DeploymentControllerTest extends RestDocsSupport {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("deployment-search",
+                        //JSON 이쁘게 만들기
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        //RestDoc 스니펫 정보
                         queryParameters(
                                 parameterWithName("githubRepoName").description("검색할 깃허브 저장소 이름"),
                                 parameterWithName("page").optional().description("페이지 번호 (기본값: 0)"),
@@ -431,6 +447,10 @@ class DeploymentControllerTest extends RestDocsSupport {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("deployment-delete",
+                        //JSON 이쁘게 만들기
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        //RestDoc 스니펫 정보
                         pathParameters(
                                 parameterWithName("deploymentId").description("배포 ID")
                         ),
@@ -441,6 +461,48 @@ class DeploymentControllerTest extends RestDocsSupport {
                                 fieldWithPath("data").type(JsonFieldType.NULL).description("삭제된 후에는 반환되는 데이터가 없습니다.")
                         )
                 ));
+    }
+
+    @DisplayName("배포 상태 변경")
+    @Test
+    public void updateDeploymentStatus() throws Exception {
+        // given
+        // DeploymentCommandStatusRequest에 필요한 값을 설정
+        DeploymentCommandStatusRequest request = DeploymentCommandStatusRequest.builder()
+                .deploymentId(1L)
+                .command("START")
+                .build();
+        // when - then
+        mockMvc.perform(post("/v1/deployment/status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("deployment-status",
+                        //JSON 이쁘게 만들기
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        //RestDoc 스니펫 정보
+                        requestFields(
+                                fieldWithPath("deploymentId").type(JsonFieldType.NUMBER)
+                                         .description("배포 ID"),
+                                fieldWithPath("command").type(JsonFieldType.STRING)
+                                        .description("배포 상태 변경 메시지(예 : RESTART, START, STOP)")
+                        ),
+                        responseFields(
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                        .description("요청 성공 여부"),
+                                fieldWithPath("message").type(JsonFieldType.NULL)
+                                        .description("응답 메시지 (현재 null)"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("응답 코드 (예: 200)"),
+                                fieldWithPath("data").description("Always null for this request").optional().type(JsonFieldType.NULL)
+
+                        )
+                ));
+
+        // verify
+        Mockito.verify(commandDeploymentStatusUsecase, Mockito.times(1)).commandDeploymentStatus(Mockito.any(DeploymentCommandStatusRequest.class));
     }
 
 //    @DisplayName("배포 수정")

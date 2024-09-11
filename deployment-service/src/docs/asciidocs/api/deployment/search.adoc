@@ -1,0 +1,11 @@
+[[Deployment-create]]
+=== 배포 검색 조회
+HTTP Request
+include::{snippets}/deployment-search/http-request.adoc[]
+include::{snippets}/deployment-search/query-parameters.adoc[]
+
+
+
+HTTP Response
+include::{snippets}/deployment-search/http-response.adoc[]
+include::{snippets}/deployment-search/response-fields.adoc[]

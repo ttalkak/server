@@ -1,0 +1,10 @@
+[[Deployment-create]]
+=== 배포 삭제
+HTTP Request
+include::{snippets}/deployment-delete/http-request.adoc[]
+include::{snippets}/deployment-delete/path-parameters.adoc[]
+
+
+HTTP Response
+include::{snippets}/deployment-delete/http-response.adoc[]
+include::{snippets}/deployment-delete/response-fields.adoc[]
