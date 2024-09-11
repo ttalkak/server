@@ -109,23 +109,25 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
 
     private List<DatabaseEvent> createDatabaseEvents(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity savedDeployment) {
         List<DatabaseEvent> databaseEvents = new ArrayList<>();
-        if(ServiceType.isBackendType(deploymentCreateRequest.getServiceType())){
-            for(DatabaseCreateRequest databaseCreateRequest : deploymentCreateRequest.getDatabaseCreateRequests()) {
-                DatabaseEntity database = DatabaseEntity.createDatabase(
-                        savedDeployment,
-                        databaseCreateRequest.getDatabasePort(),
-                        databaseCreateRequest.getDatabaseName(),
-                        databaseCreateRequest.getUsername(),
-                        databaseCreateRequest.getPassword()
-                );
-                DatabaseEntity savedDatabaseEntity = databaseOutputPort.save(database);
-                savedDeployment.addDatabaseEntity(savedDatabaseEntity);
-                databaseEvents.add(new DatabaseEvent(savedDatabaseEntity.getId(),
-                        savedDatabaseEntity.getDatabaseType().toString(),
-                        savedDatabaseEntity.getUsername(),
-                        savedDatabaseEntity.getPassword(),
-                        savedDatabaseEntity.getPort()
-                ));
+        if(ServiceType.isBackendType(deploymentCreateRequest.getServiceType())) {
+            if (deploymentCreateRequest.getDatabaseCreateRequests() != null) {
+                for (DatabaseCreateRequest databaseCreateRequest : deploymentCreateRequest.getDatabaseCreateRequests()) {
+                    DatabaseEntity database = DatabaseEntity.createDatabase(
+                            savedDeployment,
+                            databaseCreateRequest.getDatabasePort(),
+                            databaseCreateRequest.getDatabaseName(),
+                            databaseCreateRequest.getUsername(),
+                            databaseCreateRequest.getPassword()
+                    );
+                    DatabaseEntity savedDatabaseEntity = databaseOutputPort.save(database);
+                    savedDeployment.addDatabaseEntity(savedDatabaseEntity);
+                    databaseEvents.add(new DatabaseEvent(savedDatabaseEntity.getId(),
+                            savedDatabaseEntity.getDatabaseType().toString(),
+                            savedDatabaseEntity.getUsername(),
+                            savedDatabaseEntity.getPassword(),
+                            savedDatabaseEntity.getPort()
+                    ));
+                }
             }
         }
         return databaseEvents;
