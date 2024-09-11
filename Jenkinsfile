@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-            DOCKER_REGISTRY = 'docker.io'
-            DOCKER_CREDENTIALS_ID = 'dockerhub-access-token' // Jenkins에 저장된 Docker Hub 크리덴셜 ID
-            DOCKER_HUB_USERNAME = 'sgo722'
-    }
-        
     stages {
         stage('Checkout') {
             steps {

@@ -1,8 +1,8 @@
 package com.ttalkak.project.project.framework.jpaadapter.adapter;
 
 import com.ttalkak.project.common.PersistenceAdapter;
-import com.ttalkak.project.global.error.ErrorCode;
-import com.ttalkak.project.global.exception.EntityNotFoundException;
+import com.ttalkak.project.common.error.ErrorCode;
+import com.ttalkak.project.common.exception.EntityNotFoundException;
 import com.ttalkak.project.project.application.outputport.DeleteProjectOutputPort;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
@@ -65,7 +65,7 @@ public class ProjectPersistenceAdapter implements SaveProjectOutputPort,
      */
     @Override
     public Page<ProjectEntity> findMyPrjectsContinsSearchKeyWord(Pageable pageable, Long userId, String searchKeyword) {
-        return projectJpaRepository.findMyPrjectsContinsSearchKeyWord(pageable, userId, searchKeyword);
+        return projectJpaRepository.findMyProjectsContainsSearchKeyWord(pageable, userId, searchKeyword);
     }
 
     /**

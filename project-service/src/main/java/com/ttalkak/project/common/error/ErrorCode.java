@@ -1,4 +1,4 @@
-package com.ttalkak.project.global.error;
+package com.ttalkak.project.common.error;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

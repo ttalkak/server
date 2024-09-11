@@ -1,6 +1,6 @@
-package com.ttalkak.deployment.global.exception;
+package com.ttalkak.project.common.exception;
 
-import com.ttalkak.deployment.global.error.ErrorCode;
+import com.ttalkak.project.common.error.ErrorCode;
 import lombok.Getter;
 
 @Getter
