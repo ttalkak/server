@@ -45,8 +45,6 @@ public class DeploymentResponse {
     // 상세 조회에는 필요한 정보
     private List<DatabaseResponse> databaseResponses;
 
-    private String webhookUrl;
-
     @Builder
     private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, List<EnvResponse> envs, String branch, String framework, List<DatabaseResponse> databaseResponses) {
         this.deploymentId = deploymentId;

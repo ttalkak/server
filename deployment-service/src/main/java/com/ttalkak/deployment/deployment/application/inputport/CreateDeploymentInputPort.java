@@ -20,6 +20,7 @@ import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInf
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.EnvCreateRequest;
+import com.ttalkak.deployment.deployment.framework.web.response.DeploymentCreateResponse;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
     private final EventOutputPort eventOutputPort;
 
     @Override
-    public DeploymentResponse createDeployment(DeploymentCreateRequest deploymentCreateRequest) {
+    public DeploymentCreateResponse createDeployment(DeploymentCreateRequest deploymentCreateRequest) {
         // 깃허브 관련 정보 객체 생성
         GithubInfo githubInfo = createGithubInfo(deploymentCreateRequest);
 
@@ -62,7 +63,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
         String domainName = projectInfo.getDomainName();
 
-//      https://ttalkak.com/webhook/deployment/frontend/{webhookToken} -> WEBHOOK-URL
+
+//      {webhookToken} -> WEBHOOK-URL
 //        projectInfo.getWebhookToken()
 
         // 호스팅 객체 생성
@@ -94,7 +96,9 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
             throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
         }
 
-        return DeploymentResponse.mapToDTO(savedDeployment);
+        return DeploymentCreateResponse.of(
+                "https://ttalkak.com/webhook/deployment/" + deploymentCreateRequest.getServiceType().toLowerCase() + "/" + projectInfo.getWebhookToken()
+        );
     }
 
     private List<EnvEvent> createEnvs(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity deployment, DeploymentEntity savedDeployment) {

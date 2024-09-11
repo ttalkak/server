@@ -3,6 +3,7 @@ package com.ttalkak.deployment.deployment.framework.web;
 import com.ttalkak.deployment.common.ApiResponse;
 import com.ttalkak.deployment.deployment.application.usecase.*;
 import com.ttalkak.deployment.deployment.framework.web.request.*;
+import com.ttalkak.deployment.deployment.framework.web.response.DeploymentCreateResponse;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,9 @@ public class DeploymentController {
     // 배포 등록
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<DeploymentResponse> createDeployment(@RequestBody DeploymentCreateRequest deploymentCreateRequest){
-        DeploymentResponse deployment = createDeploymentUsecase.createDeployment(deploymentCreateRequest);
-        return new ApiResponse<>(true, null, 201, deployment);
+    public ApiResponse<DeploymentCreateResponse> createDeployment(@RequestBody DeploymentCreateRequest deploymentCreateRequest){
+        DeploymentCreateResponse deployment = createDeploymentUsecase.createDeployment(deploymentCreateRequest);
+        return ApiResponse.created(deployment);
     }
 
     // 배포 상태 변경
@@ -38,7 +39,7 @@ public class DeploymentController {
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<Void> updateDeploymentStatus(@RequestBody DeploymentCommandStatusRequest deploymentCommandStatusRequest){
         commandDeploymentStatusUsecase.commandDeploymentStatus(deploymentCommandStatusRequest);
-        return ApiResponse.success();
+        return ApiResponse.empty();
     }
 
     // 배포 상세조회
@@ -73,7 +74,7 @@ public class DeploymentController {
     @DeleteMapping("/{deploymentId}")
     public ApiResponse<Void> deleteDeployment(@RequestHeader("X-USER-ID") Long userId, @PathVariable("deploymentId") Long deploymentId){
         deleteDeploymentUsecase.deleteDeployment(userId, deploymentId);
-        return ApiResponse.success(null);
+        return ApiResponse.empty();
     }
 
 
