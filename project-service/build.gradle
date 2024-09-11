@@ -9,7 +9,13 @@ plugins {
     id 'org.springframework.boot' version '3.3.3'
     id 'io.spring.dependency-management' version '1.1.6'
     id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
+
+configurations {
+    asciidoctorExt
+}
+
 
 group = 'kr.kro.ddalkak'
 version = '0.0.1'
@@ -32,6 +38,24 @@ repositories {
 
 ext {
     set('springCloudVersion', "2023.0.3")
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
 }
 
 dependencies {
@@ -42,6 +66,7 @@ dependencies {
     // 데이터베이스 관련 의존성
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     runtimeOnly 'org.postgresql:postgresql'
 
     // 스프링 클라우드 의존성
@@ -77,8 +102,18 @@ dependencies {
     implementation 'ch.qos.logback:logback-access:1.5.7'
 
     // Documentation
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'com.google.code.gson:gson:2.11.0'
+    testImplementation 'org.projectlombok:lombok'
+
+
+
 
 }
 
