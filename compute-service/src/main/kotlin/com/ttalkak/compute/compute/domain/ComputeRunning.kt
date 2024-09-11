@@ -1,5 +1,7 @@
 package com.ttalkak.compute.compute.domain
 
-enum class ComputeRunning {
-    RUNNING, STOPPED, PENDING, ERROR
-}
+data class ComputeRunning(
+    val userId: Long,
+    val status: RunningStatus,
+    val message: String?,
+)

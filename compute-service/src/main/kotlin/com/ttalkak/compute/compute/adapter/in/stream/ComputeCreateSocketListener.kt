@@ -1,5 +1,6 @@
 package com.ttalkak.compute.compute.adapter.`in`.stream
 
+import com.ttalkak.compute.common.SocketAdapter
 import com.ttalkak.compute.common.StreamAdapter
 import com.ttalkak.compute.common.util.Json
 import com.ttalkak.compute.compute.application.port.`in`.AllocateCommand
@@ -11,12 +12,12 @@ import org.springframework.data.redis.connection.MessageListener
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.messaging.simp.SimpMessagingTemplate
 
-@StreamAdapter
-class ComputeSocketListener(
-private val redisTemplate: RedisTemplate<String, String>,
+@SocketAdapter
+class ComputeCreateSocketListener(
+    private val redisTemplate: RedisTemplate<String, String>,
     private val simpleMessagingTemplate: SimpMessagingTemplate,
     private val allocateUseCase: AllocateUseCase
-):  MessageListener{
+): MessageListener {
 
     override fun onMessage(message: Message, pattern: ByteArray?) {
         val response = redisTemplate.stringSerializer.deserialize(message.body)?.let {
