@@ -1,19 +1,25 @@
 package com.ttalkak.compute.compute.application.service
 
 import com.ttalkak.compute.common.UseCase
+import com.ttalkak.compute.compute.adapter.out.feign.DeploymentFeignClient
+import com.ttalkak.compute.compute.adapter.out.feign.request.DeploymentUpdateStatusRequest
 import com.ttalkak.compute.compute.application.port.`in`.*
-import com.ttalkak.compute.compute.application.port.out.LoadComputePort
-import com.ttalkak.compute.compute.application.port.out.RemoveConnectPort
-import com.ttalkak.compute.compute.application.port.out.SaveComputePort
-import com.ttalkak.compute.compute.application.port.out.SaveDeploymentStatusPort
+import com.ttalkak.compute.compute.application.port.out.*
+import com.ttalkak.compute.compute.domain.ComputeRunning
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 @UseCase
 class ComputeService (
     private val saveComputePort: SaveComputePort,
     private val removeConnectPort: RemoveConnectPort,
     private val loadComputePort: LoadComputePort,
-    private val saveDeploymentStatusPort: SaveDeploymentStatusPort
-): ComputeUseCase, AllocateUseCase, ComputeStatusUseCase, CreateRunningUseCase {
+    private val saveDeploymentStatusPort: SaveDeploymentStatusPort,
+    private val saveRunningPort: SaveRunningPort,
+    private val loadRunningPort: LoadRunningPort,
+    private val deploymentFeignClient: DeploymentFeignClient
+): ComputeUseCase, AllocateUseCase, ComputeStatusUseCase, UpsertRunningUseCase, LoadRunningUseCase {
+    val log = KotlinLogging.logger {  }
+
     override fun connect(command: ConnectCommand) {
         saveComputePort.saveCompute(
             userId = command.userId,
@@ -56,12 +62,27 @@ class ComputeService (
         }
     }
 
-    override fun createRunning(runningCommand: RunningCommand) {
-//        saveDeploymentStatusPort.saveDeploymentStatus(
-//            userId = runningCommand.deploymentId,
-//            deploymentId = runningCommand.deploymentId,
-//            status = runningCommand.status.toString(),
-//            message = runningCommand.message
-//        )
+    override fun upsertRunning(userId: Long, runningCommand: RunningCommand) {
+        saveRunningPort.saveRunning(
+            userId = userId,
+            deploymentId = runningCommand.deploymentId,
+            status = runningCommand.status,
+            message = runningCommand.message
+        )
+
+        try {
+            val request = DeploymentUpdateStatusRequest(
+                deploymentId = runningCommand.deploymentId,
+                status = runningCommand.status
+            )
+
+            deploymentFeignClient.updateStatus(request)
+        } catch (e: Exception) {
+            log.error(e) { "Deployment 상태 업데이트 실패" }
+        }
+    }
+
+    override fun loadRunning(deploymentId: Long): ComputeRunning {
+        return loadRunningPort.loadRunning(deploymentId)
     }
 }
