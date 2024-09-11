@@ -20,8 +20,8 @@ producers:
       name: delete-project-exception
     update-domain-name-exception:
       name: update-domain-name-exception
-
-
+    command-deployment-status:
+      name : command-deployment-status
 
 consumers:
   topics:
