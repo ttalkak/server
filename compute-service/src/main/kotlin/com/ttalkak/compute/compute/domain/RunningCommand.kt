@@ -4,5 +4,6 @@ enum class RunningCommand {
     START,
     RESTART,
     STOP,
-    DELETE
+    DELETE,
+    REBUILD
 }

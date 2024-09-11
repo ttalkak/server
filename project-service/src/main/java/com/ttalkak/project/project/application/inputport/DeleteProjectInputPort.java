@@ -13,14 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 @UseCase
 @RequiredArgsConstructor
 public class DeleteProjectInputPort implements DeleteProjectUseCase {
-
     private final DeleteProjectOutputPort deleteProjectOutputPort;
-
     private final EventOutputPort eventOutputPort;
 
     /**
      * 프로젝트 삭제
-     * @param projectId
+     *
+     * @param projectId 프로젝트 아이디
      */
     @Override
     public void deleteProject(Long projectId) throws JsonProcessingException {
