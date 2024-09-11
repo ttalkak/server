@@ -16,7 +16,6 @@ configurations {
     asciidoctorExt
 }
 
-
 group = 'kr.kro.ddalkak'
 version = '0.0.1'
 
@@ -114,7 +113,6 @@ dependencies {
 
 
 
-
 }
 
 dependencyManagement {
@@ -126,3 +124,7 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
+//tasks.withType(Test).configureEach {
+//    enabled = false
+//}
+

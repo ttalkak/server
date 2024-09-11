@@ -8,7 +8,7 @@ import com.ttalkak.project.project.application.outputport.SaveProjectOutputPort;
 import com.ttalkak.project.project.application.usercase.CreateProjectUseCase;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.framework.web.request.ProjectCreateRequest;
-import com.ttalkak.project.project.framework.web.response.ProjectResponse;
+import com.ttalkak.project.project.framework.web.response.ProjectCreateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +27,7 @@ public class CreateProjectInputPort implements CreateProjectUseCase {
      * @return
      */
     @Override
-    public ProjectResponse createProject(Long userId, ProjectCreateRequest projectCreateRequest) {
+    public ProjectCreateResponse createProject(Long userId, ProjectCreateRequest projectCreateRequest) {
 
         // 도메인명 중복 체크
         if(projectCreateRequest.getDomainName() != null && !"".equals(projectCreateRequest.getDomainName())) {
@@ -45,6 +45,6 @@ public class CreateProjectInputPort implements CreateProjectUseCase {
 
         ProjectEntity result = saveProjectOutputPort.save(projectEntity);
 
-        return ProjectResponse.mapToResponse(result);
+        return ProjectCreateResponse.mapToResponse(result);
     }
 }

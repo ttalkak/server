@@ -1,4 +1,4 @@
-package com.ttalkak.project.config;
+package com.ttalkak.project.project.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

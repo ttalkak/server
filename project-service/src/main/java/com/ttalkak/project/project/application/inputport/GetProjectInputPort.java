@@ -6,6 +6,7 @@ import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
+import com.ttalkak.project.project.framework.web.response.ProjectPageResponse;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,15 +50,24 @@ public class GetProjectInputPort implements GetProjectUseCase {
      * @return
      */
     @Override
-    public Page<ProjectResponse> getProjects(Pageable pageable, String searchKeyword, Long userId) {
+    public ProjectPageResponse getProjects(Pageable pageable, String searchKeyword, Long userId) {
         Page<ProjectEntity> projects = null;
         if(searchKeyword == null || searchKeyword.isEmpty()) {
             projects = loadProjectOutputPort.findMyProjects(pageable, userId);
         } else {
             projects = loadProjectOutputPort.findMyPrjectsContinsSearchKeyWord(pageable, userId, searchKeyword);
         }
-        return projects
-                .map(ProjectResponse::mapToResponse);
+        Page<ProjectResponse> page = projects.map(ProjectResponse::mapToResponse);
+
+        ProjectPageResponse projectPageResponse = ProjectPageResponse.builder()
+                .content(page.getContent())
+                .pageNumber(page.getNumber())
+                .pageSize(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .build();
+
+        return projectPageResponse;
     }
 
     /**

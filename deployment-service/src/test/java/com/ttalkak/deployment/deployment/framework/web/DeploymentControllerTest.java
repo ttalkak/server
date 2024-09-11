@@ -41,7 +41,7 @@ class DeploymentControllerTest extends RestDocsSupport {
         return new DeploymentController(createDeploymentUsecase, updateDeploymentUsecase, commandDeploymentStatusUsecase, deleteDeploymentUsecase, inquiryUsecase);
     }
 
-    @DisplayName("배포 실행")
+    @DisplayName("배포 생성")
     @Test
     void createDeployment() throws Exception {
         //given

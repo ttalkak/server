@@ -11,10 +11,13 @@ import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
 import com.ttalkak.project.project.framework.web.request.ProjectCreateRequest;
 import com.ttalkak.project.project.framework.web.request.ProjectUpdateRequest;
 import com.ttalkak.project.project.framework.web.response.DomainNameResponse;
+import com.ttalkak.project.project.framework.web.response.ProjectCreateResponse;
+import com.ttalkak.project.project.framework.web.response.ProjectPageResponse;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -45,7 +48,7 @@ public class ProjectController {
      */
     @PostMapping("/project")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ProjectResponse> createProject(
+    public ApiResponse<ProjectCreateResponse> createProject(
             @RequestHeader("X-USER-ID") Long userId,
             @RequestBody ProjectCreateRequest projectCreateRequest) {
         return new ApiResponse<>(true, "", 201, createProjectUseCase.createProject(userId, projectCreateRequest));
@@ -65,17 +68,27 @@ public class ProjectController {
 
     /**
      * 프로젝트 페이징 조회
-     * @param pageable
+     * @param page
+     * @param size
+     * @param sort
+     * @param direction
+     * @param searchKeyword
+     * @param userId
      * @return
      */
     @GetMapping("/project/search")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<Page<ProjectResponse>> getProjectsByPageable(
-            @PageableDefault(page = 0, size = 9, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-            @RequestParam(required = true) String searchKeyword,
+    public ApiResponse<ProjectPageResponse> getProjectsByPageable(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "9") int size,
+            @RequestParam(required = false, defaultValue = "createdAt") String sort,
+            @RequestParam(required = false, defaultValue = "DESC") Sort.Direction direction,
+            @RequestParam String searchKeyword,
             @RequestHeader("X-USER-ID") Long userId) {
 
-            return ApiResponse.success(getProjectUseCase.getProjects(pageable, searchKeyword, userId));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
+        ProjectPageResponse pages = getProjectUseCase.getProjects(pageable, searchKeyword, userId);
+        return ApiResponse.success(pages);
     }
 
     /**
@@ -87,7 +100,6 @@ public class ProjectController {
     @PatchMapping("/project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<ProjectResponse> updateProject(@PathVariable Long projectId, @RequestBody ProjectUpdateRequest projectUpdateRequest) {
-
 
         return ApiResponse.success(updateProjectUseCase.updateProject(projectId, projectUpdateRequest));
     }
