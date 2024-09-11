@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ public class DeploymentCreateRequest {
 
     private GithubRepositoryRequest githubRepositoryRequest;
 
-    private List<DatabaseCreateRequest> databaseCreateRequests = new ArrayList<>();
+    @Nullable
+    private List<DatabaseCreateRequest> databaseCreateRequests;
 
     private List<EnvCreateRequest> envs = new ArrayList<>();
 
