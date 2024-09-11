@@ -1,9 +1,14 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.ProjectOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.DeleteDeploymentUsecase;
+import com.ttalkak.deployment.deployment.domain.event.CommandEvent;
+import com.ttalkak.deployment.deployment.domain.event.UpdateDeploymentStatusEvent;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
+import com.ttalkak.deployment.deployment.framework.kafka.ChangeStatusProducer;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentDeleteRequest;
 import com.ttalkak.deployment.common.global.error.ErrorCode;
@@ -23,6 +28,8 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
     private final DeploymentOutputPort deploymentOutputPort;
     private final ProjectOutputPort projectOutputPort;
 
+    private final ChangeStatusProducer changeStatusProducer;
+
     @Override
     public void deleteDeployment(Long userId, Long deploymentId) {
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentId)
@@ -35,6 +42,13 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
             throw new EntityNotFoundException(ErrorCode.UN_AUTHORIZATION);
         }
 
+
+        UpdateDeploymentStatusEvent deleted = new UpdateDeploymentStatusEvent(deploymentId.toString(), CommandEvent.DELETE.toString());
+        try{
+            changeStatusProducer.occurUpdateDeploymentStatus(deleted);
+        }catch (JsonProcessingException e){
+            throw new BusinessException(ErrorCode.KAFKA_PRODUCER_ERROR);
+        }
         deploymentEntity.deleteDeployment();
         deploymentOutputPort.save(deploymentEntity);
     }
