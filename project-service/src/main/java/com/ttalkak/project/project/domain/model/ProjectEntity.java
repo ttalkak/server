@@ -8,12 +8,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Getter
 @Entity
 @Table(name = "projects")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectEntity extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_id")
@@ -28,6 +29,14 @@ public class ProjectEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private ProjectStatus status = ProjectStatus.ACTIVE;
+
+    @Column(name = "webhook_token", length = 100)
+    private String webhookToken;
+
+    @PrePersist
+    public void prePersist() {
+        this.webhookToken = UUID.randomUUID().toString();
+    }
 
     @Builder
     private ProjectEntity(Long id, Long userId, String projectName, String domainName, ProjectStatus status) {

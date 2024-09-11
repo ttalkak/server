@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProjectJpaRepository extends JpaRepository<ProjectEntity, Long> {
-
     // 유저 Id로 페이징 처리
     @Query("select p from ProjectEntity p where p.userId =:userId and p.status = 'ACTIVE' ")
     Page<ProjectEntity> findMyProjects(Pageable pageable, @Param("userId")Long userId);
