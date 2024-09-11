@@ -24,8 +24,11 @@ public class DeploymentPreviewResponse {
     private ServiceType serviceType;
 
     private String branch;
+
     private String repositoryLastCommitMessage;
+
     private String repositoryLastCommitUserProfile;
+
     private String repositoryLastCommitUserName;
 
     private String framework;
