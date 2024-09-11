@@ -132,14 +132,14 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
     }
 
     private String makeSubDomainKey(HostingEntity savedHostingEntity, ProjectInfoResponse projectInfo) {
-//        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(
-//                new DomainRequest(
-//                        savedHostingEntity.getId().toString(),
-//                        projectInfo.getDomainName() + " " + savedHostingEntity.getServiceType().toString(),
-//                        savedHostingEntity.getDetailSubDomainName()
-//                ));
-//        String detailSubDomainKey = domainKeyResponse.getKey();
-        return "detailSubDomainKey";
+        DomainKeyResponse domainKeyResponse = domainOutputPort.makeDomainKey(
+                new DomainRequest(
+                        savedHostingEntity.getId().toString(),
+                        projectInfo.getDomainName() + " " + savedHostingEntity.getServiceType().toString(),
+                        savedHostingEntity.getDetailSubDomainName()
+                ));
+        String detailSubDomainKey = domainKeyResponse.getKey();
+        return detailSubDomainKey;
     }
 
     private static HostingEntity createHosting(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity savedDeployment, String domainName) {
