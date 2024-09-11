@@ -1,5 +1,6 @@
 package com.ttalkak.deployment.deployment.framework.web.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class DeploymentCreateRequest {
     private GithubRepositoryRequest githubRepositoryRequest;
 
     @Nullable
+    @Valid
     private List<DatabaseCreateRequest> databaseCreateRequests;
 
     private List<EnvCreateRequest> envs = new ArrayList<>();
