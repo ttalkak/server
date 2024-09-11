@@ -6,7 +6,6 @@ import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter
