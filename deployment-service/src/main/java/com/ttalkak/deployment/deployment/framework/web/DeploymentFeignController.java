@@ -24,12 +24,11 @@ public class DeploymentFeignController {
     @GetMapping("/deployment/project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
     public List<DeploymentResponse> getAllDeploymentByProjectId(@PathVariable("projectId") Long projectId){
-        List<DeploymentResponse> deployments = inquiryUsecase.getDeploymentsByProjectId(projectId);
-        return deployments;
+        return inquiryUsecase.getDeploymentsByProjectId(projectId);
     }
 
     @PostMapping("/deployment/status")
-    public ApiResponse updateDeploymentStatus(@RequestBody DeploymentUpdateStatusRequest deploymentUpdateStatusRequest){
+    public ApiResponse<Void> updateDeploymentStatus(@RequestBody DeploymentUpdateStatusRequest deploymentUpdateStatusRequest){
         updateDeploymentStatusUsecase.updateDeploymentStatus(deploymentUpdateStatusRequest);
         return ApiResponse.success(null);
     }

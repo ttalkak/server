@@ -62,6 +62,9 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
         String domainName = projectInfo.getDomainName();
 
+//      https://ttalkak.com/webhook/deployment/frontend/{webhookToken} -> WEBHOOK-URL
+//        projectInfo.getWebhookToken()
+
         // 호스팅 객체 생성
         HostingEntity hosting = createHosting(deploymentCreateRequest, savedDeployment, domainName);
 
