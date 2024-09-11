@@ -19,8 +19,6 @@ public class DeploymentController {
 
     private final UpdateDeploymentUsecase updateDeploymentUsecase;
 
-    private final UpdateDeploymentStatusUsecase updateDeploymentStatusUsecase;
-
     private final CommandDeploymentStatusUsecase commandDeploymentStatusUsecase;
 
     private final DeleteDeploymentUsecase deleteDeploymentUsecase;
