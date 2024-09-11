@@ -1,25 +1,37 @@
 package com.ttalkak.deployment.deployment.framework.web.response;
 
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
-import lombok.*;
+import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
+import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class DeploymentResponse {
+public class DeploymentDetailResponse {
 
     private Long deploymentId;
 
     private Long projectId;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private DeploymentStatus status;
 
-    private String serviceType;
+    @Enumerated(EnumType.STRING)
+    private ServiceType serviceType;
 
     private String repositoryName;
 
     private String repositoryUrl;
+
+    private String branch;
 
     private String repositoryLastCommitMessage;
 
@@ -27,16 +39,16 @@ public class DeploymentResponse {
 
     private String repositoryLastCommitUserName;
 
-    private String branch;
-
     private String framework;
 
     private List<EnvResponse> envs;
 
     private List<HostingResponse> hostingResponses;
 
+    private List<DatabaseResponse> databaseResponses;
+
     @Builder
-    private DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, List<EnvResponse> envs, String branch, String framework) {
+    private DeploymentDetailResponse(Long deploymentId, Long projectId, DeploymentStatus status, ServiceType serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, List<EnvResponse> envs, String branch, String framework, List<DatabaseResponse> databaseResponses) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
@@ -50,14 +62,15 @@ public class DeploymentResponse {
         this.branch = branch;
         this.envs = envs;
         this.framework = framework;
+        this.databaseResponses = databaseResponses;
     }
 
-    public static DeploymentResponse mapToDTO(DeploymentEntity deploymentEntity){
-        return DeploymentResponse.builder()
+    public static DeploymentDetailResponse mapToDTO(DeploymentEntity deploymentEntity){
+        return DeploymentDetailResponse.builder()
                 .deploymentId(deploymentEntity.getId())
                 .projectId(deploymentEntity.getProjectId())
-                .status(String.valueOf(deploymentEntity.getStatus()))
-                .serviceType(String.valueOf(deploymentEntity.getServiceType()))
+                .status(deploymentEntity.getStatus())
+                .serviceType(deploymentEntity.getServiceType())
                 .repositoryLastCommitMessage(deploymentEntity.getGithubInfo().getRepositoryLastCommitMessage())
                 .repositoryLastCommitUserName(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserName())
                 .repositoryLastCommitUserProfile(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserProfile())
@@ -71,6 +84,9 @@ public class DeploymentResponse {
                         .toList())
                 .branch(deploymentEntity.getGithubInfo().getBranch())
                 .framework(deploymentEntity.getFramework())
+                .databaseResponses(deploymentEntity.getDataBaseEntities().stream()
+                        .map(DatabaseResponse::mapToDTO)
+                        .toList())
                 .build();
     }
 }

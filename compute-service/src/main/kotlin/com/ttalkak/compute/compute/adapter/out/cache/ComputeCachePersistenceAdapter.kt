@@ -2,17 +2,27 @@ package com.ttalkak.compute.compute.adapter.out.cache
 
 import com.ttalkak.compute.common.PersistenceAdapter
 import com.ttalkak.compute.compute.adapter.out.cache.entity.ComputeUserCache
+import com.ttalkak.compute.compute.adapter.out.cache.entity.RunningCache
 import com.ttalkak.compute.compute.adapter.out.cache.repository.ComputeUserCacheRepository
+import com.ttalkak.compute.compute.adapter.out.cache.repository.RunningCacheRepository
 import com.ttalkak.compute.compute.application.port.out.LoadComputePort
+import com.ttalkak.compute.compute.application.port.out.LoadRunningPort
 import com.ttalkak.compute.compute.application.port.out.SaveComputePort
+import com.ttalkak.compute.compute.application.port.out.SaveRunningPort
+import com.ttalkak.compute.compute.domain.ComputeRunning
 import com.ttalkak.compute.compute.domain.ComputeUser
 import com.ttalkak.compute.compute.domain.ComputerType
+import com.ttalkak.compute.compute.domain.RunningStatus
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.*
 
 @PersistenceAdapter
 class ComputeCachePersistenceAdapter(
     private val computeUserCacheRepository: ComputeUserCacheRepository,
-): SaveComputePort, LoadComputePort {
+    private val runningCacheRepository: RunningCacheRepository
+): SaveComputePort, LoadComputePort, SaveRunningPort, LoadRunningPort {
+    private val log = KotlinLogging.logger {  }
+
     override fun saveCompute(
         userId: Long,
         computeType: ComputerType,
@@ -57,6 +67,30 @@ class ComputeCachePersistenceAdapter(
                 remainMemory = it.usedMemory,
                 remainCPU = it.usedCPU
             )
+        }
+    }
+
+    override fun saveRunning(userId: Long, deploymentId: Long, status: RunningStatus, message: String?) {
+        runningCacheRepository.save(deploymentId = deploymentId, RunningCache(
+            userId = userId,
+            status = status,
+            message = message ?: ""
+        ))
+    }
+
+    override fun loadRunning(deploymentId: Long): ComputeRunning {
+        log.debug {
+            "deploymentId: $deploymentId, runningCacheRepository.findById(deploymentId): ${runningCacheRepository.findById(deploymentId)}"
+        }
+
+        return runningCacheRepository.findById(deploymentId).map {
+            ComputeRunning(
+                userId = it.userId,
+                status = it.status,
+                message = it.message
+            )
+        }.orElseThrow {
+            RuntimeException("현재 실행중인 인스턴스가 없습니다.")
         }
     }
 }

@@ -33,7 +33,6 @@ public class ProjectKafkaProducer implements EventOutputPort {
      * 비동기 작업, 예외 처리, 콜백 지원, 스레드 풀(ForkJoinPool)을 사용
      */
 
-
     /**
      * Deployment service에  배포 엔티티 삭제를 요청
      * @param projectEvent

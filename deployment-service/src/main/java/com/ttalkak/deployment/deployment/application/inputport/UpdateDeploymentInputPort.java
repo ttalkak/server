@@ -12,9 +12,9 @@ import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
-import com.ttalkak.deployment.deployment.framework.web.request.EnvCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.EnvUpdateRequest;
-import com.ttalkak.deployment.deployment.framework.web.response.DeploymentResponse;
+import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
+import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
 import com.ttalkak.deployment.common.global.error.ErrorCode;
 import com.ttalkak.deployment.common.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -37,10 +37,15 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
     private final EnvOutputPort envOutputPort;
 
     @Override
-    public DeploymentResponse updateDeployment(DeploymentUpdateRequest deploymentUpdateRequest) {
+    public DeploymentDetailResponse updateDeployment(Long userId, DeploymentUpdateRequest deploymentUpdateRequest) {
 
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentUpdateRequest.getDeploymentId())
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
+
+        ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentEntity.getProjectId());
+        if(userId != projectInfo.getUserId()){
+            throw new EntityNotFoundException(ErrorCode.UN_AUTHORIZATION);
+        }
 
         // 깃허브 관련 정보 객체 생성
         GithubInfo newGithubInfo = GithubInfo.create(
@@ -54,7 +59,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         );
 
         // 프로젝트의 도메인명 가져오기
-        ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentEntity.getProjectId());
         String domainName = projectInfo.getDomainName();
 
         // 호스팅 정보 수정
@@ -110,6 +114,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         // 업데이트 내역 알림 민준수 ===============================================
 
 
-        return DeploymentResponse.mapToDTO(savedDeployment);
+        return DeploymentDetailResponse.mapToDTO(savedDeployment);
     }
 }

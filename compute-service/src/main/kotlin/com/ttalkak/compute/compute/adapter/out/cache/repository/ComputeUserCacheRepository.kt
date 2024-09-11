@@ -1,5 +1,6 @@
 package com.ttalkak.compute.compute.adapter.out.cache.repository
 
+import com.ttalkak.compute.common.util.Json
 import com.ttalkak.compute.compute.adapter.out.cache.entity.ComputeUserCache
 import jakarta.annotation.Resource
 import org.springframework.data.redis.core.HashOperations
@@ -9,18 +10,21 @@ import java.util.Optional
 @Repository
 class ComputeUserCacheRepository{
     @Resource(name = "redisTemplate")
-    private lateinit var hashOperations: HashOperations<String, String, ComputeUserCache>
+    private lateinit var hashOperations: HashOperations<String, String, String>
 
     companion object {
         const val COMPUTE_CACHE_KEY = "computeUserCache"
     }
 
     fun save(computeUser: ComputeUserCache) {
-        hashOperations.put(COMPUTE_CACHE_KEY, computeUser.userId.toString(), computeUser)
+        val value = Json.serialize(computeUser)
+        hashOperations.put(COMPUTE_CACHE_KEY, computeUser.userId.toString(), value)
     }
 
     fun findById(userId: Long): Optional<ComputeUserCache> {
-        return Optional.ofNullable(hashOperations.get(COMPUTE_CACHE_KEY, userId.toString()))
+        return hashOperations.get(COMPUTE_CACHE_KEY, userId.toString())?.let {
+            return Optional.of(Json.deserialize(it, ComputeUserCache::class.java))
+        } ?: Optional.empty()
     }
 
     fun delete(userId: Long) {
@@ -28,6 +32,8 @@ class ComputeUserCacheRepository{
     }
 
     fun findAll(): List<ComputeUserCache> {
-        return hashOperations.entries(COMPUTE_CACHE_KEY).values.toList()
+        return hashOperations.entries(COMPUTE_CACHE_KEY).values.map {
+            Json.deserialize(it, ComputeUserCache::class.java)
+        }.toList()
     }
 }

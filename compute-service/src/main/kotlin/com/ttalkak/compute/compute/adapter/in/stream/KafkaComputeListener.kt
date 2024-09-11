@@ -2,37 +2,35 @@ package com.ttalkak.compute.compute.adapter.`in`.stream
 
 import com.ttalkak.compute.common.StreamAdapter
 import com.ttalkak.compute.common.util.Json
-import com.ttalkak.compute.common.util.LoggerCreator
 import com.ttalkak.compute.compute.application.port.`in`.StatusCommand
 import com.ttalkak.compute.compute.application.port.`in`.UpdateStatusUseCase
-import com.ttalkak.compute.compute.application.port.out.SaveStatusPort
-import com.ttalkak.compute.compute.application.service.StatusService
 import com.ttalkak.compute.compute.domain.ComputeCreateEvent
+import com.ttalkak.compute.compute.domain.UpdateComputeStatusEvent
 import com.ttalkak.compute.compute.domain.UserCreateEvent
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.annotation.PostConstruct
-import org.apache.kafka.clients.consumer.Consumer
-import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.listener.ChannelTopic
 import org.springframework.data.redis.listener.RedisMessageListenerContainer
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.messaging.handler.annotation.Payload
-import org.springframework.messaging.simp.SimpMessagingTemplate
 
 @StreamAdapter
 class KafkaComputeListener(
     private val redisTemplate: RedisTemplate<String, String>,
     private val redisMessageListenerContainer: RedisMessageListenerContainer,
-    private val computeSocketListener: ComputeSocketListener,
+    private val computeCreateSocketListener: ComputeCreateSocketListener,
+    private val computeUpdateSocketListener: ComputeUpdateSocketListener,
     private val updateStatusUseCase: UpdateStatusUseCase
 ) {
     private val log = KotlinLogging.logger {}
-    private val computeChannel = ChannelTopic("compute-create")
+    private val computeCreateChannel = ChannelTopic("compute-create")
+    private val computeUpdateChannel = ChannelTopic("compute-update")
 
     @PostConstruct
     fun init() {
-        redisMessageListenerContainer.addMessageListener(computeSocketListener, computeChannel)
+        redisMessageListenerContainer.addMessageListener(computeCreateSocketListener, computeCreateChannel)
+        redisMessageListenerContainer.addMessageListener(computeUpdateSocketListener, computeUpdateChannel)
     }
 
     @KafkaListener(topics = ["\${consumer.topics.create-compute.name}"], groupId = "\${spring.kafka.consumer.group-id}")
@@ -41,7 +39,7 @@ class KafkaComputeListener(
         log.info {
             "컴퓨터 생성 이벤트 발생: ${response.deploymentId}"
         }
-        redisTemplate.convertAndSend(computeChannel.topic, Json.serialize(response))
+        redisTemplate.convertAndSend(computeCreateChannel.topic, Json.serialize(response))
     }
 
     @KafkaListener(topics = ["\${consumer.topics.create-user.name}"], groupId = "\${spring.kafka.consumer.group-id}")
@@ -61,5 +59,15 @@ class KafkaComputeListener(
         )
 
         updateStatusUseCase.upsertStatus(response.userId, command)
+    }
+    @KafkaListener(topics = ["\${consumer.topics.command-deployment-status.name}"], groupId = "\${spring.kafka.consumer.group-id}")
+    fun updateComputeStatus(@Payload record: String) {
+        val response = Json.deserialize(record, UpdateComputeStatusEvent::class.java)
+
+        log.info {
+            "컴퓨터 상태 변경 이벤트 발생: ${response.deploymentId} - ${response.command}"
+        }
+
+        redisTemplate.convertAndSend(computeUpdateChannel.topic, Json.serialize(response))
     }
 }

@@ -23,7 +23,7 @@ public class UpdateDeploymentStatusInputPort implements UpdateDeploymentStatusUs
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(Long.valueOf(deploymentUpdateStatusRequest.getDeploymentId()))
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
 
-        deploymentEntity.setStatus(DeploymentStatus.valueOf(deploymentUpdateStatusRequest.getStatus()));
+        deploymentEntity.setStatus(DeploymentStatus.valueOf(deploymentUpdateStatusRequest.getStatus().toString()));
         deploymentOutputPort.save(deploymentEntity);
     }
 }

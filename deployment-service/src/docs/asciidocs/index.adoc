@@ -1,0 +1,19 @@
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+= [딸깍] REST API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[Deployment-API]]
+== Product API
+
+include::api/deployment/create.adoc[]
+include::api/deployment/delete.adoc[]
+include::api/deployment/get.adoc[]
+include::api/deployment/search.adoc[]
+

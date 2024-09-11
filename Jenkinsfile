@@ -6,6 +6,129 @@ pipeline {
             steps {
                 // Git 리포지토리에서 코드를 체크아웃합니다.
                 checkout scm
+                script {
+                    dir('config-server') {
+                        sh 'mkdir -p src/main/resources'
+                        sh 'cp /home/ubuntu/secret/config/application.yml src/main/resources'
+                    }
+                }
+
+            }
+        }
+
+        stage('Test Services') {
+            parallel {
+                stage('Test Eureka Server') {
+                    when {
+                        changeset "eureka-server/**"
+                    }
+                    steps {
+                        script {
+                            // Eureka Server 테스트 코드 실행
+                            sh """
+                            cd eureka-server
+                            chmod +x gradlew
+                            ./gradlew test
+                            """
+                        }
+                    }
+                }
+
+                stage('Test Config Server') {
+                    when {
+                        changeset "config-server/**"
+                    }
+                    steps {
+                        script {
+                            // Config Server 테스트 코드 실행
+                            sh """
+                            cd config-server
+                            chmod +x gradlew
+                            ./gradlew test
+                            """
+                        }
+                    }
+                }
+
+                stage('Test Gateway Service') {
+                    when {
+                        changeset "gateway-service/**"
+                    }
+                    steps {
+                        script {
+                            // Gateway Service 테스트 코드 실행
+                            sh """
+                            cd gateway-service
+                            chmod +x gradlew
+                            ./gradlew test
+                            """
+                        }
+                    }
+                }
+
+                stage('Test User Service') {
+                    when {
+                        changeset "user-service/**"
+                    }
+                    steps {
+                        script {
+                            // User Service 테스트 코드 실행
+                            sh """
+                            cd user-service
+                            chmod +x gradlew
+                            ./gradlew test
+                            """
+                        }
+                    }
+                }
+
+                stage('Test Compute Service') {
+                    when {
+                        changeset "compute-service/**"
+                    }
+                    steps {
+                        script {
+                            // Compute Service 테스트 코드 실행
+                            sh """
+                            cd compute-service
+                            chmod +x gradlew
+                            ./gradlew test
+                            """
+                        }
+                    }
+                }
+
+                stage('Test Deployment Service') {
+                    when {
+                        changeset "deployment-service/**"
+                    }
+                    steps {
+                        script {
+                            // Deployment Service 테스트 코드 실행
+                            sh """
+                            cd deployment-service
+                            chmod +x gradlew
+                            ./gradlew test
+                            """
+                        }
+                    }
+                }
+
+                stage('Test Project Service') {
+                    when {
+                        changeset "project-service/**"
+                    }
+                    steps {
+                        script {
+                            // Project Service 테스트 코드 실행
+                            sh """
+                            cd project-service
+                            chmod +x gradlew
+                            ./gradlew test
+                            """
+                        }
+                    }
+                }
             }
         }
 

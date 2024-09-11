@@ -36,6 +36,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("com.google.code.gson:gson:2.11.0")
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     runtimeOnly("org.postgresql:postgresql")
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

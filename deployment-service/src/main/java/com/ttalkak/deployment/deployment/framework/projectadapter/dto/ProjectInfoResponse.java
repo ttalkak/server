@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ProjectInfoResponse {
-
+    private Long userId;
     private String domainName;
+    private String webhookToken;
 }

@@ -22,7 +22,7 @@ public class EnvResponse {
         this.value = value;
     }
 
-    public  EnvResponse(String key, String value){
+    public EnvResponse(String key, String value){
         this.key = key;
         this.value = value;
     }

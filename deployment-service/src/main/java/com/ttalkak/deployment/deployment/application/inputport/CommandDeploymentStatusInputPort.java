@@ -42,8 +42,8 @@ public class CommandDeploymentStatusInputPort implements CommandDeploymentStatus
 
     private UpdateDeploymentStatusEvent toKafkaEventMessage(DeploymentCommandStatusRequest deploymentUpdateStatusRequest) {
         UpdateDeploymentStatusEvent updateDeploymentStatusEvent = new UpdateDeploymentStatusEvent(
-                deploymentUpdateStatusRequest.getDeploymentId(),
-                deploymentUpdateStatusRequest.getCommand()
+                deploymentUpdateStatusRequest.getDeploymentId().toString(),
+                deploymentUpdateStatusRequest.getCommand().toString()
         );
         return updateDeploymentStatusEvent;
     }
