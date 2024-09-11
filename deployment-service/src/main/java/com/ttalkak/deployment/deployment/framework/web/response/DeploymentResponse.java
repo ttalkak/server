@@ -74,6 +74,9 @@ public class DeploymentResponse {
                         .toList())
                 .branch(deploymentEntity.getGithubInfo().getBranch())
                 .framework(deploymentEntity.getFramework())
+                .databaseResponses(deploymentEntity.getDataBaseEntities().stream()
+                        .map(DatabaseResponse::mapToDTO)
+                        .toList())
                 .build();
     }
 }
