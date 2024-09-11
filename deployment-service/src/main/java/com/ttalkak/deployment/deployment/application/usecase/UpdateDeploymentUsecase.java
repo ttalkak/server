@@ -5,6 +5,6 @@ import com.ttalkak.deployment.deployment.framework.web.response.DeploymentRespon
 
 public interface UpdateDeploymentUsecase {
     // 배포 정보 수정
-    DeploymentResponse updateDeployment(DeploymentUpdateRequest deploymentUpdateRequest);
+    DeploymentResponse updateDeployment(Long userId, DeploymentUpdateRequest deploymentUpdateRequest);
     
 }

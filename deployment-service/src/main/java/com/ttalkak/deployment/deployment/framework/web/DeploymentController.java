@@ -63,8 +63,8 @@ public class DeploymentController {
     // 배포 수정
     @PatchMapping("/deployment")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<DeploymentResponse> updateDeployment(@RequestBody DeploymentUpdateRequest deploymentUpdateRequest){
-        DeploymentResponse deployment = updateDeploymentUsecase.updateDeployment(deploymentUpdateRequest);
+    public ApiResponse<DeploymentResponse> updateDeployment(@RequestHeader("X-USER-ID") Long userId, @RequestBody DeploymentUpdateRequest deploymentUpdateRequest){
+        DeploymentResponse deployment = updateDeploymentUsecase.updateDeployment(userId, deploymentUpdateRequest);
         return ApiResponse.success(deployment);
     }
 

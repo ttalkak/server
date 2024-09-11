@@ -37,10 +37,15 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
     private final EnvOutputPort envOutputPort;
 
     @Override
-    public DeploymentResponse updateDeployment(DeploymentUpdateRequest deploymentUpdateRequest) {
+    public DeploymentResponse updateDeployment(Long userId, DeploymentUpdateRequest deploymentUpdateRequest) {
 
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentUpdateRequest.getDeploymentId())
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
+
+        ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentEntity.getProjectId());
+        if(userId != projectInfo.getUserId()){
+            throw new EntityNotFoundException(ErrorCode.UN_AUTHORIZATION);
+        }
 
         // 깃허브 관련 정보 객체 생성
         GithubInfo newGithubInfo = GithubInfo.create(
@@ -54,7 +59,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         );
 
         // 프로젝트의 도메인명 가져오기
-        ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentEntity.getProjectId());
         String domainName = projectInfo.getDomainName();
 
         // 호스팅 정보 수정
