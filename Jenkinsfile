@@ -6,6 +6,13 @@ pipeline {
             steps {
                 // Git 리포지토리에서 코드를 체크아웃합니다.
                 checkout scm
+                script {
+                    dir('config-server') {
+                        sh 'mkdir -p src/main/resources'
+                        sh 'cp /home/ubuntu/secret/config/application.yml src/main/resources'
+                    }
+                }
+
             }
         }
 
