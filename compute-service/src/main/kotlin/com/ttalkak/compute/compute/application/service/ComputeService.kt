@@ -52,7 +52,7 @@ class ComputeService (
             saveDeploymentStatusPort.saveDeploymentStatus(
                 userId = connectCommand.userId,
                 deploymentId = it.deploymentId,
-                status = it.status.toString(),
+                status = it.status,
                 useMemory = it.useMemory,
                 useCPU = it.useCPU,
                 runningTime = it.runningTime,
