@@ -28,18 +28,10 @@ public class DeploymentResponse {
 
     private String repositoryLastCommitUserName;
 
-    private String rootDirectory;
-
-    private String branch;
-
-    private String framework;
-
-    private List<EnvResponse> envs;
-
-    private List<HostingResponse> hostingResponses;
+    private String repositoryOwner;
 
     @Builder
-    public DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, String rootDirectory, String branch, String framework, List<EnvResponse> envs, List<HostingResponse> hostingResponses) {
+    public DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String branch, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, String repositoryOwner, String framework) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
@@ -49,10 +41,6 @@ public class DeploymentResponse {
         this.repositoryLastCommitMessage = repositoryLastCommitMessage;
         this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
         this.repositoryLastCommitUserName = repositoryLastCommitUserName;
-        this.rootDirectory = rootDirectory;
-        this.branch = branch;
-        this.framework = framework;
-        this.envs = envs;
-        this.hostingResponses = hostingResponses;
+        this.repositoryOwner = repositoryOwner;
     }
 }
