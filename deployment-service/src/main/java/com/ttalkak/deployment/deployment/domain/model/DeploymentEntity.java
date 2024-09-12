@@ -112,4 +112,8 @@ public class DeploymentEntity extends BaseEntity {
     public void clearEnvs() {
         this.envs = new ArrayList<>();
     }
+
+    public VersionEntity getLastVersion(){
+        return versions.get(versions.size()-1);
+    }
 }

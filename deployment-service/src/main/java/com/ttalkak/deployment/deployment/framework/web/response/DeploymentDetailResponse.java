@@ -34,15 +34,12 @@ public class DeploymentDetailResponse {
 
     private String branch;
 
-    private String repositoryLastCommitMessage;
-
-    private String repositoryLastCommitUserProfile;
-
-    private String repositoryLastCommitUserName;
+    private String repositoryOwner;
 
     private String framework;
 
-    private String logUrl;
+
+    private List<VersionResponse> versions;
     private List<EnvResponse> envs;
 
     private HostingResponse hostingResponse;
@@ -50,18 +47,28 @@ public class DeploymentDetailResponse {
     private List<DatabaseResponse> databaseResponses;
 
     @Builder
-    private DeploymentDetailResponse(Long deploymentId, Long projectId, DeploymentStatus status, ServiceType serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, HostingResponse hostingResponse, List<EnvResponse> envs, String branch, String framework, String logUrl, List<DatabaseResponse> databaseResponses) {
+    private DeploymentDetailResponse(Long deploymentId,
+                                     Long projectId,
+                                     DeploymentStatus status,
+                                     ServiceType serviceType,
+                                     String repositoryName,
+                                     String repositoryUrl,
+
+                                     String repositoryOwner,
+                                     String branch,
+                                     String framework,
+                                     HostingResponse hostingResponse,
+                                     List<VersionResponse> versions,
+                                     List<EnvResponse> envs,
+                                     List<DatabaseResponse> databaseResponses) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
         this.serviceType = serviceType;
         this.repositoryName = repositoryName;
         this.repositoryUrl = repositoryUrl;
-        this.repositoryLastCommitMessage = repositoryLastCommitMessage;
-        this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
-        this.repositoryLastCommitUserName = repositoryLastCommitUserName;
+        this.repositoryOwner = repositoryOwner;
         this.hostingResponse = hostingResponse;
-        this.logUrl = logUrl;
         this.branch = branch;
         this.envs = envs;
         this.framework = framework;
@@ -76,13 +83,14 @@ public class DeploymentDetailResponse {
                 .serviceType(deploymentEntity.getServiceType())
                 .repositoryUrl(deploymentEntity.getGithubInfo().getRepositoryUrl())
                 .repositoryName(deploymentEntity.getGithubInfo().getRepositoryName())
+                .repositoryOwner(deploymentEntity.getGithubInfo().getRepositoryOwner())
                 .hostingResponse(HostingResponse.mapToDTO(hostingEntity))
                 .envs(deploymentEntity.getEnvs().stream()
                         .map(EnvResponse::mapToDTO)
                         .toList())
-
-                // 마지막 버전의 로그 가져오기
-                .logUrl(deploymentEntity.getVersions().get(deploymentEntity.getVersions().size()-1).getLogUrl())
+                .versions(deploymentEntity.getVersions().stream()
+                        .map(VersionResponse::mapToDTO)
+                        .toList())
                 .branch(deploymentEntity.getGithubInfo().getBranch())
                 .framework(deploymentEntity.getFramework())
                 .databaseResponses(deploymentEntity.getDataBaseEntities().stream()
