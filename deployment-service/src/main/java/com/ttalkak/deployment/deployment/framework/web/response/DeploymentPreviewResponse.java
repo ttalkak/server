@@ -16,11 +16,9 @@ public class DeploymentPreviewResponse {
 
     private Long projectId;
 
-    @Enumerated(EnumType.STRING)
-    private DeploymentStatus status;
+    private String status;
 
-    @Enumerated(EnumType.STRING)
-    private ServiceType serviceType;
+    private String serviceType;
 
     private String branch;
 
@@ -37,8 +35,8 @@ public class DeploymentPreviewResponse {
     @Builder
     private DeploymentPreviewResponse(Long deploymentId,
                                       Long projectId,
-                                      DeploymentStatus status,
-                                      ServiceType serviceType,
+                                      String status,
+                                      String serviceType,
                                       String repositoryLastCommitMessage,
                                       String repositoryLastCommitUserProfile,
                                       String repositoryLastCommitUserName,
@@ -61,11 +59,11 @@ public class DeploymentPreviewResponse {
         return DeploymentPreviewResponse.builder()
                 .deploymentId(deploymentEntity.getId())
                 .projectId(deploymentEntity.getProjectId())
-                .status(deploymentEntity.getStatus())
+                .status(deploymentEntity.getStatus().toString())
                 .repositoryLastCommitMessage(deploymentEntity.getLastVersion().getRepositoryLastCommitMessage())
                 .repositoryLastCommitUserName(deploymentEntity.getLastVersion().getRepositoryLastCommitUserName())
                 .repositoryLastCommitMessage(deploymentEntity.getLastVersion().getRepositoryLastCommitMessage())
-                .serviceType(deploymentEntity.getServiceType())
+                .serviceType(deploymentEntity.getServiceType().toString())
                 .branch(deploymentEntity.getGithubInfo().getBranch())
                 .framework(deploymentEntity.getFramework())
                 .build();
