@@ -7,9 +7,9 @@ import java.util.Optional;
 
 @Repository
 public interface HostingOutputPort {
-
     public HostingEntity save(HostingEntity hostingEntity);
 
     public Optional<HostingEntity> findById(Long hostingId);
 
+    HostingEntity findByProjectIdAndServiceType(Long projectId, String serviceType);
 }

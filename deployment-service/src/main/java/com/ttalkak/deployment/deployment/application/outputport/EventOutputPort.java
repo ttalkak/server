@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ttalkak.deployment.deployment.domain.event.CreateInstanceEvent;
 
 public interface EventOutputPort {
-
-
-    public void occurCreateInstance(CreateInstanceEvent createInstanceEvent) throws JsonProcessingException;
+    void occurCreateInstance(CreateInstanceEvent createInstanceEvent) throws JsonProcessingException;
+    void occurRebuildInstance(CreateInstanceEvent createInstanceEvent) throws JsonProcessingException;
 }

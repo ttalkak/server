@@ -8,6 +8,7 @@ import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
 import com.ttalkak.project.project.framework.web.response.ProjectPageResponse;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;
+import com.ttalkak.project.project.framework.web.response.ProjectWebHookResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +43,16 @@ public class GetProjectInputPort implements GetProjectUseCase {
         ProjectEntity result = loadProjectOutputPort.findById(projectId);
         ProjectResponse projectResponse = ProjectResponse.mapToResponse(result);
         return projectResponse;
+    }
+
+    @Override
+    public ProjectWebHookResponse getWebHookProject(String webhookToken) {
+        ProjectEntity entity = loadProjectOutputPort.findByWebHookToken(webhookToken);
+        return ProjectWebHookResponse.builder()
+                .projectId(entity.getId())
+                .userId(entity.getUserId())
+                .domainName(entity.getDomainName())
+                .build();
     }
 
     /**

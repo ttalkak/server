@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateInstanceEvent implements Serializable {
-
     private String deploymentId;
 
     private String port;
@@ -45,6 +44,4 @@ public class CreateInstanceEvent implements Serializable {
         this.envs = envs;
         this.databases = database;
     }
-
-
 }

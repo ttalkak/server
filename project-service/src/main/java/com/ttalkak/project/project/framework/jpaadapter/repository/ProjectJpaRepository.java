@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface ProjectJpaRepository extends JpaRepository<ProjectEntity, Long> {
     // 유저 Id로 페이징 처리
     @Query("select p from ProjectEntity p where p.userId =:userId and p.status = 'ACTIVE' ")
@@ -19,4 +21,7 @@ public interface ProjectJpaRepository extends JpaRepository<ProjectEntity, Long>
     // 도메인 명으로 프로젝트 조회
     @Query("select p from ProjectEntity p where p.domainName like :domainName and p.status = 'ACTIVE' ")
     ProjectEntity findByDomainName(@Param("domainName") String domainName);
+
+    @Query("SELECT p FROM ProjectEntity p WHERE p.webhookToken = :webhookToken")
+    Optional<ProjectEntity> findByWebHookToken(@Param("webhookToken") String webhookToken);
 }

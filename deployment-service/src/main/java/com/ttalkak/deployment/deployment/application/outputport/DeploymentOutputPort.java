@@ -20,4 +20,6 @@ public interface DeploymentOutputPort {
     public void delete(DeploymentEntity deploymentEntity);
 
     void saveAll(List<DeploymentEntity> deploymentEntities);
+
+    Optional<DeploymentEntity> findByProjectIdAndServiceType(Long projectId, String serviceType);
 }

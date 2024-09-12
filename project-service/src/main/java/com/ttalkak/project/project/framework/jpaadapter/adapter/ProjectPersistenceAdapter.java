@@ -78,6 +78,13 @@ public class ProjectPersistenceAdapter implements SaveProjectOutputPort,
         return projectJpaRepository.findByDomainName(domainName);
     }
 
+    @Override
+    public ProjectEntity findByWebHookToken(String webHookToken) {
+        return projectJpaRepository.findByWebHookToken(webHookToken).orElseThrow(
+                () -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_PROJECT)
+        );
+    }
+
 
     /**
      * 프로젝트 삭제

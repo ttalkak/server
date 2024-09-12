@@ -62,16 +62,11 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
         String domainName = projectInfo.getDomainName();
 
-
-//      {webhookToken} -> WEBHOOK-URL
-//        projectInfo.getWebhookToken()
-
         // 호스팅 객체 생성
         HostingEntity hosting = createHosting(deploymentCreateRequest, savedDeployment, domainName);
 
         // 호스팅 객체 저장
         HostingEntity savedHostingEntity = hostingOutputPort.save(hosting);
-        deployment.addHostingEntity(savedHostingEntity);
 
         // 도메인 서비스로부터 도메인 키 생성
         String detailSubDomainKey = makeSubDomainKey(savedHostingEntity, projectInfo);
@@ -146,32 +141,29 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
                         projectInfo.getDomainName() + " " + savedHostingEntity.getServiceType().toString(),
                         savedHostingEntity.getDetailSubDomainName()
                 ));
-        String detailSubDomainKey = domainKeyResponse.getKey();
-        return detailSubDomainKey;
+        return domainKeyResponse.getKey();
     }
 
     private static HostingEntity createHosting(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity savedDeployment, String domainName) {
-        HostingEntity hosting = HostingEntity.createHosting(
-                savedDeployment,
+        return HostingEntity.createHosting(
                 deploymentCreateRequest.getHostingPort(),
+                deploymentCreateRequest.getProjectId(),
                 deploymentCreateRequest.getServiceType(),
                 domainName
         );
-        return hosting;
     }
 
     private static DeploymentEntity createDeployment(DeploymentCreateRequest deploymentCreateRequest, GithubInfo githubInfo) {
-        DeploymentEntity deployment = DeploymentEntity.createDeployment(
+        return DeploymentEntity.createDeployment(
                 deploymentCreateRequest.getProjectId(),
                 ServiceType.valueOf(deploymentCreateRequest.getServiceType()),
                 githubInfo,
                 deploymentCreateRequest.getFramework()
         );
-        return deployment;
     }
 
     private static GithubInfo createGithubInfo(DeploymentCreateRequest deploymentCreateRequest) {
-        GithubInfo githubInfo = GithubInfo.create(
+        return GithubInfo.create(
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryName(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
@@ -180,6 +172,5 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
                 deploymentCreateRequest.getGithubRepositoryRequest().getRootDirectory(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getBranch()
         );
-        return githubInfo;
     }
 }

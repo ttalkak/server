@@ -35,9 +35,6 @@ public class DeploymentEntity extends BaseEntity {
     private ServiceType serviceType;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "deploymentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<HostingEntity> hostingEntities = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deploymentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<DatabaseEntity> dataBaseEntities = new ArrayList<>();
 
     @Setter
@@ -68,10 +65,6 @@ public class DeploymentEntity extends BaseEntity {
                 .githubInfo(githubInfo)
                 .framework(framework)
                 .build();
-    }
-
-    public void addHostingEntity(HostingEntity hostingEntity){
-        this.hostingEntities.add(hostingEntity);
     }
 
     public void addDatabaseEntity(DatabaseEntity databaseEntity){

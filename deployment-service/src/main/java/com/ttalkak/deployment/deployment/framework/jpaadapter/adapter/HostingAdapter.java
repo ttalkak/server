@@ -15,12 +15,18 @@ public class HostingAdapter implements HostingOutputPort {
 
     @Override
     public HostingEntity save(HostingEntity hostingEntity) {
-        HostingEntity savedHostingEntity = hostingRepository.save(hostingEntity);
-        return savedHostingEntity;
+        return hostingRepository.save(hostingEntity);
     }
 
     @Override
     public Optional<HostingEntity> findById(Long hostingId) {
         return hostingRepository.findById(hostingId);
+    }
+
+    @Override
+    public HostingEntity findByProjectIdAndServiceType(Long projectId, String serviceType) {
+        // TODO: 에러 처리 추가
+        return hostingRepository.findByProjectIdAndServiceType(projectId, serviceType)
+                .orElseThrow(() -> new RuntimeException("HostingEntity not found"));
     }
 }

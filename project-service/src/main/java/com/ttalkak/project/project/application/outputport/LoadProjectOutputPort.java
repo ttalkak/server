@@ -17,4 +17,6 @@ public interface LoadProjectOutputPort {
 
     // 도메인명으로 조회 
     ProjectEntity findByDomainName(String domainName);
+
+    ProjectEntity findByWebHookToken(String webHookToken);
 }
