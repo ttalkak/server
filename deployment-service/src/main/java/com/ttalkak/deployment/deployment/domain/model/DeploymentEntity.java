@@ -101,8 +101,6 @@ public class DeploymentEntity extends BaseEntity {
     public void edit(DeploymentEditor deploymentEditor) {
         this.githubInfo = deploymentEditor.getGithubInfo();
         this.envs = deploymentEditor.getEnvs();
-
-
     }
 
     public void createEnv(EnvEntity env) {
