@@ -13,5 +13,6 @@ WORKDIR /app
 # 4. 빌드된 JAR 파일 복사
 COPY --from=build /app/build/libs/*.jar /app/app.jar
 
+
 # 5. 스프링 부트 앱 실행
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
