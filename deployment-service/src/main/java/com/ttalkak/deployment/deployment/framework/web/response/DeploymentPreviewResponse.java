@@ -20,7 +20,9 @@ public class DeploymentPreviewResponse {
 
     private String serviceType;
 
-    private String branch;
+    private String repositoryName;
+
+    private String repositoryUrl;
 
     private String repositoryLastCommitMessage;
 
@@ -30,29 +32,28 @@ public class DeploymentPreviewResponse {
 
     private String repositoryOwner;
 
-    private String framework;
-
     @Builder
     private DeploymentPreviewResponse(Long deploymentId,
                                       Long projectId,
                                       String status,
                                       String serviceType,
+                                      String repositoryName,
+                                      String repositoryUrl,
                                       String repositoryLastCommitMessage,
                                       String repositoryLastCommitUserProfile,
                                       String repositoryLastCommitUserName,
                                       String repositoryOwner,
-                                      String branch,
                                       String framework) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
+        this.repositoryName = repositoryName;
+        this.repositoryUrl = repositoryUrl;
         this.serviceType = serviceType;
         this.repositoryLastCommitMessage = repositoryLastCommitMessage;
         this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
         this.repositoryLastCommitUserName = repositoryLastCommitUserName;
         this.repositoryOwner = repositoryOwner;
-        this.branch = branch;
-        this.framework = framework;
     }
 
     public static DeploymentPreviewResponse mapToDTO(DeploymentEntity deploymentEntity){
@@ -60,12 +61,12 @@ public class DeploymentPreviewResponse {
                 .deploymentId(deploymentEntity.getId())
                 .projectId(deploymentEntity.getProjectId())
                 .status(deploymentEntity.getStatus().toString())
+                .repositoryName(deploymentEntity.getGithubInfo().getRepositoryName())
+                .repositoryUrl(deploymentEntity.getGithubInfo().getRepositoryUrl())
                 .repositoryLastCommitMessage(deploymentEntity.getLastVersion().getRepositoryLastCommitMessage())
                 .repositoryLastCommitUserName(deploymentEntity.getLastVersion().getRepositoryLastCommitUserName())
                 .repositoryLastCommitMessage(deploymentEntity.getLastVersion().getRepositoryLastCommitMessage())
                 .serviceType(deploymentEntity.getServiceType().toString())
-                .branch(deploymentEntity.getGithubInfo().getBranch())
-                .framework(deploymentEntity.getFramework())
                 .build();
     }
 }
