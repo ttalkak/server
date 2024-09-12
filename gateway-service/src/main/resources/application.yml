@@ -58,3 +58,8 @@ spring:
             - Path=/feign/deployment/**
           filters:
             - AuthenticationHeaderFilter
+
+        - id: deployment-service-webhook
+          uri: lb://DEPLOYMENT-SERVICE
+          predicates:
+            - Path=/webhook/deployment/**
