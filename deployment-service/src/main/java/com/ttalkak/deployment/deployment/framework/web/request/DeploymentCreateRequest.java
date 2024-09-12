@@ -25,6 +25,8 @@ public class DeploymentCreateRequest {
 
     private GithubRepositoryRequest githubRepositoryRequest;
 
+    private VersionRequest versionRequest;
+
     @Nullable
     @Valid
     private List<DatabaseCreateRequest> databaseCreateRequests;

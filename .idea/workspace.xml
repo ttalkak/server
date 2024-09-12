@@ -5,7 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/test/java/com/ttalkak/deployment/deployment/framework/web/DeploymentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/test/java/com/ttalkak/deployment/deployment/framework/web/DeploymentControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/outputport/VersionOutputPort.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/VersionEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/jpaadapter/adapter/VersionAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/jpaadapter/repository/VersionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/request/VersionRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/common/global/error/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/common/global/error/ErrorCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/CreateDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/CreateDeploymentInputPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentInputPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/WebHookDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/WebHookDeploymentInputPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/DeploymentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/DeploymentEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/vo/GithubInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/vo/GithubInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/request/DeploymentCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/request/DeploymentCreateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/response/DeploymentDetailResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/response/DeploymentDetailResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/response/DeploymentPreviewResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/response/DeploymentPreviewResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +37,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$/deployment-service">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand />

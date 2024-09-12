@@ -56,9 +56,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         GithubInfo newGithubInfo = GithubInfo.create(
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryName(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
-                deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
-                deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
-                deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRootDirectory(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getBranch()
         );

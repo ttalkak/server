@@ -8,10 +8,7 @@ import com.ttalkak.deployment.deployment.domain.event.DatabaseEvent;
 import com.ttalkak.deployment.deployment.domain.event.DeploymentEvent;
 import com.ttalkak.deployment.deployment.domain.event.HostingEvent;
 import com.ttalkak.deployment.deployment.domain.event.*;
-import com.ttalkak.deployment.deployment.domain.model.DatabaseEntity;
-import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
-import com.ttalkak.deployment.deployment.domain.model.EnvEntity;
-import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
+import com.ttalkak.deployment.deployment.domain.model.*;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainKeyResponse;
@@ -37,6 +34,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
 
     private final HostingOutputPort hostingOutputPort;
 
+    private final VersionOutputPort versionOutputPort;
+
     private final DatabaseOutputPort databaseOutputPort;
 
     private final EnvOutputPort envOutputPort;
@@ -52,11 +51,18 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         // 깃허브 관련 정보 객체 생성
         GithubInfo githubInfo = createGithubInfo(deploymentCreateRequest);
 
+
         // 배포 객체 생성
         DeploymentEntity deployment = createDeployment(deploymentCreateRequest, githubInfo);
         // 배포 객체 저장
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deployment);
 
+        // 배포 버전 객체 생성
+        VersionEntity versionEntity = createVersion(deploymentCreateRequest, 1L, savedDeployment);
+
+        // 배포 버전 저장
+        VersionEntity savedVersionEntity = versionOutputPort.save(versionEntity);
+        savedDeployment.addVersion(savedVersionEntity);
 
         // 프로젝트 서비스로부터 도메인 이름 받아오기
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
@@ -93,6 +99,14 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         return DeploymentCreateResponse.of(
                 "https://ttalkak.com/webhook/deployment/" + deploymentCreateRequest.getServiceType().toLowerCase() + "/" + projectInfo.getWebhookToken()
         );
+    }
+
+    private static VersionEntity createVersion(DeploymentCreateRequest deploymentCreateRequest, Long versionId, DeploymentEntity savedDeployment) {
+        return VersionEntity.createVersion(savedDeployment,
+                versionId,
+                deploymentCreateRequest.getVersionRequest().getRepositoryLastCommitMessage(),
+                deploymentCreateRequest.getVersionRequest().getRepositoryLastCommitUserProfile(),
+                deploymentCreateRequest.getVersionRequest().getRepositoryLastCommitUserName());
     }
 
     private List<EnvEvent> createEnvs(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity deployment, DeploymentEntity savedDeployment) {
@@ -166,9 +180,6 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         return GithubInfo.create(
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryName(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRootDirectory(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getBranch()
         );

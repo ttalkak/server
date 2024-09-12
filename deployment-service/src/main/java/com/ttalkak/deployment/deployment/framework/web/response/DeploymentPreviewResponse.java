@@ -51,9 +51,6 @@ public class DeploymentPreviewResponse {
                 .projectId(deploymentEntity.getProjectId())
                 .status(deploymentEntity.getStatus())
                 .serviceType(deploymentEntity.getServiceType())
-                .repositoryLastCommitMessage(deploymentEntity.getGithubInfo().getRepositoryLastCommitMessage())
-                .repositoryLastCommitUserName(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserName())
-                .repositoryLastCommitUserProfile(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserProfile())
                 .branch(deploymentEntity.getGithubInfo().getBranch())
                 .framework(deploymentEntity.getFramework())
                 .build();
