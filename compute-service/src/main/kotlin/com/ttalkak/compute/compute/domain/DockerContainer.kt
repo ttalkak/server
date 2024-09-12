@@ -1,6 +1,7 @@
 package com.ttalkak.compute.compute.domain
 
 data class DockerContainer(
+    private val deploymentId: Long,
     private val hasDockerImage: Boolean,
     private val containerName: String,
     private val inboundPort: Int,
