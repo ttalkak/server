@@ -4,8 +4,7 @@ WORKDIR /app
 COPY . .
 
 # 2. Gradle 빌드
-RUN gradle clean
-RUN build -x test --no-daemon
+RUN gradle clean build -x test --no-daemon
 
 # 3. 실제 서버 실행 환경 설정
 FROM eclipse-temurin:17-jdk
