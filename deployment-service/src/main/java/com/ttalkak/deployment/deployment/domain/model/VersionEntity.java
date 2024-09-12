@@ -50,7 +50,7 @@ public class VersionEntity {
                 .repositoryLastCommitMessage(repositoryLastCommitMessage)
                 .repositoryLastCommitUserName(repositoryLastCommitUserName)
                 .repositoryLastCommitUserProfile(repositoryLastCommitUserProfile)
-                .logUrl("PENDING")
+                .logUrl("배포 준비중 입니다.")
                 .build();
     }
 }

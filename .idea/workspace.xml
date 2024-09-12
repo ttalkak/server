@@ -5,21 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
-      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/outputport/VersionOutputPort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/VersionEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/jpaadapter/adapter/VersionAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/jpaadapter/repository/VersionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/request/VersionRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/common/global/error/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/common/global/error/ErrorCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/CreateDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/CreateDeploymentInputPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentInputPort.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/WebHookDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/WebHookDeploymentInputPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/DeploymentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/DeploymentEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/vo/GithubInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/vo/GithubInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/request/DeploymentCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/request/DeploymentCreateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/CreateInstanceEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/CreateInstanceEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/HostingEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/event/HostingEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/VersionEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/domain/model/VersionEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/response/DeploymentDetailResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/response/DeploymentDetailResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/response/DeploymentPreviewResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/response/DeploymentPreviewResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,9 +30,6 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
-        <task path="$PROJECT_DIR$/deployment-service">
-          <activation />
-        </task>
         <projects_view>
           <tree_state>
             <expand />
@@ -120,7 +110,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Gradle.DeploymentControllerTest">
+  <component name="RunManager" selected="Spring Boot.DeploymentServiceApplication (1)">
     <configuration name="DeploymentControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -142,7 +132,6 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="DeploymentControllerTest.updateDeployment" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -166,7 +155,6 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration default="true" type="JetRunConfigurationType">
@@ -185,6 +173,13 @@
     <configuration name="DeploymentServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="deployment.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.ttalkak.deployment.DeploymentServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProjectServiceApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="kr.kro.ddalkak.project.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ttalkak.project.ProjectServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -288,7 +283,9 @@
       <workItem from="1725878610693" duration="902000" />
       <workItem from="1725928750145" duration="9188000" />
       <workItem from="1725968428831" duration="12822000" />
-      <workItem from="1726059404898" duration="3671000" />
+      <workItem from="1726059404898" duration="3858000" />
+      <workItem from="1726102920307" duration="6000" />
+      <workItem from="1726119294629" duration="1957000" />
     </task>
     <task id="LOCAL-00001" summary="도커 컴포즈 수정">
       <option name="closed" value="true" />
