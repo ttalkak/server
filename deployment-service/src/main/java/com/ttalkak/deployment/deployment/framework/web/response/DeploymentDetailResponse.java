@@ -1,6 +1,7 @@
 package com.ttalkak.deployment.deployment.framework.web.response;
 
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
+import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import jakarta.persistence.EnumType;
@@ -43,12 +44,12 @@ public class DeploymentDetailResponse {
 
     private List<EnvResponse> envs;
 
-    private List<HostingResponse> hostingResponses;
+    private HostingResponse hostingResponse;
 
     private List<DatabaseResponse> databaseResponses;
 
     @Builder
-    private DeploymentDetailResponse(Long deploymentId, Long projectId, DeploymentStatus status, ServiceType serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, List<EnvResponse> envs, String branch, String framework, List<DatabaseResponse> databaseResponses) {
+    private DeploymentDetailResponse(Long deploymentId, Long projectId, DeploymentStatus status, ServiceType serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, HostingResponse hostingResponse, List<EnvResponse> envs, String branch, String framework, List<DatabaseResponse> databaseResponses) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
@@ -58,14 +59,14 @@ public class DeploymentDetailResponse {
         this.repositoryLastCommitMessage = repositoryLastCommitMessage;
         this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
         this.repositoryLastCommitUserName = repositoryLastCommitUserName;
-        this.hostingResponses = hostingResponses;
+        this.hostingResponse = hostingResponse;
         this.branch = branch;
         this.envs = envs;
         this.framework = framework;
         this.databaseResponses = databaseResponses;
     }
 
-    public static DeploymentDetailResponse mapToDTO(DeploymentEntity deploymentEntity){
+    public static DeploymentDetailResponse mapToDTO(DeploymentEntity deploymentEntity, HostingEntity hostingEntity){
         return DeploymentDetailResponse.builder()
                 .deploymentId(deploymentEntity.getId())
                 .projectId(deploymentEntity.getProjectId())
@@ -76,9 +77,7 @@ public class DeploymentDetailResponse {
                 .repositoryLastCommitUserProfile(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserProfile())
                 .repositoryUrl(deploymentEntity.getGithubInfo().getRepositoryUrl())
                 .repositoryName(deploymentEntity.getGithubInfo().getRepositoryName())
-                .hostingResponses(deploymentEntity.getHostingEntities().stream()
-                        .map(HostingResponse::mapToDTO)
-                        .toList())
+                .hostingResponse(HostingResponse.mapToDTO(hostingEntity))
                 .envs(deploymentEntity.getEnvs().stream()
                         .map(EnvResponse::mapToDTO)
                         .toList())

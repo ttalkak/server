@@ -217,10 +217,6 @@ class DeploymentControllerTest extends RestDocsSupport {
                         EnvResponse.builder().envId(1L).key("key1").value("value1").build(),
                         EnvResponse.builder().envId(2L).key("key2").value("value2").build()
                 ))
-                .hostingResponses(List.of(
-                        HostingResponse.builder().hostingId(1L).detailDomainName("api.leadme").serviceType(ServiceType.BACKEND).hostingPort(8080).build(),
-                        HostingResponse.builder().hostingId(2L).detailDomainName("leadme").serviceType(ServiceType.FRONTEND).hostingPort(5173).build()
-                ))
                 .build();
 
         when(inquiryUsecase.getDeployment(anyLong())).thenReturn(response);
