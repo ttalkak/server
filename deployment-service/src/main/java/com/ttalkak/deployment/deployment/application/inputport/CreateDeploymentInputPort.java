@@ -178,6 +178,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
 
     private static GithubInfo createGithubInfo(DeploymentCreateRequest deploymentCreateRequest) {
         return GithubInfo.create(
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryOwner(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryName(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRootDirectory(),

@@ -54,6 +54,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
 
         // 깃허브 관련 정보 객체 생성
         GithubInfo newGithubInfo = GithubInfo.create(
+                deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryOwner(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryName(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRootDirectory(),

@@ -9,21 +9,14 @@ import lombok.NoArgsConstructor;
 @Getter
 public class GithubRepositoryRequest {
 
+    @NotNull(message = "깃허브 레포지토리 오너는 필수입니다.")
+    private String repositoryOwner;
 
     @NotNull(message = "깃허브 레포지토리 이름은 필수입니다.")
     private String repositoryName;
 
     @NotNull(message = "깃허브 레포지토리 URL은 필수입니다.")
     private String repositoryUrl;
-
-    @NotNull(message = "깃허브 레포지토리 마지막 커밋 메시지는 필수입니다.")
-    private String repositoryLastCommitMessage;
-
-    @NotNull(message = "깃허브 레포지토리 커밋 유저 이미지는 필수입니다.")
-    private String repositoryLastCommitUserProfile;
-
-    @NotNull(message = "깃허브 레포지토리 마지막 커밋 유저 이름은 필수입니다.")
-    private String repositoryLastCommitUserName;
 
     @NotNull(message = "깃허브 레포지토리 루트 디렉토리는 필수입니다.")
     private String rootDirectory;
@@ -32,12 +25,10 @@ public class GithubRepositoryRequest {
     private String branch;
 
     @Builder
-    private GithubRepositoryRequest(String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, String rootDirectory, String branch) {
+    private GithubRepositoryRequest(String repositoryOwner, String repositoryName, String repositoryUrl, String rootDirectory, String branch) {
+        this.repositoryOwner = repositoryOwner;
         this.repositoryName = repositoryName;
         this.repositoryUrl = repositoryUrl;
-        this.repositoryLastCommitMessage = repositoryLastCommitMessage;
-        this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
-        this.repositoryLastCommitUserName = repositoryLastCommitUserName;
         this.rootDirectory = rootDirectory;
         this.branch = branch;
     }
