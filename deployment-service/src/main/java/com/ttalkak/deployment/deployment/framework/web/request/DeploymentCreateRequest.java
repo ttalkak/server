@@ -25,6 +25,8 @@ public class DeploymentCreateRequest {
 
     private GithubRepositoryRequest githubRepositoryRequest;
 
+    private VersionRequest versionRequest;
+
     @Nullable
     @Valid
     private List<DatabaseCreateRequest> databaseCreateRequests;
@@ -34,11 +36,12 @@ public class DeploymentCreateRequest {
     private String framework;
 
     @Builder
-    private DeploymentCreateRequest(Long projectId, String serviceType, GithubRepositoryRequest githubRepositoryRequest, List<DatabaseCreateRequest> databaseCreateRequests, int hostingPort, List<EnvCreateRequest> envs, String framework) {
+    private DeploymentCreateRequest(Long projectId, String serviceType, GithubRepositoryRequest githubRepositoryRequest, List<DatabaseCreateRequest> databaseCreateRequests,VersionRequest versionRequest, int hostingPort, List<EnvCreateRequest> envs, String framework) {
         this.projectId = projectId;
         this.serviceType = serviceType;
         this.githubRepositoryRequest = githubRepositoryRequest;
         this.databaseCreateRequests = databaseCreateRequests;
+        this.versionRequest = versionRequest;
         this.hostingPort = hostingPort;
         this.envs = envs;
         this.framework = framework;

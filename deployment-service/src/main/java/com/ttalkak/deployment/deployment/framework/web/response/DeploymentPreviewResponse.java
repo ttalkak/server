@@ -30,10 +30,21 @@ public class DeploymentPreviewResponse {
 
     private String repositoryLastCommitUserName;
 
+    private String repositoryOwner;
+
     private String framework;
 
     @Builder
-    private DeploymentPreviewResponse(Long deploymentId, Long projectId, DeploymentStatus status, ServiceType serviceType, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName,  String branch, String framework) {
+    private DeploymentPreviewResponse(Long deploymentId,
+                                      Long projectId,
+                                      DeploymentStatus status,
+                                      ServiceType serviceType,
+                                      String repositoryLastCommitMessage,
+                                      String repositoryLastCommitUserProfile,
+                                      String repositoryLastCommitUserName,
+                                      String repositoryOwner,
+                                      String branch,
+                                      String framework) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
@@ -41,6 +52,7 @@ public class DeploymentPreviewResponse {
         this.repositoryLastCommitMessage = repositoryLastCommitMessage;
         this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
         this.repositoryLastCommitUserName = repositoryLastCommitUserName;
+        this.repositoryOwner = repositoryOwner;
         this.branch = branch;
         this.framework = framework;
     }
@@ -50,10 +62,10 @@ public class DeploymentPreviewResponse {
                 .deploymentId(deploymentEntity.getId())
                 .projectId(deploymentEntity.getProjectId())
                 .status(deploymentEntity.getStatus())
+                .repositoryLastCommitMessage(deploymentEntity.getLastVersion().getRepositoryLastCommitMessage())
+                .repositoryLastCommitUserName(deploymentEntity.getLastVersion().getRepositoryLastCommitUserName())
+                .repositoryLastCommitMessage(deploymentEntity.getLastVersion().getRepositoryLastCommitMessage())
                 .serviceType(deploymentEntity.getServiceType())
-                .repositoryLastCommitMessage(deploymentEntity.getGithubInfo().getRepositoryLastCommitMessage())
-                .repositoryLastCommitUserName(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserName())
-                .repositoryLastCommitUserProfile(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserProfile())
                 .branch(deploymentEntity.getGithubInfo().getBranch())
                 .framework(deploymentEntity.getFramework())
                 .build();

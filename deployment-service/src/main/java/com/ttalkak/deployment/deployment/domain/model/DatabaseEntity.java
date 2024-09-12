@@ -42,13 +42,13 @@ public class DatabaseEntity {
 
     public static DatabaseEntity createDatabase(DeploymentEntity deploymentEntity,
                                                 int port,
-                                                String databaseType,
+                                                DatabaseType databaseType,
                                                 String username,
                                                 String password) {
         return DatabaseEntity.builder()
                 .deploymentEntity(deploymentEntity)
                 .port(port)
-                .databaseType(DatabaseType.valueOf(databaseType))
+                .databaseType(databaseType)
                 .username(username)
                 .password(password)
                 .build();

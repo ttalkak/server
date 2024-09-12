@@ -42,6 +42,9 @@ public class DeploymentEntity extends BaseEntity {
     private GithubInfo githubInfo;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "deploymentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VersionEntity> versions = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deploymentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EnvEntity> envs = new ArrayList<>();
 
     private String framework;
@@ -70,6 +73,12 @@ public class DeploymentEntity extends BaseEntity {
     public void addDatabaseEntity(DatabaseEntity databaseEntity){
         this.dataBaseEntities.add(databaseEntity);
     }
+
+
+    public void addVersion(VersionEntity version){
+        this.versions.add(version);
+    }
+
 
     public void deleteDeployment(){
         this.status = DeploymentStatus.DELETED;
@@ -102,5 +111,9 @@ public class DeploymentEntity extends BaseEntity {
 
     public void clearEnvs() {
         this.envs = new ArrayList<>();
+    }
+
+    public VersionEntity getLastVersion(){
+        return versions.get(versions.size()-1);
     }
 }
