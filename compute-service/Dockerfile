@@ -10,7 +10,6 @@ RUN gradle clean build --no-daemon
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
 
-
 # 4. 빌드된 JAR 파일 복사
 COPY --from=build /app/build/libs/*.jar /app/app.jar
 
