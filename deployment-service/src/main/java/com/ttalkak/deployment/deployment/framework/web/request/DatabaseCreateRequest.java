@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class DatabaseCreateRequest {
-
     @NotNull(message = "데이터베이스 이름은 필수입니다.")
     @Enumerated(EnumType.STRING)
     private DatabaseType databaseName;

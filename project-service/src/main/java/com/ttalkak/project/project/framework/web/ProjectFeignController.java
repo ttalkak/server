@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/feign/project")
 public class ProjectFeignController {
-
     private final GetProjectUseCase getProjectUseCase;
 
     /**
