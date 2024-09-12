@@ -36,7 +36,7 @@ public class DeploymentController {
     }
 
     // 배포 상태 변경
-    @PostMapping("/status")
+    @PostMapping("/command")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<Void> updateDeploymentStatus(@RequestBody DeploymentCommandStatusRequest deploymentCommandStatusRequest){
         commandDeploymentStatusUsecase.commandDeploymentStatus(deploymentCommandStatusRequest);
