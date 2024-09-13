@@ -54,7 +54,6 @@ public class DeploymentDetailResponse {
                                      ServiceType serviceType,
                                      String repositoryName,
                                      String repositoryUrl,
-
                                      String repositoryOwner,
                                      String branch,
                                      String framework,
@@ -73,6 +72,7 @@ public class DeploymentDetailResponse {
         this.branch = branch;
         this.envs = envs;
         this.framework = framework;
+        this.versions = versions;
         this.databaseResponses = databaseResponses;
     }
 
