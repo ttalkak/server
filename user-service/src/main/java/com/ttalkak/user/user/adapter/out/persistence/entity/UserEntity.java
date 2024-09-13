@@ -51,9 +51,10 @@ public class UserEntity {
         this.userRole = userRole;
     }
 
-    public UserEntity(String username, String password, String email, UserRole userRole, String providerId, String githubToken) {
+    public UserEntity(String username, String password, String email, UserRole userRole, String providerId, String profileImage, String githubToken) {
         this(username, password, email, userRole);
         this.providerId = providerId;
         this.githubToken = githubToken;
+        this.profileImage = profileImage;
     }
 }
