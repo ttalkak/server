@@ -19,7 +19,7 @@ public class KafkaUserListener {
     public void listen(@Payload String record) {
         EmailVerifyRequest request = Json.deserialize(record, EmailVerifyRequest.class);
 
-        log.info("유저 이메일 인증 로직 실행 : {}", request.getEmail());
+        log.info("유저 이메일 인증 로직 실행 - 발송 이메일 : {}", request.getEmail());
 
         userEmailVerifyUseCase.verifyEmail(request.getEmail());
     }
