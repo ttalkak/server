@@ -1,7 +1,5 @@
 package com.ttalkak.deployment.deployment.framework.jpaadapter.adapter;
 
-import com.ttalkak.deployment.common.global.error.ErrorCode;
-import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.outputport.VersionOutputPort;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.VersionEntity;
