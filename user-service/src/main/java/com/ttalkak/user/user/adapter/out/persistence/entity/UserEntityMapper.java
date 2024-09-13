@@ -26,6 +26,8 @@ public class UserEntityMapper {
         user.setUserId(userEntity.getId());
         user.setUsername(userEntity.getUsername());
         user.setEmail(userEntity.getEmail());
+        user.setProfileImage(userEntity.getProfileImage());
+        user.setEmailVerified(userEntity.isEmailVerified());
         user.setAccessToken(userEntity.getGithubToken());
         return user;
     }

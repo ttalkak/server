@@ -8,4 +8,6 @@ public class LoginUser {
     private String username;
     private String accessToken;
     private String email;
+    private String profileImage;
+    private boolean isEmailVerified;
 }
