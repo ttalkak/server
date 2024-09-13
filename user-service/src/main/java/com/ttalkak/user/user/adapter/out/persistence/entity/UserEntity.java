@@ -25,6 +25,9 @@ public class UserEntity {
     @Column(nullable = false, length = 300)
     private String password;
 
+    @Column(name = "profile_image")
+    private String profileImage;
+
     private String email;
 
     @Column(name = "provider_id")

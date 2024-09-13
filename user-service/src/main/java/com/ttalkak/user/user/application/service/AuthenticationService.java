@@ -5,9 +5,11 @@ import com.ttalkak.user.user.adapter.in.security.JwtTokenProvider;
 import com.ttalkak.user.user.adapter.out.persistence.entity.UserEntity;
 import com.ttalkak.user.user.application.port.in.AuthenticationUseCase;
 import com.ttalkak.user.user.application.port.in.RegisterCommand;
+import com.ttalkak.user.user.application.port.in.UserEmailVerifyUseCase;
 import com.ttalkak.user.user.application.port.out.LoadUserPort;
 import com.ttalkak.user.user.application.port.out.SaveUserPort;
 import com.ttalkak.user.user.application.port.out.UserCreatePort;
+import com.ttalkak.user.user.application.port.out.VerifyEmailUserPort;
 import com.ttalkak.user.user.domain.JwtToken;
 import com.ttalkak.user.user.domain.User;
 import com.ttalkak.user.user.domain.UserCreateEvent;
@@ -20,9 +22,10 @@ import java.util.List;
 
 @UseCase
 @RequiredArgsConstructor
-public class AuthenticationService implements AuthenticationUseCase {
+public class AuthenticationService implements AuthenticationUseCase, UserEmailVerifyUseCase {
     private final LoadUserPort loadUserPort;
     private final SaveUserPort saveUserPort;
+    private final VerifyEmailUserPort verifyEmailUserPort;
     private final UserCreatePort userCreatePort;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -61,5 +64,14 @@ public class AuthenticationService implements AuthenticationUseCase {
                 entity.getUsername(),
                 entity.getEmail()
         ));
+    }
+
+    @Override
+    public void verifyEmail(String email) {
+        loadUserPort.loadUser(email).orElseThrow(
+            () -> new IllegalArgumentException("사용자를 찾을 수 없습니다.")
+        );
+
+        verifyEmailUserPort.verifyEmail(email);
     }
 }
