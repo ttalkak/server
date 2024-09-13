@@ -52,8 +52,6 @@ class RedisConfig {
         val redisTemplate = RedisTemplate<String, Any>()
         redisTemplate.connectionFactory = connectionFactory
 
-        val jackson2JsonRedisSerializer = Jackson2JsonRedisSerializer(Any::class.java)
-
         redisTemplate.keySerializer = StringRedisSerializer()
         redisTemplate.valueSerializer = StringRedisSerializer()
         redisTemplate.hashKeySerializer = StringRedisSerializer()
