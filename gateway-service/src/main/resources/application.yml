@@ -58,3 +58,8 @@ spring:
             - Path=/feign/deployment/**
           filters:
             - AuthenticationHeaderFilter
+
+        - id: notification-service-api
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/v1/notification/**
