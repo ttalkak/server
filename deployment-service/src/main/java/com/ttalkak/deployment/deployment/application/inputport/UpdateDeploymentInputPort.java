@@ -113,6 +113,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
 
         // 업데이트 내역 알림 민준수 ===============================================
 
-        return DeploymentDetailResponse.mapToDTO(savedDeployment, hosting);
+        return DeploymentDetailResponse.mapToDTO(savedDeployment, hosting, null);
     }
 }

@@ -8,6 +8,8 @@ import com.ttalkak.deployment.deployment.framework.jpaadapter.repository.Version
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class VersionAdapter implements VersionOutputPort {
@@ -24,5 +26,10 @@ public class VersionAdapter implements VersionOutputPort {
     public VersionEntity findById(Long versionId) {
         VersionEntity versionEntity = versionRepository.findLastVersionById(versionId);
         return versionEntity;
+    }
+
+    @Override
+    public List<VersionEntity> findAllByDeploymentId(Long deploymentId) {
+        return versionRepository.findAllByDeploymentId(deploymentId);
     }
 }

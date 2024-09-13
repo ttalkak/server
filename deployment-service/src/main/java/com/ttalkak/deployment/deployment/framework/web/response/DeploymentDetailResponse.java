@@ -2,6 +2,7 @@ package com.ttalkak.deployment.deployment.framework.web.response;
 
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
+import com.ttalkak.deployment.deployment.domain.model.VersionEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import jakarta.persistence.EnumType;
@@ -38,8 +39,8 @@ public class DeploymentDetailResponse {
 
     private String framework;
 
-
     private List<VersionResponse> versions;
+
     private List<EnvResponse> envs;
 
     private HostingResponse hostingResponse;
@@ -75,7 +76,9 @@ public class DeploymentDetailResponse {
         this.databaseResponses = databaseResponses;
     }
 
-    public static DeploymentDetailResponse mapToDTO(DeploymentEntity deploymentEntity, HostingEntity hostingEntity){
+    public static DeploymentDetailResponse mapToDTO(DeploymentEntity deploymentEntity,
+                                                    HostingEntity hostingEntity,
+                                                    List<VersionEntity> versions){
         return DeploymentDetailResponse.builder()
                 .deploymentId(deploymentEntity.getId())
                 .projectId(deploymentEntity.getProjectId())
@@ -88,7 +91,7 @@ public class DeploymentDetailResponse {
                 .envs(deploymentEntity.getEnvs().stream()
                         .map(EnvResponse::mapToDTO)
                         .toList())
-                .versions(deploymentEntity.getVersions().stream()
+                .versions(versions.stream()
                         .map(VersionResponse::mapToDTO)
                         .toList())
                 .branch(deploymentEntity.getGithubInfo().getBranch())

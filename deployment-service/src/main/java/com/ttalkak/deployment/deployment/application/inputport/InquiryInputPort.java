@@ -2,9 +2,11 @@ package com.ttalkak.deployment.deployment.application.inputport;
 
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.HostingOutputPort;
+import com.ttalkak.deployment.deployment.application.outputport.VersionOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.InquiryUsecase;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
+import com.ttalkak.deployment.deployment.domain.model.VersionEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
@@ -24,6 +26,7 @@ public class InquiryInputPort implements InquiryUsecase {
 
     private final DeploymentOutputPort deploymentOutputPort;
     private final HostingOutputPort hostingOutputPort;
+    private final VersionOutputPort versionOutputPort;
 
     // 배포이력 상세조회
     @Override
@@ -32,7 +35,8 @@ public class InquiryInputPort implements InquiryUsecase {
                 // 배포 이력이 존재하지 않은 경우
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
         HostingEntity hosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType());
-        return DeploymentDetailResponse.mapToDTO(deploymentEntity, hosting);
+        List<VersionEntity> versionEntities = versionOutputPort.findAllByDeploymentId(deploymentId);
+        return DeploymentDetailResponse.mapToDTO(deploymentEntity, hosting, versionEntities);
     }
 
     // 프로젝트 관련 배포이력 전체조회
