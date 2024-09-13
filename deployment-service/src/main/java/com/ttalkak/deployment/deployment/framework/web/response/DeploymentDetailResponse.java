@@ -54,7 +54,6 @@ public class DeploymentDetailResponse {
                                      ServiceType serviceType,
                                      String repositoryName,
                                      String repositoryUrl,
-
                                      String repositoryOwner,
                                      String branch,
                                      String framework,
@@ -73,12 +72,13 @@ public class DeploymentDetailResponse {
         this.branch = branch;
         this.envs = envs;
         this.framework = framework;
+        this.versions = versions;
         this.databaseResponses = databaseResponses;
     }
 
     public static DeploymentDetailResponse mapToDTO(DeploymentEntity deploymentEntity,
                                                     HostingEntity hostingEntity,
-                                                    List<VersionEntity> versions){
+                                                    List<VersionEntity> versionEntities){
         return DeploymentDetailResponse.builder()
                 .deploymentId(deploymentEntity.getId())
                 .projectId(deploymentEntity.getProjectId())
@@ -91,7 +91,7 @@ public class DeploymentDetailResponse {
                 .envs(deploymentEntity.getEnvs().stream()
                         .map(EnvResponse::mapToDTO)
                         .toList())
-                .versions(versions.stream()
+                .versions(versionEntities.stream()
                         .map(VersionResponse::mapToDTO)
                         .toList())
                 .branch(deploymentEntity.getGithubInfo().getBranch())

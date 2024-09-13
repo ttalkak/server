@@ -60,8 +60,9 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         // 배포 버전 객체 생성
         VersionEntity versionEntity = createVersion(deploymentCreateRequest, 1L, savedDeployment);
 
-        // 배포 버전 저장
         VersionEntity savedVersionEntity = versionOutputPort.save(versionEntity);
+
+        // 배포 버전 저장
         savedDeployment.addVersion(savedVersionEntity);
 
         // 프로젝트 서비스로부터 도메인 이름 받아오기
