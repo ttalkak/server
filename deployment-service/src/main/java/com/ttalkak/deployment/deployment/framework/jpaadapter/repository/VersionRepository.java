@@ -14,6 +14,6 @@ public interface VersionRepository extends JpaRepository<VersionEntity, Long> {
     @Query("SELECT v FROM VersionEntity v where v.id = :id ORDER BY v.version")
     public VersionEntity findLastVersionById(long id);
 
-    @Query("SELECT v FROM VersionEntity v where v.deploymentEntity = :deploymentId ORDER BY v.id DESC")
+    @Query("SELECT v FROM VersionEntity v where v.deploymentEntity = :deploymentEntity ORDER BY v.id DESC")
     public List<VersionEntity> findAllByDeploymentId(DeploymentEntity deploymentEntity);
 }
