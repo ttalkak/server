@@ -66,6 +66,8 @@ public class DeploymentPreviewResponse {
                 .repositoryLastCommitMessage(deploymentEntity.getLastVersion().getRepositoryLastCommitMessage())
                 .repositoryLastCommitUserName(deploymentEntity.getLastVersion().getRepositoryLastCommitUserName())
                 .repositoryLastCommitMessage(deploymentEntity.getLastVersion().getRepositoryLastCommitMessage())
+                .repositoryLastCommitUserProfile(deploymentEntity.getLastVersion().getRepositoryLastCommitUserProfile())
+                .repositoryOwner(deploymentEntity.getGithubInfo().getRepositoryOwner())
                 .serviceType(deploymentEntity.getServiceType().toString())
                 .build();
     }

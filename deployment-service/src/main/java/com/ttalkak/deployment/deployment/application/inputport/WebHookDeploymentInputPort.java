@@ -97,7 +97,7 @@ public class WebHookDeploymentInputPort implements WebHookDeploymentUsecase {
         deployment.addVersion(savedVersion);
 
 
-        HostingEntity hosting = hostingOutputPort.findByProjectIdAndServiceType(response.getProjectId(), serviceType.name());
+        HostingEntity hosting = hostingOutputPort.findByProjectIdAndServiceType(response.getProjectId(), serviceType);
 
         List<EnvEvent> envEvents = deployment.getEnvs().stream().map(env -> new EnvEvent(env.getKey(), env.getValue())).toList();
         HostingEvent hostingEvent = new HostingEvent(

@@ -65,7 +65,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         String domainName = projectInfo.getDomainName();
 
         // 호스팅 정보 수정
-        HostingEntity hosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType().name());
+        HostingEntity hosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType());
         hosting.setHostingPort(deploymentUpdateRequest.getHostingPort());
         hosting.updateDomainName(domainName, String.valueOf(deploymentEntity.getServiceType()));
 
@@ -113,6 +113,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
 
         // 업데이트 내역 알림 민준수 ===============================================
 
-        return DeploymentDetailResponse.mapToDTO(savedDeployment, hosting);
+        // TO Do List
+        return DeploymentDetailResponse.mapToDTO(savedDeployment, hosting, null);
     }
 }
