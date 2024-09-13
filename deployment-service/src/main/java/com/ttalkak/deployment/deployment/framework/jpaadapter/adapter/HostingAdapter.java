@@ -1,7 +1,10 @@
 package com.ttalkak.deployment.deployment.framework.jpaadapter.adapter;
 
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.outputport.HostingOutputPort;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
+import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import com.ttalkak.deployment.deployment.framework.jpaadapter.repository.HostingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -24,9 +27,8 @@ public class HostingAdapter implements HostingOutputPort {
     }
 
     @Override
-    public HostingEntity findByProjectIdAndServiceType(Long projectId, String serviceType) {
-        // TODO: 에러 처리 추가
+    public HostingEntity findByProjectIdAndServiceType(Long projectId, ServiceType serviceType) {
         return hostingRepository.findByProjectIdAndServiceType(projectId, serviceType)
-                .orElseThrow(() -> new RuntimeException("HostingEntity not found"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_EXISTS_HOSTING));
     }
 }

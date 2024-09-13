@@ -1,6 +1,7 @@
 package com.ttalkak.deployment.deployment.application.outputport;
 
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
+import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -11,5 +12,5 @@ public interface HostingOutputPort {
 
     public Optional<HostingEntity> findById(Long hostingId);
 
-    HostingEntity findByProjectIdAndServiceType(Long projectId, String serviceType);
+    HostingEntity findByProjectIdAndServiceType(Long projectId, ServiceType serviceType);
 }

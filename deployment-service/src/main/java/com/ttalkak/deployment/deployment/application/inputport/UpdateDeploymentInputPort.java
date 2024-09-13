@@ -65,7 +65,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         String domainName = projectInfo.getDomainName();
 
         // 호스팅 정보 수정
-        HostingEntity hosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType().name());
+        HostingEntity hosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType());
         hosting.setHostingPort(deploymentUpdateRequest.getHostingPort());
         hosting.updateDomainName(domainName, String.valueOf(deploymentEntity.getServiceType()));
 
