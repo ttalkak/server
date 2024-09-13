@@ -78,7 +78,7 @@ public class DeploymentDetailResponse {
 
     public static DeploymentDetailResponse mapToDTO(DeploymentEntity deploymentEntity,
                                                     HostingEntity hostingEntity,
-                                                    List<VersionEntity> versions){
+                                                    List<VersionEntity> versionEntities){
         return DeploymentDetailResponse.builder()
                 .deploymentId(deploymentEntity.getId())
                 .projectId(deploymentEntity.getProjectId())
@@ -91,7 +91,7 @@ public class DeploymentDetailResponse {
                 .envs(deploymentEntity.getEnvs().stream()
                         .map(EnvResponse::mapToDTO)
                         .toList())
-                .versions(versions.stream()
+                .versions(versionEntities.stream()
                         .map(VersionResponse::mapToDTO)
                         .toList())
                 .branch(deploymentEntity.getGithubInfo().getBranch())
