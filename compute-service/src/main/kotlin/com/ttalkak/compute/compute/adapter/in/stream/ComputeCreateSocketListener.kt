@@ -26,11 +26,11 @@ class ComputeCreateSocketListener(
 
         require(response != null) { "이벤트 수신에 문제가 발생하였습니다." }
 
-        val command = AllocateCommand(
-            computeCount = response.databases.size + 1,
-            useMemory = 0,
-            usePorts = response.databases.map { it.port } + response.port
-        )
+//        val command = AllocateCommand(
+//            computeCount = response.databases.size + 1,
+//            useMemory = 0,
+//            usePorts = response.databases.map { it.port } + response.port
+//        )
 
 //        val deployerId = allocateUseCase.allocate(command)
         val deployerId = 2L

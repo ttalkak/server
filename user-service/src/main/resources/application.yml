@@ -6,3 +6,9 @@ spring:
     include: kafka
   application:
     name: user-service
+
+
+consumer:
+  topics:
+    verify-user-email:
+      name: verify-user-email
