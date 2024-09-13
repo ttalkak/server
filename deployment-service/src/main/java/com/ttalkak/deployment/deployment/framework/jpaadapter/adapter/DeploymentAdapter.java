@@ -47,4 +47,9 @@ public class DeploymentAdapter implements DeploymentOutputPort {
     public void saveAll(List<DeploymentEntity> deploymentEntities) {
         deploymentRepository.saveAll(deploymentEntities);
     }
+
+    @Override
+    public Optional<DeploymentEntity> findByProjectIdAndServiceType(Long projectId, String serviceType) {
+        return deploymentRepository.findByProjectIdAndServiceType(projectId, serviceType).stream().findAny();
+    }
 }

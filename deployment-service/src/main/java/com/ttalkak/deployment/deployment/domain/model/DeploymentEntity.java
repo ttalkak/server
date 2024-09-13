@@ -35,14 +35,14 @@ public class DeploymentEntity extends BaseEntity {
     private ServiceType serviceType;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "deploymentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<HostingEntity> hostingEntities = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deploymentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<DatabaseEntity> dataBaseEntities = new ArrayList<>();
 
     @Setter
     @Embedded
     private GithubInfo githubInfo;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deploymentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VersionEntity> versions = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "deploymentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EnvEntity> envs = new ArrayList<>();
@@ -70,13 +70,15 @@ public class DeploymentEntity extends BaseEntity {
                 .build();
     }
 
-    public void addHostingEntity(HostingEntity hostingEntity){
-        this.hostingEntities.add(hostingEntity);
-    }
-
     public void addDatabaseEntity(DatabaseEntity databaseEntity){
         this.dataBaseEntities.add(databaseEntity);
     }
+
+
+    public void addVersion(VersionEntity version){
+        this.versions.add(version);
+    }
+
 
     public void deleteDeployment(){
         this.status = DeploymentStatus.DELETED;
@@ -99,8 +101,6 @@ public class DeploymentEntity extends BaseEntity {
     public void edit(DeploymentEditor deploymentEditor) {
         this.githubInfo = deploymentEditor.getGithubInfo();
         this.envs = deploymentEditor.getEnvs();
-
-
     }
 
     public void createEnv(EnvEntity env) {
@@ -109,5 +109,9 @@ public class DeploymentEntity extends BaseEntity {
 
     public void clearEnvs() {
         this.envs = new ArrayList<>();
+    }
+
+    public VersionEntity getLastVersion(){
+        return versions.get(versions.size()-1);
     }
 }

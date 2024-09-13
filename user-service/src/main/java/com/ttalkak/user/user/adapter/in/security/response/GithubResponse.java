@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 
 @Slf4j
-public class GithubResponse implements com.ttalkak.user.user.adapter.in.security.response.OAuth2Response {
+public class GithubResponse implements OAuth2Response {
 	private final Map<String, Object> attribute;
 
 	public GithubResponse(Map<String, Object> attribute) {
@@ -40,5 +40,14 @@ public class GithubResponse implements com.ttalkak.user.user.adapter.in.security
 			return getProviderId();
 		}
 		return name.toString();
+	}
+
+	@Override
+	public String getProfileImage() {
+		Object avatarUrl = attribute.get("avatar_url");
+		if (avatarUrl == null) {
+			return "";
+		}
+		return avatarUrl.toString();
 	}
 }

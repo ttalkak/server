@@ -34,16 +34,5 @@ public class UpdateHostingInputPort implements UpdateHostingUsecase {
 
     @Override
     public void updateHostingDomainName(Long projectId, String newDomainName) {
-
-        List<DeploymentEntity> deploymentEntities = deploymentOutputPort.findAllByProjectId(projectId);
-        deploymentEntities.forEach(
-                deploymentEntity -> {
-                    deploymentEntity.getHostingEntities().forEach(
-                            hostingEntity -> {
-                                hostingEntity.updateDomainName(newDomainName, String.valueOf(deploymentEntity.getServiceType()));
-                            }
-                    );
-                }
-        );
     }
 }

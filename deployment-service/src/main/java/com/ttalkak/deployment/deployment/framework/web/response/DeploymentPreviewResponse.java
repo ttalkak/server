@@ -16,13 +16,13 @@ public class DeploymentPreviewResponse {
 
     private Long projectId;
 
-    @Enumerated(EnumType.STRING)
-    private DeploymentStatus status;
+    private String status;
 
-    @Enumerated(EnumType.STRING)
-    private ServiceType serviceType;
+    private String serviceType;
 
-    private String branch;
+    private String repositoryName;
+
+    private String repositoryUrl;
 
     private String repositoryLastCommitMessage;
 
@@ -30,32 +30,45 @@ public class DeploymentPreviewResponse {
 
     private String repositoryLastCommitUserName;
 
-    private String framework;
+    private String repositoryOwner;
 
     @Builder
-    private DeploymentPreviewResponse(Long deploymentId, Long projectId, DeploymentStatus status, ServiceType serviceType, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName,  String branch, String framework) {
+    private DeploymentPreviewResponse(Long deploymentId,
+                                      Long projectId,
+                                      String status,
+                                      String serviceType,
+                                      String repositoryName,
+                                      String repositoryUrl,
+                                      String repositoryLastCommitMessage,
+                                      String repositoryLastCommitUserProfile,
+                                      String repositoryLastCommitUserName,
+                                      String repositoryOwner,
+                                      String framework) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
+        this.repositoryName = repositoryName;
+        this.repositoryUrl = repositoryUrl;
         this.serviceType = serviceType;
         this.repositoryLastCommitMessage = repositoryLastCommitMessage;
         this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
         this.repositoryLastCommitUserName = repositoryLastCommitUserName;
-        this.branch = branch;
-        this.framework = framework;
+        this.repositoryOwner = repositoryOwner;
     }
 
     public static DeploymentPreviewResponse mapToDTO(DeploymentEntity deploymentEntity){
         return DeploymentPreviewResponse.builder()
                 .deploymentId(deploymentEntity.getId())
                 .projectId(deploymentEntity.getProjectId())
-                .status(deploymentEntity.getStatus())
-                .serviceType(deploymentEntity.getServiceType())
-                .repositoryLastCommitMessage(deploymentEntity.getGithubInfo().getRepositoryLastCommitMessage())
-                .repositoryLastCommitUserName(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserName())
-                .repositoryLastCommitUserProfile(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserProfile())
-                .branch(deploymentEntity.getGithubInfo().getBranch())
-                .framework(deploymentEntity.getFramework())
+                .status(deploymentEntity.getStatus().toString())
+                .repositoryName(deploymentEntity.getGithubInfo().getRepositoryName())
+                .repositoryUrl(deploymentEntity.getGithubInfo().getRepositoryUrl())
+                .repositoryLastCommitMessage(deploymentEntity.getLastVersion().getRepositoryLastCommitMessage())
+                .repositoryLastCommitUserName(deploymentEntity.getLastVersion().getRepositoryLastCommitUserName())
+                .repositoryLastCommitMessage(deploymentEntity.getLastVersion().getRepositoryLastCommitMessage())
+                .repositoryLastCommitUserProfile(deploymentEntity.getLastVersion().getRepositoryLastCommitUserProfile())
+                .repositoryOwner(deploymentEntity.getGithubInfo().getRepositoryOwner())
+                .serviceType(deploymentEntity.getServiceType().toString())
                 .build();
     }
 }

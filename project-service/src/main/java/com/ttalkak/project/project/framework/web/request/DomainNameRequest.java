@@ -7,4 +7,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class DomainNameRequest {
     String domainName;
+
+    public DomainNameRequest(String domainName) {
+        this.domainName = domainName;
+    }
 }

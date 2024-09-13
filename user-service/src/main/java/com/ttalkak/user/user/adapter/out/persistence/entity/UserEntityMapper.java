@@ -14,7 +14,9 @@ public class UserEntityMapper {
         user.setUsername(userEntity.getUsername());
         user.setPassword(userEntity.getPassword());
         user.setEmail(userEntity.getEmail());
-        user.setAccessToken(userEntity.getGithubToken());
+        user.setGithubToken(userEntity.getGithubToken());
+        user.setProfileImage(userEntity.getProfileImage());
+        user.setEmailVerified(userEntity.isEmailVerified());
         user.setUserRole(userEntity.getUserRole());
         return user;
     }
@@ -24,6 +26,8 @@ public class UserEntityMapper {
         user.setUserId(userEntity.getId());
         user.setUsername(userEntity.getUsername());
         user.setEmail(userEntity.getEmail());
+        user.setProfileImage(userEntity.getProfileImage());
+        user.setEmailVerified(userEntity.isEmailVerified());
         user.setAccessToken(userEntity.getGithubToken());
         return user;
     }

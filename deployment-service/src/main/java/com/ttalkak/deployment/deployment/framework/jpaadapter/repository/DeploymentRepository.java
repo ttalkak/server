@@ -18,4 +18,6 @@ public interface DeploymentRepository extends JpaRepository<DeploymentEntity, Lo
     @Query("select d from DeploymentEntity d where d.githubInfo.repositoryName like %:githubRepoName% ORDER BY d.id")
     public List<DeploymentEntity> searchDeploymentByGithubRepoName(@Param("githubRepoName") String githubRepoName, Pageable pageable);
 
+    @Query("select d from DeploymentEntity d where d.projectId = :projectId and d.serviceType = :serviceType")
+    List<DeploymentEntity> findByProjectIdAndServiceType(@Param("projectId") Long projectId, @Param("serviceType") String serviceType);
 }

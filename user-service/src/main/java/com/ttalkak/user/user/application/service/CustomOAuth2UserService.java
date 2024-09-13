@@ -49,9 +49,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 		AtomicBoolean isNewUser = new AtomicBoolean(false);
 		User user = loadUserPort.loadUser(username).orElseGet(() -> {
+			log.info("신규 유저 생성 응답: {}", response);
+
 			isNewUser.set(true);
 			String encodedPassword = passwordEncoder.encode(response.getEmail());
-			UserEntity entity = saveUserPort.save(username, encodedPassword, response.getEmail(), response.getProviderId(), githubToken.getTokenValue());
+			UserEntity entity = saveUserPort.save(
+					username,
+					encodedPassword,
+					response.getEmail(),
+					response.getProviderId(),
+					response.getProfileImage(),
+					githubToken.getTokenValue()
+			);
 			return UserEntityMapper.toUser(entity);
 		});
 

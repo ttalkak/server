@@ -6,7 +6,9 @@ import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
+import com.ttalkak.project.project.framework.web.response.ProjectPageResponse;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;
+import com.ttalkak.project.project.framework.web.response.ProjectWebHookResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,21 +45,40 @@ public class GetProjectInputPort implements GetProjectUseCase {
         return projectResponse;
     }
 
+    @Override
+    public ProjectWebHookResponse getWebHookProject(String webhookToken) {
+        ProjectEntity entity = loadProjectOutputPort.findByWebHookToken(webhookToken);
+        return ProjectWebHookResponse.builder()
+                .projectId(entity.getId())
+                .userId(entity.getUserId())
+                .domainName(entity.getDomainName())
+                .build();
+    }
+
     /**
      * 프로젝트 페이징 조회
      * @param pageable
      * @return
      */
     @Override
-    public Page<ProjectResponse> getProjects(Pageable pageable, String searchKeyword, Long userId) {
+    public ProjectPageResponse getProjects(Pageable pageable, String searchKeyword, Long userId) {
         Page<ProjectEntity> projects = null;
         if(searchKeyword == null || searchKeyword.isEmpty()) {
             projects = loadProjectOutputPort.findMyProjects(pageable, userId);
         } else {
             projects = loadProjectOutputPort.findMyPrjectsContinsSearchKeyWord(pageable, userId, searchKeyword);
         }
-        return projects
-                .map(ProjectResponse::mapToResponse);
+        Page<ProjectResponse> page = projects.map(ProjectResponse::mapToResponse);
+
+        ProjectPageResponse projectPageResponse = ProjectPageResponse.builder()
+                .content(page.getContent())
+                .pageNumber(page.getNumber())
+                .pageSize(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .build();
+
+        return projectPageResponse;
     }
 
     /**

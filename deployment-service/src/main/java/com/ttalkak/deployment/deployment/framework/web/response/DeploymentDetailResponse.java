@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.framework.web.response;
 
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
+import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
+import com.ttalkak.deployment.deployment.domain.model.VersionEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import jakarta.persistence.EnumType;
@@ -33,54 +35,64 @@ public class DeploymentDetailResponse {
 
     private String branch;
 
-    private String repositoryLastCommitMessage;
-
-    private String repositoryLastCommitUserProfile;
-
-    private String repositoryLastCommitUserName;
+    private String repositoryOwner;
 
     private String framework;
 
+    private List<VersionResponse> versions;
+
     private List<EnvResponse> envs;
 
-    private List<HostingResponse> hostingResponses;
+    private HostingResponse hostingResponse;
 
     private List<DatabaseResponse> databaseResponses;
 
     @Builder
-    private DeploymentDetailResponse(Long deploymentId, Long projectId, DeploymentStatus status, ServiceType serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, List<HostingResponse> hostingResponses, List<EnvResponse> envs, String branch, String framework, List<DatabaseResponse> databaseResponses) {
+    private DeploymentDetailResponse(Long deploymentId,
+                                     Long projectId,
+                                     DeploymentStatus status,
+                                     ServiceType serviceType,
+                                     String repositoryName,
+                                     String repositoryUrl,
+                                     String repositoryOwner,
+                                     String branch,
+                                     String framework,
+                                     HostingResponse hostingResponse,
+                                     List<VersionResponse> versions,
+                                     List<EnvResponse> envs,
+                                     List<DatabaseResponse> databaseResponses) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;
         this.serviceType = serviceType;
         this.repositoryName = repositoryName;
         this.repositoryUrl = repositoryUrl;
-        this.repositoryLastCommitMessage = repositoryLastCommitMessage;
-        this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
-        this.repositoryLastCommitUserName = repositoryLastCommitUserName;
-        this.hostingResponses = hostingResponses;
+        this.repositoryOwner = repositoryOwner;
+        this.hostingResponse = hostingResponse;
         this.branch = branch;
         this.envs = envs;
         this.framework = framework;
+        this.versions = versions;
         this.databaseResponses = databaseResponses;
     }
 
-    public static DeploymentDetailResponse mapToDTO(DeploymentEntity deploymentEntity){
+    public static DeploymentDetailResponse mapToDTO(DeploymentEntity deploymentEntity,
+                                                    HostingEntity hostingEntity,
+                                                    List<VersionEntity> versionEntities){
         return DeploymentDetailResponse.builder()
                 .deploymentId(deploymentEntity.getId())
                 .projectId(deploymentEntity.getProjectId())
                 .status(deploymentEntity.getStatus())
                 .serviceType(deploymentEntity.getServiceType())
-                .repositoryLastCommitMessage(deploymentEntity.getGithubInfo().getRepositoryLastCommitMessage())
-                .repositoryLastCommitUserName(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserName())
-                .repositoryLastCommitUserProfile(deploymentEntity.getGithubInfo().getRepositoryLastCommitUserProfile())
                 .repositoryUrl(deploymentEntity.getGithubInfo().getRepositoryUrl())
                 .repositoryName(deploymentEntity.getGithubInfo().getRepositoryName())
-                .hostingResponses(deploymentEntity.getHostingEntities().stream()
-                        .map(HostingResponse::mapToDTO)
-                        .toList())
+                .repositoryOwner(deploymentEntity.getGithubInfo().getRepositoryOwner())
+                .hostingResponse(HostingResponse.mapToDTO(hostingEntity))
                 .envs(deploymentEntity.getEnvs().stream()
                         .map(EnvResponse::mapToDTO)
+                        .toList())
+                .versions(versionEntities.stream()
+                        .map(VersionResponse::mapToDTO)
                         .toList())
                 .branch(deploymentEntity.getGithubInfo().getBranch())
                 .framework(deploymentEntity.getFramework())

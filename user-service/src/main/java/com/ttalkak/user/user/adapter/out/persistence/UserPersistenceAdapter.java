@@ -1,6 +1,7 @@
 package com.ttalkak.user.user.adapter.out.persistence;
 
 import com.ttalkak.user.user.adapter.out.persistence.entity.UserEntity;
+import com.ttalkak.user.user.application.port.out.VerifyEmailUserPort;
 import com.ttalkak.user.user.domain.LoginUser;
 import com.ttalkak.user.user.domain.UserRole;
 import com.ttalkak.user.common.PersistenceAdapter;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort {
+public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort, VerifyEmailUserPort {
     private final UserJpaRepository userJpaRepository;
 
     @Override
@@ -37,8 +38,8 @@ public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort {
     }
 
     @Override
-    public UserEntity save(String username, String password, String email, String providerId, String githubToken) {
-        UserEntity entity = new UserEntity(username, password, email, UserRole.PROVIDER, providerId, githubToken);
+    public UserEntity save(String username, String password, String email, String providerId, String profileImage, String githubToken) {
+        UserEntity entity = new UserEntity(username, password, email, UserRole.PROVIDER, providerId, profileImage, githubToken);
         return userJpaRepository.save(entity);
     }
 
@@ -47,5 +48,10 @@ public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort {
         userJpaRepository.findByUsername(username).ifPresent(userEntity -> {
             userJpaRepository.updateGithubToken(username, accessToken);
         });
+    }
+
+    @Override
+    public void verifyEmail(String email) {
+        userJpaRepository.verifyEmail(email);
     }
 }

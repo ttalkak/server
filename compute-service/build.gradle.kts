@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.3.3"
     id("io.spring.dependency-management") version "1.1.6"
     kotlin("plugin.jpa") version "1.9.25"
+    id("org.sonarqube") version "4.0.0.2929"
 }
 
 group = "kr.kro.ddalkak"

@@ -16,6 +16,8 @@ producers:
   topics:
     create-compute:
       name: create-compute
+    rebuild-compute:
+      name: rebuild-compute
     delete-project-exception:
       name: delete-project-exception
     update-domain-name-exception:

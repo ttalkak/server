@@ -1,11 +1,13 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
+import com.ttalkak.deployment.deployment.application.outputport.HostingOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.ProjectOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUsecase;
 import com.ttalkak.deployment.deployment.domain.event.EnvEvent;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.EnvEntity;
+import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -36,6 +39,8 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
 
     private final EnvOutputPort envOutputPort;
 
+    private final HostingOutputPort hostingOutputPort;
+
     @Override
     public DeploymentDetailResponse updateDeployment(Long userId, DeploymentUpdateRequest deploymentUpdateRequest) {
 
@@ -43,17 +48,15 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
 
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentEntity.getProjectId());
-        if(userId != projectInfo.getUserId()){
+        if(!Objects.equals(userId, projectInfo.getUserId())){
             throw new EntityNotFoundException(ErrorCode.UN_AUTHORIZATION);
         }
 
         // 깃허브 관련 정보 객체 생성
         GithubInfo newGithubInfo = GithubInfo.create(
+                deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryOwner(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryName(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
-                deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
-                deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
-                deploymentUpdateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getRootDirectory(),
                 deploymentUpdateRequest.getGithubRepositoryRequest().getBranch()
         );
@@ -62,12 +65,9 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         String domainName = projectInfo.getDomainName();
 
         // 호스팅 정보 수정
-        deploymentEntity.getHostingEntities().forEach(hostingEntity -> {
-                            // 포트 업데이트
-                            hostingEntity.setHostingPort(deploymentUpdateRequest.getHostingPort());
-                            // 도메인명 업데이트
-                            hostingEntity.updateDomainName(domainName, String.valueOf(deploymentEntity.getServiceType()));
-                        });
+        HostingEntity hosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType());
+        hosting.setHostingPort(deploymentUpdateRequest.getHostingPort());
+        hosting.updateDomainName(domainName, String.valueOf(deploymentEntity.getServiceType()));
 
         // 업데이트된 내용의 데이터베이스
         List<DatabaseUpdateRequest> updatedDatabases = deploymentUpdateRequest.getDatabaseUpdateRequests();
@@ -113,7 +113,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
 
         // 업데이트 내역 알림 민준수 ===============================================
 
-
-        return DeploymentDetailResponse.mapToDTO(savedDeployment);
+        // TO Do List
+        return DeploymentDetailResponse.mapToDTO(savedDeployment, hosting, null);
     }
 }

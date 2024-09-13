@@ -3,28 +3,18 @@ package com.ttalkak.deployment.deployment.domain.model.vo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
 public class GithubInfo {
 
-    @Column(nullable = false)
-    private String repositoryLastCommitMessage;
-
-    @Column(nullable = false)
-    private String repositoryLastCommitUserProfile;
-
-    @Column(nullable = false)
-    private String repositoryLastCommitUserName;
-
-    @Column(nullable = false)
+    private String repositoryOwner;
     private String repositoryName;
 
-    @Column(nullable = false)
     private String repositoryUrl;
 
     @Column(nullable = false)
@@ -33,15 +23,22 @@ public class GithubInfo {
     @Column(nullable = false)
     private String branch;
 
-    public static GithubInfo create(String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserName, String repositoryLastCommitUserProfile, String rootDirectory, String branch) {
-        GithubInfo githubInfo = new GithubInfo();
-        githubInfo.repositoryLastCommitMessage = repositoryLastCommitMessage;
-        githubInfo.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
-        githubInfo.repositoryLastCommitUserName = repositoryLastCommitUserName;
-        githubInfo.repositoryName = repositoryName;
-        githubInfo.repositoryUrl = repositoryUrl;
-        githubInfo.rootDirectory = rootDirectory;
-        githubInfo.branch = branch;
-        return githubInfo;
+    @Builder
+    private GithubInfo(String repositoryOwner, String repositoryName, String repositoryUrl, String rootDirectory, String branch) {
+        this.repositoryOwner = repositoryOwner;
+        this.repositoryName = repositoryName;
+        this.repositoryUrl = repositoryUrl;
+        this.rootDirectory = rootDirectory;
+        this.branch = branch;
+    }
+
+    public static GithubInfo create(String repositoryOwner, String repositoryName, String repositoryUrl, String rootDirectory, String branch) {
+        return GithubInfo.builder()
+                .repositoryName(repositoryName)
+                .repositoryUrl(repositoryUrl)
+                .repositoryOwner(repositoryOwner)
+                .rootDirectory(rootDirectory)
+                .branch(branch)
+                .build();
     }
 }

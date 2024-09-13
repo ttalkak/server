@@ -15,8 +15,6 @@ public class HostingEvent implements Serializable {
 
     private Long hostingId;
 
-    private String hostingIp;
-
     private int hostingPort;
 
     private Long deployerId;

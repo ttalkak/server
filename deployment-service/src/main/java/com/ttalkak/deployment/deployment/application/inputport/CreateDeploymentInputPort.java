@@ -8,10 +8,7 @@ import com.ttalkak.deployment.deployment.domain.event.DatabaseEvent;
 import com.ttalkak.deployment.deployment.domain.event.DeploymentEvent;
 import com.ttalkak.deployment.deployment.domain.event.HostingEvent;
 import com.ttalkak.deployment.deployment.domain.event.*;
-import com.ttalkak.deployment.deployment.domain.model.DatabaseEntity;
-import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
-import com.ttalkak.deployment.deployment.domain.model.EnvEntity;
-import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
+import com.ttalkak.deployment.deployment.domain.model.*;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainKeyResponse;
@@ -37,6 +34,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
 
     private final HostingOutputPort hostingOutputPort;
 
+    private final VersionOutputPort versionOutputPort;
+
     private final DatabaseOutputPort databaseOutputPort;
 
     private final EnvOutputPort envOutputPort;
@@ -52,26 +51,29 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         // 깃허브 관련 정보 객체 생성
         GithubInfo githubInfo = createGithubInfo(deploymentCreateRequest);
 
+
         // 배포 객체 생성
         DeploymentEntity deployment = createDeployment(deploymentCreateRequest, githubInfo);
         // 배포 객체 저장
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deployment);
 
+        // 배포 버전 객체 생성
+        VersionEntity versionEntity = createVersion(deploymentCreateRequest, 1L, savedDeployment);
+
+        VersionEntity savedVersionEntity = versionOutputPort.save(versionEntity);
+
+        // 배포 버전 저장
+        savedDeployment.addVersion(savedVersionEntity);
 
         // 프로젝트 서비스로부터 도메인 이름 받아오기
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
         String domainName = projectInfo.getDomainName();
-
-
-//      {webhookToken} -> WEBHOOK-URL
-//        projectInfo.getWebhookToken()
 
         // 호스팅 객체 생성
         HostingEntity hosting = createHosting(deploymentCreateRequest, savedDeployment, domainName);
 
         // 호스팅 객체 저장
         HostingEntity savedHostingEntity = hostingOutputPort.save(hosting);
-        deployment.addHostingEntity(savedHostingEntity);
 
         // 도메인 서비스로부터 도메인 키 생성
         String detailSubDomainKey = makeSubDomainKey(savedHostingEntity, projectInfo);
@@ -85,10 +87,10 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         // 환경변수 생성
         List<EnvEvent> envs = createEnvs(deploymentCreateRequest, deployment, savedDeployment);
         // Kafka Event 객체 생성
-        HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), savedHostingEntity.getId(), null, savedHostingEntity.getHostingPort(), null,projectInfo.getDomainName(), hosting.getDetailSubDomainKey());
+        HostingEvent hostingEvent = new HostingEvent(savedDeployment.getId(), savedHostingEntity.getId(), savedHostingEntity.getHostingPort(), null,projectInfo.getDomainName(), hosting.getDetailSubDomainKey());
         DeploymentEvent deploymentEvent = new DeploymentEvent(savedDeployment.getId(), savedDeployment.getProjectId(), envs, savedDeployment.getServiceType().toString());
-        GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory(), "main");
-        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envs, databaseEvents);
+        GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory(), deployment.getGithubInfo().getBranch());
+        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envs, databaseEvents, versionEntity.getVersion());
         try {
             eventOutputPort.occurCreateInstance(createInstanceEvent);
         } catch (JsonProcessingException e) {
@@ -98,6 +100,14 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         return DeploymentCreateResponse.of(
                 "https://ttalkak.com/webhook/deployment/" + deploymentCreateRequest.getServiceType().toLowerCase() + "/" + projectInfo.getWebhookToken()
         );
+    }
+
+    private static VersionEntity createVersion(DeploymentCreateRequest deploymentCreateRequest, Long versionId, DeploymentEntity savedDeployment) {
+        return VersionEntity.createVersion(savedDeployment,
+                versionId,
+                deploymentCreateRequest.getVersionRequest().getRepositoryLastCommitMessage(),
+                deploymentCreateRequest.getVersionRequest().getRepositoryLastCommitUserProfile(),
+                deploymentCreateRequest.getVersionRequest().getRepositoryLastCommitUserName());
     }
 
     private List<EnvEvent> createEnvs(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity deployment, DeploymentEntity savedDeployment) {
@@ -146,40 +156,34 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
                         projectInfo.getDomainName() + " " + savedHostingEntity.getServiceType().toString(),
                         savedHostingEntity.getDetailSubDomainName()
                 ));
-        String detailSubDomainKey = domainKeyResponse.getKey();
-        return detailSubDomainKey;
+        return domainKeyResponse.getKey();
     }
 
     private static HostingEntity createHosting(DeploymentCreateRequest deploymentCreateRequest, DeploymentEntity savedDeployment, String domainName) {
-        HostingEntity hosting = HostingEntity.createHosting(
-                savedDeployment,
+        return HostingEntity.createHosting(
                 deploymentCreateRequest.getHostingPort(),
+                deploymentCreateRequest.getProjectId(),
                 deploymentCreateRequest.getServiceType(),
                 domainName
         );
-        return hosting;
     }
 
     private static DeploymentEntity createDeployment(DeploymentCreateRequest deploymentCreateRequest, GithubInfo githubInfo) {
-        DeploymentEntity deployment = DeploymentEntity.createDeployment(
+        return DeploymentEntity.createDeployment(
                 deploymentCreateRequest.getProjectId(),
                 ServiceType.valueOf(deploymentCreateRequest.getServiceType()),
                 githubInfo,
                 deploymentCreateRequest.getFramework()
         );
-        return deployment;
     }
 
     private static GithubInfo createGithubInfo(DeploymentCreateRequest deploymentCreateRequest) {
-        GithubInfo githubInfo = GithubInfo.create(
+        return GithubInfo.create(
+                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryOwner(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryName(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryUrl(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitMessage(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserName(),
-                deploymentCreateRequest.getGithubRepositoryRequest().getRepositoryLastCommitUserProfile(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getRootDirectory(),
                 deploymentCreateRequest.getGithubRepositoryRequest().getBranch()
         );
-        return githubInfo;
     }
 }

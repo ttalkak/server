@@ -5,9 +5,11 @@ import lombok.Data;
 @Data
 public class User {
     private Long id;
-    private String accessToken;
+    private String githubToken;
     private String username;
     private String password;
     private String email;
     private UserRole userRole;
+    private String profileImage;
+    private boolean isEmailVerified;
 }

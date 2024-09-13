@@ -4,7 +4,6 @@ import com.ttalkak.deployment.deployment.framework.web.request.DeploymentDeleteR
 
 public interface DeleteDeploymentUsecase {
     void deleteDeployment(Long userId, Long deploymentId);
-
-
+    
     public void deleteDeploymentByProject(Long projectId) throws Exception;
 }

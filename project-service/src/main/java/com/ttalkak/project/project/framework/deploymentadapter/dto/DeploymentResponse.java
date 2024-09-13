@@ -1,13 +1,13 @@
 package com.ttalkak.project.project.framework.deploymentadapter.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class DeploymentResponse {
 
     private Long deploymentId;
@@ -28,5 +28,19 @@ public class DeploymentResponse {
 
     private String repositoryLastCommitUserName;
 
-    private List<HostingResponse> hostingResponses;
+    private String repositoryOwner;
+
+    @Builder
+    public DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String branch, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, String repositoryOwner, String framework) {
+        this.deploymentId = deploymentId;
+        this.projectId = projectId;
+        this.status = status;
+        this.serviceType = serviceType;
+        this.repositoryName = repositoryName;
+        this.repositoryUrl = repositoryUrl;
+        this.repositoryLastCommitMessage = repositoryLastCommitMessage;
+        this.repositoryLastCommitUserProfile = repositoryLastCommitUserProfile;
+        this.repositoryLastCommitUserName = repositoryLastCommitUserName;
+        this.repositoryOwner = repositoryOwner;
+    }
 }

@@ -63,3 +63,8 @@ spring:
           uri: lb://NOTIFICATION-SERVICE
           predicates:
             - Path=/v1/notification/**
+
+        - id: deployment-service-webhook
+          uri: lb://DEPLOYMENT-SERVICE
+          predicates:
+            - Path=/webhook/deployment/**

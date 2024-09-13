@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateInstanceEvent implements Serializable {
-
     private String deploymentId;
 
     private String port;
@@ -33,7 +32,9 @@ public class CreateInstanceEvent implements Serializable {
 
     private List<DatabaseEvent> databases;
 
-    public CreateInstanceEvent(DeploymentEvent deployment, HostingEvent hosting, GithubInfoEvent githubInfo, List<EnvEvent> envs, List<DatabaseEvent> database) {
+    private Long version;
+
+    public CreateInstanceEvent(DeploymentEvent deployment, HostingEvent hosting, GithubInfoEvent githubInfo, List<EnvEvent> envs, List<DatabaseEvent> database, Long version) {
         this.deploymentId = deployment.getDeploymentId().toString();
         this.port = String.valueOf(hosting.getHostingPort());
         this.subdomainName = hosting.getSubdomainName();
@@ -44,7 +45,6 @@ public class CreateInstanceEvent implements Serializable {
         this.rootDirectory = githubInfo.getRootDirectory();
         this.envs = envs;
         this.databases = database;
+        this.version = version;
     }
-
-
 }
