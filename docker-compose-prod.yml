@@ -113,22 +113,22 @@ services:
           cpus: "0.5"
           memory: 512M
 
-  notification-service:
-    container_name: notification-service
-    build:
-      context: notification-service
-      dockerfile: Dockerfile.prod
-    depends_on:
-      - eureka-server
-      - config-server
-      - gateway-service
-    networks:
-      - spring-network
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 512M         
+  # notification-service:
+  #   container_name: notification-service
+  #   build:
+  #     context: notification-service
+  #     dockerfile: Dockerfile.prod
+  #   depends_on:
+  #     - eureka-server
+  #     - config-server
+  #     - gateway-service
+  #   networks:
+  #     - spring-network
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: "0.5"
+  #         memory: 512M         
 
 networks:
   spring-network:
