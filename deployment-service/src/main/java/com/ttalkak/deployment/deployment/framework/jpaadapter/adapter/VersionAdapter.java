@@ -3,6 +3,7 @@ package com.ttalkak.deployment.deployment.framework.jpaadapter.adapter;
 import com.ttalkak.deployment.common.global.error.ErrorCode;
 import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.outputport.VersionOutputPort;
+import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.VersionEntity;
 import com.ttalkak.deployment.deployment.framework.jpaadapter.repository.VersionRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class VersionAdapter implements VersionOutputPort {
     }
 
     @Override
-    public List<VersionEntity> findAllByDeploymentId(Long deploymentId) {
-        return versionRepository.findAllByDeploymentId(deploymentId);
+    public List<VersionEntity> findAllByDeploymentId(DeploymentEntity deploymentEntity) {
+        return versionRepository.findAllByDeploymentId(deploymentEntity);
     }
 }

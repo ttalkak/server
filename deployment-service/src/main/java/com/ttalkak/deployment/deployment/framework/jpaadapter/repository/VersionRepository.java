@@ -1,5 +1,6 @@
 package com.ttalkak.deployment.deployment.framework.jpaadapter.repository;
 
+import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.VersionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,5 @@ public interface VersionRepository extends JpaRepository<VersionEntity, Long> {
     public VersionEntity findLastVersionById(long id);
 
     @Query("SELECT v FROM VersionEntity v where v.deploymentEntity = :deploymentId ORDER BY v.id DESC")
-    public List<VersionEntity> findAllByDeploymentId(Long deploymentId);
+    public List<VersionEntity> findAllByDeploymentId(DeploymentEntity deploymentEntity);
 }
-

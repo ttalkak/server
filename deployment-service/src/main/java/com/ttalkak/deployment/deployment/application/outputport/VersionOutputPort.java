@@ -13,5 +13,5 @@ public interface VersionOutputPort {
 
     VersionEntity findById(Long versionId);
 
-    List<VersionEntity> findAllByDeploymentId(Long deploymentId);
+    List<VersionEntity> findAllByDeploymentId(DeploymentEntity deploymentEntity);
 }
