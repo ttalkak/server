@@ -1,13 +1,13 @@
 package com.ttalkak.deployment.deployment.application.usecase;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class WebHookCommand {
-    private Long projectId;
     private String repositoryName;
     private String repositoryUrl;
-    private String branch;
     private String commitUsername;
     private String commitUserProfile;
     private String commitMessage;
