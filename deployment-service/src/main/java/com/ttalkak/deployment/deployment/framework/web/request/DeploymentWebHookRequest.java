@@ -11,3 +11,4 @@ public class DeploymentWebHookRequest {
     private WebHookUser sender;
     private List<WebHookCommit> commits;
 }
+

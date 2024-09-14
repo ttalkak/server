@@ -21,9 +21,9 @@ public class DeploymentController {
 
     private final UpdateDeploymentUsecase updateDeploymentUsecase;
 
-    private final CommandDeploymentStatusUsecase commandDeploymentStatusUsecase;
-
     private final DeleteDeploymentUsecase deleteDeploymentUsecase;
+
+    private final CommandDeploymentStatusUsecase commandDeploymentStatusUsecase;
 
     private final InquiryUsecase inquiryUsecase;
 
@@ -77,6 +77,4 @@ public class DeploymentController {
         deleteDeploymentUsecase.deleteDeployment(userId, deploymentId);
         return ApiResponse.empty();
     }
-
-
 }

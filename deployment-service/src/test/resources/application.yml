@@ -1,0 +1,16 @@
+logging:
+  level:
+    root: OFF
+
+spring:
+  cloud:
+    config:
+      enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+hosts:
+  logstash: localhost

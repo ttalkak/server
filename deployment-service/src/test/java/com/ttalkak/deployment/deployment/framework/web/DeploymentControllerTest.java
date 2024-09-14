@@ -1,201 +1,189 @@
-//package com.ttalkak.deployment.deployment.framework.web;
-//
-//import com.ttalkak.deployment.deployment.application.usecase.*;
-//import com.ttalkak.deployment.deployment.domain.event.CommandEvent;
-//import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentStatus;
-//import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
-//import com.ttalkak.deployment.deployment.framework.web.request.*;
-//import com.ttalkak.deployment.deployment.framework.web.response.*;
-//import com.ttalkak.deployment.deployment.support.RestDocsSupport;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.Mockito;
-//import org.springframework.http.MediaType;
-//import org.springframework.restdocs.payload.JsonFieldType;
-//import org.springframework.test.web.servlet.ResultActions;
-//
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-//import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
-//import static org.mockito.ArgumentMatchers.*;
-//import static org.mockito.Mockito.*;
-//import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-//import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-//import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-//import static org.springframework.restdocs.request.RequestDocumentation.*;
-//import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-//
-//class DeploymentControllerTest extends RestDocsSupport {
-//
-//    private final CreateDeploymentUsecase createDeploymentUsecase = mock(CreateDeploymentUsecase.class);
-//
-//    private final UpdateDeploymentUsecase updateDeploymentUsecase = mock(UpdateDeploymentUsecase.class);
-//
-//    private final DeleteDeploymentUsecase deleteDeploymentUsecase = mock(DeleteDeploymentUsecase.class);
-//
-//    private final CommandDeploymentStatusUsecase commandDeploymentStatusUsecase = mock(CommandDeploymentStatusUsecase.class);
-//
-//    private final InquiryUsecase inquiryUsecase = mock(InquiryUsecase.class);
-//
-//    @Override
-//    public Object initController() {
-//        return new DeploymentController(createDeploymentUsecase, updateDeploymentUsecase, commandDeploymentStatusUsecase, deleteDeploymentUsecase, inquiryUsecase);
-//    }
-//
-//    @DisplayName("배포 생성")
-//    @Test
-//    void createDeployment() throws Exception {
-//        //given
-//        GithubRepositoryRequest githubRepositoryRequest = createGitRepositoryRequest("repo-name", "https://github.com/repo-url", "Initial commit", "https://github.com/user/profile", "userName", "root/", "main");
-//
-//        DatabaseCreateRequest databaseCreateRequest = createDatabaseRequest("dbName", 3306, "dbUser", "dbPassword");
-//
-//        EnvCreateRequest env1 = createEnvRequest("key1", "value1");
-//        EnvCreateRequest env2 = createEnvRequest("key2", "value2");
-//
-//        List<EnvCreateRequest> exampleEnvs = List.of(env1, env2);
-//
-//        DeploymentCreateRequest request = DeploymentCreateRequest.builder()
-//                .projectId(1L)
-//                .serviceType("BACKEND")
-//                .githubRepositoryRequest(githubRepositoryRequest)
-//                .databaseCreateRequests(List.of(databaseCreateRequest))
-//                .hostingPort(8080)
-//                .framework("Spring Boot")
-//                .envs(exampleEnvs)
-//                .build();
-//
-//        HostingResponse hostingResponse1 = HostingResponse.builder()
-//                .hostingId(1L)
-//                .hostingPort(8080)
-//                .serviceType(ServiceType.BACKEND)
-//                .detailDomainName("api.leadme")
-//                .build();
-//
-//        EnvResponse envResponse1 = EnvResponse.builder()
-//                .envId(1L)
-//                .key("key1")
-//                .value("value1")
-//                .build();
-//
-//        EnvResponse envResponse2 = EnvResponse.builder()
-//                .envId(2L)
-//                .key("key2")
-//                .value("value2")
-//                .build();
-//
-//        List<EnvResponse> envResponse = List.of(envResponse1, envResponse2);
-//
-//        HostingResponse hostingResponse2 = HostingResponse.builder()
-//                .hostingId(2L)
-//                .hostingPort(5173)
-//                .serviceType(ServiceType.FRONTEND)
-//                .detailDomainName("leadme")
-//                .build();
-//
-//        DeploymentCreateResponse response = DeploymentCreateResponse.of("https://ttalkak.com/webhook/deployment/backend/{webhooktoken}");
-//
-//        when(createDeploymentUsecase.createDeployment(any(DeploymentCreateRequest.class)))
-//                .thenReturn(response);
-//
-//        //when
-//        ResultActions perform = mockMvc.perform(
-//                        post("/v1/deployment")
-//                                .content(objectMapper.writeValueAsString(request))
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                )
-//                .andDo(print())
-//                .andExpect(status().isCreated())
-//                // Documentation
-//                .andDo(document("deployment-create",
-//                        //JSON 이쁘게 만들기
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        //RestDoc 스니펫 정보
-//                        requestFields(
-//                                fieldWithPath("projectId").type(JsonFieldType.NUMBER)
-//                                        .description("프로젝트 ID"),
-//                                fieldWithPath("framework").type(JsonFieldType.STRING)
-//                                        .description("프레임워크"),
-//                                fieldWithPath("serviceType").type(JsonFieldType.STRING)
-//                                        .description("서비스 유형 (예: FRONTEND, BACKEND)"),
-//                                fieldWithPath("githubRepositoryRequest.repositoryName").type(JsonFieldType.STRING)
-//                                        .description("깃허브 저장소 이름"),
-//                                fieldWithPath("githubRepositoryRequest.repositoryUrl").type(JsonFieldType.STRING)
-//                                        .description("깃허브 저장소 URL"),
-//                                fieldWithPath("githubRepositoryRequest.repositoryLastCommitMessage").type(JsonFieldType.STRING)
-//                                        .description("최근 커밋 메시지"),
-//                                fieldWithPath("githubRepositoryRequest.repositoryLastCommitUserProfile").type(JsonFieldType.STRING)
-//                                        .description("최근 커밋 유저 프로필 URL"),
-//                                fieldWithPath("githubRepositoryRequest.repositoryLastCommitUserName").type(JsonFieldType.STRING)
-//                                        .description("최근 커밋 유저 이름"),
-//                                fieldWithPath("githubRepositoryRequest.rootDirectory").type(JsonFieldType.STRING)
-//                                        .description("루트 디렉토리 경로"),
-//                                fieldWithPath("githubRepositoryRequest.branch").type(JsonFieldType.STRING)
-//                                        .description("깃허브 브랜치"),
-//                                fieldWithPath("databaseCreateRequests[].databaseName").type(JsonFieldType.STRING)
-//                                        .description("데이터베이스 이름"),
-//                                fieldWithPath("databaseCreateRequests[].databasePort").type(JsonFieldType.NUMBER)
-//                                        .description("데이터베이스 포트"),
-//                                fieldWithPath("databaseCreateRequests[].username").type(JsonFieldType.STRING)
-//                                        .optional()
-//                                        .description("데이터베이스 사용자 이름"),
-//                                fieldWithPath("databaseCreateRequests[].password").type(JsonFieldType.STRING)
-//                                        .description("데이터베이스 비밀번호"),
-//                                fieldWithPath("hostingPort").type(JsonFieldType.NUMBER)
-//                                        .description("호스팅 포트"),
-//                                fieldWithPath("envs[].key").type(JsonFieldType.STRING)
-//                                        .description("환경변수 키 값"),
-//                                fieldWithPath("envs[].value").type(JsonFieldType.STRING)
-//                                        .description("환경변수 키에 해당하는 응답값")
-//                        ),
-//                        responseFields(
-//                                fieldWithPath("success").type(JsonFieldType.BOOLEAN)
-//                                        .description("요청 성공 여부"),
-//                                fieldWithPath("message").type(JsonFieldType.STRING)
-//                                        .description("응답 메시지 (현재 null)"),
-//                                fieldWithPath("status").type(JsonFieldType.NUMBER)
-//                                        .description("응답 코드 (예: 201)"),
-//                                fieldWithPath("data.webhookUrl").type(JsonFieldType.STRING)
-//                                        .description("웹 훅 URL")
-//                        )
-//                ));
-//
-//        //then
-//        perform.andDo(print()); // Optional, if you want to see the output in the console
-//    }
-//
-//    private static GithubRepositoryRequest createGitRepositoryRequest(String repositoryName, String repositoryUrl, String In1itial_commit, String repositoryLastCommitUserProfile, String userN1ame, String rootDirectory, String mai1n) {
-//        return GithubRepositoryRequest.builder()
-//                .repositoryName(repositoryName)
-//                .repositoryUrl(repositoryUrl)
-//                .repositoryLastCommitMessage(In1itial_commit)
-//                .repositoryLastCommitUserProfile(repositoryLastCommitUserProfile)
-//                .repositoryLastCommitUserName(userN1ame)
-//                .rootDirectory(rootDirectory)
-//                .branch(mai1n)
-//                .build();
-//    }
-//
-//    private static DatabaseCreateRequest createDatabaseRequest(String dbName, int databasePort, String dbUser, String dbPassword) {
-//        return DatabaseCreateRequest.builder()
-//                .databaseName(dbName)
-//                .databasePort(databasePort)
-//                .username(dbUser)
-//                .password(dbPassword)
-//                .build();
-//    }
-//
-//    private static EnvCreateRequest createEnvRequest(String key1, String value1) {
-//        return EnvCreateRequest.builder()
-//                .key(key1)
-//                .value(value1)
-//                .build();
-//    }
-//
-//
+package com.ttalkak.deployment.deployment.framework.web;
+
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.ttalkak.deployment.deployment.application.usecase.*;
+import com.ttalkak.deployment.deployment.domain.event.CommandEvent;
+import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseType;
+import com.ttalkak.deployment.deployment.framework.web.request.*;
+import com.ttalkak.deployment.deployment.framework.web.response.*;
+import com.ttalkak.deployment.deployment.support.RestDocsSupport;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.List;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@DisplayName("배포 컨트롤러 테스트")
+//@SpringBootTest(properties = {
+//        "spring.cloud.config.enabled=false",
+//        "subdomain.endpoint=localhost:8000"}
+//)
+@WebMvcTest(
+        value = DeploymentController.class
+//        excludeAutoConfiguration = {HibernateJpaAutoConfiguration.class}
+)
+@AutoConfigureWebMvc
+class DeploymentControllerTest extends RestDocsSupport {
+
+
+    @MockBean
+    private CreateDeploymentUsecase createDeploymentUsecase;
+
+    @MockBean
+    private UpdateDeploymentUsecase updateDeploymentUsecase;
+
+    @MockBean
+    private DeleteDeploymentUsecase deleteDeploymentUsecase;
+
+    @MockBean
+    private CommandDeploymentStatusUsecase commandDeploymentStatusUsecase;
+
+    @MockBean
+    private InquiryUsecase inquiryUsecase;
+
+    @Test
+    @DisplayName("배포 생성")
+    void createDeployment() throws Exception {
+        // given
+        GithubRepositoryRequest githubRepositoryRequest = createGitRepositoryRequest(
+                "repoOwner",
+                "repo-name",
+                "https://github.com/repo-url",
+                "root/",
+                "main"
+        );
+
+        DatabaseCreateRequest databaseCreateRequest = createDatabaseRequest(
+                DatabaseType.MYSQL, // Enum 타입으로 DatabaseType 사용
+                3306,
+                "dbUser",
+                "dbPassword"
+        );
+
+        EnvCreateRequest env1 = createEnvRequest("key1", "value1");
+        EnvCreateRequest env2 = createEnvRequest("key2", "value2");
+
+        List<EnvCreateRequest> exampleEnvs = List.of(env1, env2);
+
+        VersionRequest versionRequest = createVersionRequest(
+                "Initial commit",
+                "https://github.com/user/profile",
+                "userName"
+        );
+
+        DeploymentCreateRequest request = DeploymentCreateRequest.builder()
+                .projectId(1L)
+                .serviceType("BACKEND")
+                .githubRepositoryRequest(githubRepositoryRequest)
+                .databaseCreateRequests(List.of(databaseCreateRequest))
+                .versionRequest(versionRequest)
+                .hostingPort(8080)
+                .framework("Spring Boot")
+                .envs(exampleEnvs)
+                .build();
+
+        // mocking response
+        DeploymentCreateResponse response = DeploymentCreateResponse.of("https://ttalkak.com/webhook/deployment/backend/{webhooktoken}");
+
+        when(createDeploymentUsecase.createDeployment(any(DeploymentCreateRequest.class)))
+                .thenReturn(response);
+
+        // when
+        ResultActions perform = this.mockMvc.perform(
+                post("/v1/deployment")
+                        .content(toJson(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        perform.andExpect(status().isCreated())
+                .andDo(this.restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("배포")
+                                .summary("배포 생성")
+                                .description("사용자가 FRONTEND 혹은 BACKEND를 배포할 수 있습니다.")
+                                .requestFields(
+                                        fieldWithPath("projectId").type(JsonFieldType.NUMBER).description("프로젝트 ID"),
+                                        fieldWithPath("framework").type(JsonFieldType.STRING).description("프레임워크"),
+                                        fieldWithPath("serviceType").type(JsonFieldType.STRING).description("서비스 유형 (예: FRONTEND, BACKEND)"),
+                                        fieldWithPath("githubRepositoryRequest.repositoryOwner").type(JsonFieldType.STRING).description("깃허브 레포지토리 오너"),
+                                        fieldWithPath("githubRepositoryRequest.repositoryName").type(JsonFieldType.STRING).description("깃허브 저장소 이름"),
+                                        fieldWithPath("githubRepositoryRequest.repositoryUrl").type(JsonFieldType.STRING).description("깃허브 저장소 URL"),
+                                        fieldWithPath("githubRepositoryRequest.repositoryLastCommitMessage").type(JsonFieldType.STRING).description("최근 커밋 메시지"),
+                                        fieldWithPath("githubRepositoryRequest.repositoryLastCommitUserProfile").type(JsonFieldType.STRING).description("최근 커밋 유저 프로필 URL"),
+                                        fieldWithPath("githubRepositoryRequest.repositoryLastCommitUserName").type(JsonFieldType.STRING).description("최근 커밋 유저 이름"),
+                                        fieldWithPath("githubRepositoryRequest.rootDirectory").type(JsonFieldType.STRING).description("루트 디렉토리 경로"),
+                                        fieldWithPath("githubRepositoryRequest.branch").type(JsonFieldType.STRING).description("깃허브 브랜치"),
+                                        fieldWithPath("versionRequest.repositoryLastCommitMessage").type(JsonFieldType.STRING).description("깃허브 레포지토리 마지막 커밋 메시지"),
+                                        fieldWithPath("versionRequest.repositoryLastCommitUserProfile").type(JsonFieldType.STRING).description("깃허브 레포지토리 커밋 유저 프로필 이미지"),
+                                        fieldWithPath("versionRequest.repositoryLastCommitUserName").type(JsonFieldType.STRING).description("깃허브 레포지토리 마지막 커밋 유저 이름"),
+                                        fieldWithPath("databaseCreateRequests[].databaseName").type(JsonFieldType.STRING).description("데이터베이스 이름"),
+                                        fieldWithPath("databaseCreateRequests[].databasePort").type(JsonFieldType.NUMBER).description("데이터베이스 포트"),
+                                        fieldWithPath("databaseCreateRequests[].username").type(JsonFieldType.STRING).optional().description("데이터베이스 사용자 이름"),
+                                        fieldWithPath("databaseCreateRequests[].password").type(JsonFieldType.STRING).description("데이터베이스 비밀번호"),
+                                        fieldWithPath("hostingPort").type(JsonFieldType.NUMBER).description("호스팅 포트"),
+                                        fieldWithPath("envs[].key").type(JsonFieldType.STRING).description("환경변수 키 값"),
+                                        fieldWithPath("envs[].value").type(JsonFieldType.STRING).description("환경변수 키에 해당하는 응답값")
+                                )
+                                .responseFields(
+                                        fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("요청 성공 여부"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지 (현재 null)"),
+                                        fieldWithPath("status").type(JsonFieldType.NUMBER).description("응답 코드 (예: 201)"),
+                                        fieldWithPath("data.webhookUrl").type(JsonFieldType.STRING).description("웹 훅 URL")
+                                )
+                                .build()
+                )));
+    }
+
+    private GithubRepositoryRequest createGitRepositoryRequest(String repositoryOwner, String repositoryName, String repositoryUrl, String rootDirectory, String branch) {
+        return GithubRepositoryRequest.builder()
+                .repositoryOwner(repositoryOwner)
+                .repositoryName(repositoryName)
+                .repositoryUrl(repositoryUrl)
+                .rootDirectory(rootDirectory)
+                .branch(branch)
+                .build();
+    }
+
+    private DatabaseCreateRequest createDatabaseRequest(DatabaseType databaseName, int databasePort, String username, String password) {
+        return DatabaseCreateRequest.builder()
+                .databaseName(databaseName)
+                .databasePort(databasePort)
+                .username(username)
+                .password(password)
+                .build();
+    }
+
+    private EnvCreateRequest createEnvRequest(String key, String value) {
+        return EnvCreateRequest.builder()
+                .key(key)
+                .value(value)
+                .build();
+    }
+
+    private VersionRequest createVersionRequest(String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName) {
+        return VersionRequest.builder()
+                .repositoryLastCommitMessage(repositoryLastCommitMessage)
+                .repositoryLastCommitUserProfile(repositoryLastCommitUserProfile)
+                .repositoryLastCommitUserName(repositoryLastCommitUserName)
+                .build();
+    }
+
+
 //    @DisplayName("배포 상세조회")
 //    @Test
 //    void getDeployment() throws Exception {
@@ -576,4 +564,4 @@
 //                        )
 //                ));
 //    }
-//}
+}
