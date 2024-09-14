@@ -24,6 +24,8 @@ public class DeploymentEntity extends BaseEntity {
     @Column(nullable = false)
     private Long projectId;
 
+    private String payloadURL;
+
     @Setter
     @Column(name = "deploy_status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -50,23 +52,25 @@ public class DeploymentEntity extends BaseEntity {
     private String framework;
 
     @Builder
-    private DeploymentEntity(Long id, Long projectId, DeploymentStatus status, ServiceType serviceType, GithubInfo githubInfo, String framework) {
+    private DeploymentEntity(Long id, Long projectId, DeploymentStatus status, ServiceType serviceType, GithubInfo githubInfo, String framework, String payloadURL) {
         this.id = id;
         this.projectId = projectId;
         this.status = status;
         this.serviceType = serviceType;
         this.githubInfo = githubInfo;
         this.framework = framework;
+        this.payloadURL = payloadURL;
     }
 
     // 배포 생성
-    public static DeploymentEntity createDeployment(Long projectId, ServiceType ServiceType, GithubInfo githubInfo, String framework){
+    public static DeploymentEntity createDeployment(Long projectId, ServiceType ServiceType, GithubInfo githubInfo, String framework, String payloadURL){
         return DeploymentEntity.builder()
                 .projectId(projectId)
                 .serviceType(ServiceType)
                 .status(DeploymentStatus.PENDING)
                 .githubInfo(githubInfo)
                 .framework(framework)
+                .payloadURL(payloadURL)
                 .build();
     }
 

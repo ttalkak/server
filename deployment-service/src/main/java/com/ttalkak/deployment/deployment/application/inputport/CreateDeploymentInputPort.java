@@ -51,9 +51,14 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         // 깃허브 관련 정보 객체 생성
         GithubInfo githubInfo = createGithubInfo(deploymentCreateRequest);
 
+        // 프로젝트 서비스로부터 도메인 이름 받아오기
+        ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
+        String domainName = projectInfo.getDomainName();
+        String webhookToken = projectInfo.getWebhookToken();
+        String payloadURL = "https://ttalkak.com/webhook/deployment/" + deploymentCreateRequest.getServiceType().toLowerCase() + "/" + webhookToken;
 
         // 배포 객체 생성
-        DeploymentEntity deployment = createDeployment(deploymentCreateRequest, githubInfo);
+        DeploymentEntity deployment = createDeployment(deploymentCreateRequest, githubInfo, payloadURL);
         // 배포 객체 저장
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deployment);
 
@@ -65,9 +70,6 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         // 배포 버전 저장
         savedDeployment.addVersion(savedVersionEntity);
 
-        // 프로젝트 서비스로부터 도메인 이름 받아오기
-        ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentCreateRequest.getProjectId());
-        String domainName = projectInfo.getDomainName();
 
         // 호스팅 객체 생성
         HostingEntity hosting = createHosting(deploymentCreateRequest, savedDeployment, domainName);
@@ -97,9 +99,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
             throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
         }
 
-        return DeploymentCreateResponse.of(
-                "https://ttalkak.com/webhook/deployment/" + deploymentCreateRequest.getServiceType().toLowerCase() + "/" + projectInfo.getWebhookToken()
-        );
+        return DeploymentCreateResponse.of(payloadURL);
     }
 
     private static VersionEntity createVersion(DeploymentCreateRequest deploymentCreateRequest, Long versionId, DeploymentEntity savedDeployment) {
@@ -168,13 +168,13 @@ public class CreateDeploymentInputPort implements CreateDeploymentUsecase {
         );
     }
 
-    private static DeploymentEntity createDeployment(DeploymentCreateRequest deploymentCreateRequest, GithubInfo githubInfo) {
+    private static DeploymentEntity createDeployment(DeploymentCreateRequest deploymentCreateRequest, GithubInfo githubInfo, String payloadURL) {
         return DeploymentEntity.createDeployment(
                 deploymentCreateRequest.getProjectId(),
                 ServiceType.valueOf(deploymentCreateRequest.getServiceType()),
                 githubInfo,
-                deploymentCreateRequest.getFramework()
-        );
+                deploymentCreateRequest.getFramework(),
+                payloadURL);
     }
 
     private static GithubInfo createGithubInfo(DeploymentCreateRequest deploymentCreateRequest) {
