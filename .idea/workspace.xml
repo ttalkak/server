@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
-      <change beforePath="$PROJECT_DIR$/notification-service/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/notification-service/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/response/DeploymentDetailResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/response/DeploymentDetailResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +41,8 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
+        <option value="AnnotationType" />
       </list>
     </option>
   </component>
@@ -80,6 +83,8 @@
     "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
     "Gradle.Build deployment-service.executor": "Run",
     "Gradle.Build project-service.executor": "Run",
+    "Gradle.DeploymentControllerTest.createDeployment.executor": "Run",
+    "Gradle.DeploymentControllerTest.executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
@@ -90,6 +95,8 @@
     "Spring Boot.ProjectServiceApplication (1).executor": "Run",
     "Spring Boot.ProjectServiceApplication.executor": "Run",
     "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/SSAFY/Desktop/Jun/ddalkak/notification-service/gradlew",
@@ -113,10 +120,17 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.ttalkak.deployment" />
       <recent name="com.ttalkak.deployment.deployment.framework.web.response" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.ttalkak.deployment" />
+    </key>
   </component>
-  <component name="RunManager" selected="Docker.docker-compose.yml: Compose Deployment">
+  <component name="RunManager" selected="Gradle.DeploymentControllerTest.createDeployment">
     <configuration name="DeploymentControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -131,6 +145,30 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;com.ttalkak.deployment.deployment.framework.web.DeploymentControllerTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="DeploymentControllerTest.createDeployment" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/deployment-service" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.ttalkak.deployment.deployment.framework.web.DeploymentControllerTest.createDeployment&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -219,19 +257,6 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <configuration name="docker-compose-prod.yml.gateway-service: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="gateway-service" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker-compose-prod.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
     <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -255,11 +280,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+        <item itemvalue="Gradle.DeploymentControllerTest.createDeployment" />
         <item itemvalue="Gradle.DeploymentControllerTest" />
+        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
         <item itemvalue="Gradle.DeploymentControllerTest.updateDeployment" />
         <item itemvalue="Spring Boot.ProjectServiceApplication" />
-        <item itemvalue="Docker.docker-compose-prod.yml.gateway-service: Compose Deployment" />
       </list>
     </recent_temporary>
   </component>
@@ -295,7 +320,7 @@
       <workItem from="1726102920307" duration="6000" />
       <workItem from="1726119294629" duration="6512000" />
       <workItem from="1726205055385" duration="281000" />
-      <workItem from="1726304110977" duration="1099000" />
+      <workItem from="1726304110977" duration="7962000" />
     </task>
     <task id="LOCAL-00001" summary="도커 컴포즈 수정">
       <option name="closed" value="true" />

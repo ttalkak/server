@@ -39,6 +39,8 @@ public class DeploymentDetailResponse {
 
     private String framework;
 
+    private String payloadURL;
+
     private List<VersionResponse> versions;
 
     private List<EnvResponse> envs;
@@ -57,6 +59,7 @@ public class DeploymentDetailResponse {
                                      String repositoryOwner,
                                      String branch,
                                      String framework,
+                                     String payloadURL,
                                      HostingResponse hostingResponse,
                                      List<VersionResponse> versions,
                                      List<EnvResponse> envs,
@@ -71,6 +74,7 @@ public class DeploymentDetailResponse {
         this.hostingResponse = hostingResponse;
         this.branch = branch;
         this.envs = envs;
+        this.payloadURL = payloadURL;
         this.framework = framework;
         this.versions = versions;
         this.databaseResponses = databaseResponses;
@@ -84,6 +88,7 @@ public class DeploymentDetailResponse {
                 .projectId(deploymentEntity.getProjectId())
                 .status(deploymentEntity.getStatus())
                 .serviceType(deploymentEntity.getServiceType())
+                .payloadURL(deploymentEntity.getPayloadURL())
                 .repositoryUrl(deploymentEntity.getGithubInfo().getRepositoryUrl())
                 .repositoryName(deploymentEntity.getGithubInfo().getRepositoryName())
                 .repositoryOwner(deploymentEntity.getGithubInfo().getRepositoryOwner())
