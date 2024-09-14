@@ -1,4 +1,4 @@
-package com.ttalkak.user.user.adapter.in.web.response;
+package com.ttalkak.user.user.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

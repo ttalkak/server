@@ -5,11 +5,12 @@ import com.ttalkak.notification.notification.application.port.`in`.ConfirmCodeUs
 import com.ttalkak.notification.notification.application.port.`in`.SendCodeUseCase
 import com.ttalkak.notification.notification.application.port.out.LoadCodePort
 import com.ttalkak.notification.notification.application.port.out.SaveCodePort
+import com.ttalkak.notification.notification.application.port.out.VerifyEmailEventPort
+import com.ttalkak.notification.notification.domain.EmailConfirmEvent
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.scheduling.annotation.Async
-import org.springframework.transaction.annotation.Transactional
 import org.thymeleaf.context.Context
 import org.thymeleaf.spring6.SpringTemplateEngine
 
@@ -18,7 +19,8 @@ class EmailService (
     private val mailSender: JavaMailSender,
     private val templateEngine: SpringTemplateEngine,
     private val saveCodePort: SaveCodePort,
-    private val loadCodePort: LoadCodePort
+    private val loadCodePort: LoadCodePort,
+    private val verifyEmailEventPort: VerifyEmailEventPort
 ): ConfirmCodeUseCase, SendCodeUseCase {
     private val log = KotlinLogging.logger {}
 
@@ -74,6 +76,10 @@ class EmailService (
             mailSender.send(message)
             log.info {
                 "이메일 인증 코드 메일 발송 성공: $email"
+            }
+
+            EmailConfirmEvent(email).also {
+                verifyEmailEventPort.verifyEmail(it)
             }
         } catch (e: Exception) {
             log.error(e) {

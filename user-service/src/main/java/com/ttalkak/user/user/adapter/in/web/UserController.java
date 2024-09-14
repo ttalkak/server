@@ -1,7 +1,7 @@
 package com.ttalkak.user.user.adapter.in.web;
 
 import com.ttalkak.user.common.WebAdapter;
-import com.ttalkak.user.user.adapter.in.web.response.ApiResponse;
+import com.ttalkak.user.user.domain.ApiResponse;
 import com.ttalkak.user.user.application.port.in.FindUserUseCase;
 import com.ttalkak.user.user.domain.LoginUser;
 import lombok.RequiredArgsConstructor;

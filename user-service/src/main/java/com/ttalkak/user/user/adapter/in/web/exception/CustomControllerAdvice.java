@@ -1,6 +1,6 @@
 package com.ttalkak.user.user.adapter.in.web.exception;
 
-import com.ttalkak.user.user.adapter.in.web.response.ApiResponse;
+import com.ttalkak.user.user.domain.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

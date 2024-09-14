@@ -8,7 +8,7 @@ import com.ttalkak.user.common.WebAdapter;
 import com.ttalkak.user.common.util.CookieUtils;
 import com.ttalkak.user.user.adapter.in.web.request.SignInRequest;
 import com.ttalkak.user.user.adapter.in.web.request.SignUpRequest;
-import com.ttalkak.user.user.adapter.in.web.response.ApiResponse;
+import com.ttalkak.user.user.domain.ApiResponse;
 import com.ttalkak.user.user.application.port.in.RefreshTokenUseCase;
 import com.ttalkak.user.user.application.port.in.RegisterCommand;
 import com.ttalkak.user.user.application.port.in.AuthenticationUseCase;
