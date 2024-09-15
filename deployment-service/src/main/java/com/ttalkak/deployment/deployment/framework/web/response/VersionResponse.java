@@ -15,7 +15,6 @@ public class VersionResponse {
 
     private String logUrl;
 
-
     private String repositoryLastCommitMessage;
 
     private String repositoryLastCommitUserProfile;
