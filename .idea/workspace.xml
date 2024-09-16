@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f76c988a-a487-4a0c-abe3-004d5ecba508.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/f76c988a-a487-4a0c-abe3-004d5ecba508.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/index.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/ssapick-api-docs.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/docs/asciidocs/api/deployment/create.adoc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/docs/asciidocs/api/deployment/delete.adoc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/docs/asciidocs/api/deployment/get.adoc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/docs/asciidocs/api/deployment/search.adoc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/docs/asciidocs/index.adoc" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +101,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Jun/ddalkak/notification-service/gradlew",
+    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Jun/ddalkak",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -339,6 +334,7 @@
       <workItem from="1726119294629" duration="6512000" />
       <workItem from="1726205055385" duration="281000" />
       <workItem from="1726304110977" duration="7962000" />
+      <workItem from="1726472155102" duration="705000" />
     </task>
     <task id="LOCAL-00001" summary="도커 컴포즈 수정">
       <option name="closed" value="true" />

@@ -1,0 +1,24 @@
+openapi: 3.0.1
+info:
+  title: Combined API Documentation
+  description: |
+    This is the combined API documentation for the ssapick and ttalkak-deployment services.
+    Each service's documentation is available under its respective path.
+    - [SSAPICK Service](#/ssapick)
+    - [Ttalkak-Deployment Service](#/ttalkak-deployment)
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+  - url: https://staging-api.example.com/v1
+    description: Staging server
+tags:
+  - name: ssapick
+    description: All operations related to the ssapick service.
+  - name: ttalkak-deployment
+    description: All operations related to the ttalkak-deployment service.
+paths:
+  /ssapick:
+    $ref: './ssapick-api-docs.yaml'
+  /ttalkak-deployment:
+    $ref: './ttalkak-deployment-api-docs.yaml'
