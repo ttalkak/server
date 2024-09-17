@@ -38,7 +38,6 @@ public class ProjectResponse {
         this.domainName = domainName;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.deployments = deployments;
     }
 
     public static ProjectResponse mapToResponse(ProjectEntity projectEntity) {
