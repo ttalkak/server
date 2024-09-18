@@ -148,8 +148,8 @@ pipeline {
                 docker ps -aq --filter "name=document-service" | xargs -r docker rm
 
                 # API 문서 파일 복사
-                sudo cp deployment-service/build/resources/test/docs/ttalkak-deployment-api-docs.yaml /var/lib/jenkins/workspace/ttalkak/docs/deployment-api-docs.yaml
-                sudo cp project-service/build/resources/test/docs/ttalkak-project-api-docs.yaml /var/lib/jenkins/workspace/ttalkak/docs/project-api-docs.yaml
+                sudo cp /var/lib/jenkins/workspace/ttalkak/deployment-service/build/resources/test/docs/ttalkak-deployment-api-docs.yaml /var/lib/jenkins/workspace/ttalkak/docs/deployment-api-docs.yaml
+                sudo cp /var/lib/jenkins/workspace/ttalkak/project-service/build/resources/test/docs/ttalkak-project-api-docs.yaml /var/lib/jenkins/workspace/ttalkak/docs/project-api-docs.yaml
 
                 # document-service 컨테이너 실행
                 docker run --name document-service -p 10000:8080 -e SWAGGER_JSON=/var/lib/jenkins/workspace/ttalkak/docs/index.yaml -v /var/lib/jenkins/workspace/ttalkak/docs:/docs swaggerapi/swagger-ui

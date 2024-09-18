@@ -72,6 +72,4 @@ public class WebHookDeploymentInputPort implements WebHookDeploymentUsecase {
             throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
         }
     }
-
-
 }
