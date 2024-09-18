@@ -332,8 +332,7 @@ class ProjectControllerTest extends RestDocsSupport {
                                                 fieldWithPath("data.deployments").type(JsonFieldType.NULL).description("배포 목록")
                                         }
                                 )
-                        )
-                        .build()
+                        ).build()
                 )));
 
         // then
