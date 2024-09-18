@@ -152,7 +152,7 @@ pipeline {
                 sudo cp /var/lib/jenkins/workspace/ttalkak/project-service/build/resources/test/docs/ttalkak-project-api-docs.yaml /var/lib/jenkins/workspace/ttalkak/docs/project-api-docs.yaml
 
                 # document-service 컨테이너 실행
-                docker run --name document-service -p 10000:8080 -e SWAGGER_JSON=/var/lib/jenkins/workspace/ttalkak/docs/index.yaml -v /var/lib/jenkins/workspace/ttalkak/docs:/docs swaggerapi/swagger-ui
+                docker run --name document-service -p 10000:8080 -e SWAGGER_JSON=/docs/index.yaml -v /var/lib/jenkins/workspace/ttalkak/docs:/docs swaggerapi/swagger-ui
                 """
             }
         }
