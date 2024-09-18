@@ -18,7 +18,7 @@ tags:
   - name: ttalkak-deployment
     description: All operations related to the ttalkak-deployment service.
 paths:
-  /ssapick:
-    $ref: './ssapick-api-docs.yaml'
+  /ttalkak-project:
+    $ref: './project-api-docs.yaml'
   /ttalkak-deployment:
-    $ref: './ttalkak-deployment-api-docs.yaml'
+    $ref: './deployment-api-docs.yaml'
