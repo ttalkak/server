@@ -25,7 +25,6 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    asciidoctorExt
 }
 
 repositories {
@@ -35,8 +34,22 @@ repositories {
 
 ext {
     set('springCloudVersion', "2023.0.3")
-    snippetsDir = file('build/generated-snippets')
+    set('snippetsDir', file("build/generated-snippets"))
 }
+
+openapi3 {
+    servers = [
+            { url = "http://localhost:8080" },
+            { url = "https://www.ttalkak.com" }
+    ]
+    title = 'TTALKAK API Documentation'
+    description = '딸깍 프로젝트 배포 API 문서입니다.'
+    version = '0.0.1'
+    outputFileNamePrefix = 'ttalkak-api-docs'
+    format = 'yaml'
+    outputDirectory = 'build/resources/test/docs'
+}
+
 
 dependencies {
     // 스프링 웹 의존성
@@ -103,29 +116,35 @@ dependencyManagement {
     }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
 test {
     outputs.dir snippetsDir
 }
 
+tasks.register('openapi3-security-schemes') {
+    dependsOn 'openapi3'
+    doFirst {
+        def swaggerUIFile = file("${openapi3.outputDirectory}/${openapi3.outputFileNamePrefix}.${openapi3.format}")
 
-asciidoctor {
-    inputs.dir snippetsDir
-    configurations 'asciidoctorExt'
+        def securitySchemesContent = "  securitySchemes:\n" +         \
+                                             "    APIKey:\n" +         \
+                                             "      type: apiKey\n" +         \
+                                             "      name: Authorization\n" +         \
+                                             "      in: header\n" +        \
+                                             "security:\n" +
+                "  - APIKey: []  # Apply the security scheme here"
 
-    sources { // 특정 파일만 html로 만든다.
-        include("**/index.adoc")
+        swaggerUIFile.append securitySchemesContent
     }
-    baseDirFollowsSourceFile() // 다른 adoc 파일을 include 할 때 경로를 baseDir로 맞춘다.
+}
+
+
+tasks.named('asciidoctor') {
+    inputs.dir snippetsDir
     dependsOn test
 }
 
-bootJar {
-    dependsOn asciidoctor
-    from("${asciidoctor.outputDir}") {
-        into 'static/docs'
-    }
+
+tasks.named('test') {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
 }
