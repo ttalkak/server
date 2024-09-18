@@ -145,7 +145,7 @@ pipeline {
                         cp deployment-service/build/resources/test/docs/ttalkak-deployment-api-docs.yaml /home/ubuntu/ttalkak/docs/deployment-api-docs.yaml
                         cp project-service/build/resources/test/docs/ttalkak-project-api-docs.yaml /home/ubuntu/ttalkak/docs/project-api-docs.yaml
 
-                        sh 'docker run -p 5050:8080 -e SWAGGER_JSON=/app/swagger.yaml -e BASE_URL=/docs -v /home/ubuntu/source/ssapick-api-docs.yaml:/app/swagger.yaml -d --name=swagger swaggerapi/swagger-ui'
+                        docker run -p 10000:8080 -e SWAGGER_JSON=/docs/index.html -v /home/ubuntu/ttalkak/docs:/docs swaggerapi/swagger-ui
                         """
 
                     }
