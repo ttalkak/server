@@ -100,7 +100,6 @@ public class ProjectController {
     @PatchMapping("/project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<ProjectResponse> updateProject(@PathVariable Long projectId, @RequestBody ProjectUpdateRequest projectUpdateRequest) {
-
         return ApiResponse.success(updateProjectUseCase.updateProject(projectId, projectUpdateRequest));
     }
 
