@@ -291,7 +291,6 @@ class ProjectControllerTest extends RestDocsSupport {
     @Test
     @DisplayName("프로젝트 수정")
     void updateProject() throws Exception {
-
         // given
         ProjectUpdateRequest projectUpdateRequest = ProjectUpdateRequest.builder()
                 .projectName("updatedProject")
