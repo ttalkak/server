@@ -62,6 +62,5 @@ public class ProjectKafkaProducer implements EventOutputPort {
         }).exceptionally(ex -> {
             throw new IllegalArgumentException(ex);
         });
-
     }
 }
