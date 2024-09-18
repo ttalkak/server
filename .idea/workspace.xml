@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.idea/docs.iml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.idea/docs.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.idea/swagger-settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.idea/swagger-settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/ssapick-api-docs.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ssapick-api-docs.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/ttalkak-deployment-api-docs.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ttalkak-deployment-api-docs.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +115,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "feature/test",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Jun/ddalkak",
+    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Jun/2024_2/ddalkak/project-service/build.gradle",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -382,6 +373,7 @@
       <workItem from="1726411977188" duration="3451000" />
       <workItem from="1726477928624" duration="4041000" />
       <workItem from="1726582630333" duration="3000" />
+      <workItem from="1726587118289" duration="957000" />
     </task>
     <task id="LOCAL-00001" summary="도커 컴포즈 수정">
       <option name="closed" value="true" />
