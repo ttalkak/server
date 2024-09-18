@@ -152,8 +152,14 @@ pipeline {
                 sudo cp /var/lib/jenkins/workspace/ttalkak/project-service/build/resources/test/docs/ttalkak-project-api-docs.yaml /var/lib/jenkins/workspace/ttalkak/docs/project-api-docs.yaml
 
                 # document-service 컨테이너 실행
-                docker run -d --name document-service -p 10000:8080 -e SWAGGER_JSON=/docs/index.yaml -v /var/lib/jenkins/workspace/ttalkak/docs:/docs swaggerapi/swagger-ui
-                """
+                docker run -d \
+                  --name document-service \
+                  -p 10000:8080 \
+                  -e SWAGGER_JSON=/docs/index.yaml \
+                  -e URLS="[ { \"url\": \"/docs/deployment-api-docs.yaml\", \"name\": \"Deployment\" }, { \"url\": \"/docs/project-api-docs.yaml\", \"name\": \"Project\" } ]" \
+                  -v /var/lib/jenkins/workspace/ttalkak/docs:/docs \
+                  swaggerapi/swagger-ui
+                  """
             }
         }
 

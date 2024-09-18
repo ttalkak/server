@@ -333,7 +333,7 @@ class ProjectControllerTest extends RestDocsSupport {
                                         }
                                 )
                         )
-                                .build()
+                        .build()
                 )));
 
         // then
