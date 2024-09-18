@@ -135,21 +135,25 @@ pipeline {
         }
 
         stage('documentation') {
-            steps {
-                dir('server') {
-                    withGradle {
-                        sh """
-                        docker ps -q --filter "name=swagger" | xargs -r docker stop
-                        docker ps -aq --filter "name=swagger" | xargs -r docker rm
-
-                        cp deployment-service/build/resources/test/docs/ttalkak-deployment-api-docs.yaml /home/ubuntu/ttalkak/docs/deployment-api-docs.yaml
-                        cp project-service/build/resources/test/docs/ttalkak-project-api-docs.yaml /home/ubuntu/ttalkak/docs/project-api-docs.yaml
-
-                        docker run -p 10000:8080 -e SWAGGER_JSON=/docs/index.html -v /home/ubuntu/ttalkak/docs:/docs swaggerapi/swagger-ui
-                        """
-
-                    }
+            when {
+                anyOf {
+                    changeset "deployment-service/**"
+                    changeset "project-service/**"
                 }
+            }
+            steps {
+                sh """
+                # 기존 document-service 컨테이너 중지 및 삭제
+                docker ps -q --filter "name=document-service" | xargs -r docker stop
+                docker ps -aq --filter "name=document-service" | xargs -r docker rm
+
+                # API 문서 파일 복사
+                cp deployment-service/build/resources/test/docs/ttalkak-deployment-api-docs.yaml /home/ubuntu/ttalkak/docs/deployment-api-docs.yaml
+                cp project-service/build/resources/test/docs/ttalkak-project-api-docs.yaml /home/ubuntu/ttalkak/docs/project-api-docs.yaml
+
+                # document-service 컨테이너 실행
+                docker run --name document-service -p 10000:8080 -e SWAGGER_JSON=/docs/index.html -v /home/ubuntu/ttalkak/docs:/docs swaggerapi/swagger-ui
+                """
             }
         }
 
