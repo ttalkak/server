@@ -45,7 +45,7 @@ openapi3 {
     title = 'TTALKAK API Documentation'
     description = '딸깍 프로젝트 배포 API 문서입니다.'
     version = '0.0.1'
-    outputFileNamePrefix = 'ttalkak-api-docs'
+    outputFileNamePrefix = 'ttalkak-deployment-api-docs'
     format = 'yaml'
     outputDirectory = 'build/resources/test/docs'
 }

@@ -32,9 +32,28 @@ public class RestDocsUtils {
                         .description("프로젝트명"),
                 fieldWithPath("data.domainName").type(JsonFieldType.STRING)
                         .description("도메인명"),
-                fieldWithPath("data.createdAt").type(JsonFieldType.ARRAY)
+                fieldWithPath("data.webhookToken").type(JsonFieldType.STRING)
+                        .description("웹 훅 토큰"),
+                fieldWithPath("data.createdAt").type(JsonFieldType.STRING)
                         .description("생성일시"),
-                fieldWithPath("data.updatedAt").type(JsonFieldType.ARRAY)
+                fieldWithPath("data.updatedAt").type(JsonFieldType.STRING)
+                        .description("업데이트일시")
+        };
+    }
+
+    public static FieldDescriptor[] createProjectResponseFields() {
+        return new FieldDescriptor[] {
+                fieldWithPath("data.id").type(JsonFieldType.NUMBER)
+                        .description("프로젝트 ID"),
+                fieldWithPath("data.userId").type(JsonFieldType.NUMBER)
+                        .description("유저 ID"),
+                fieldWithPath("data.projectName").type(JsonFieldType.STRING)
+                        .description("프로젝트명"),
+                fieldWithPath("data.domainName").type(JsonFieldType.STRING)
+                        .description("도메인명"),
+                fieldWithPath("data.createdAt").type(JsonFieldType.STRING)
+                        .description("생성일시"),
+                fieldWithPath("data.updatedAt").type(JsonFieldType.STRING)
                         .description("업데이트일시")
         };
     }
@@ -55,38 +74,15 @@ public class RestDocsUtils {
                         .description("깃허브 저장소 이름"),
                 fieldWithPath("data.deployments[].repositoryUrl").type(JsonFieldType.STRING)
                         .description("깃허브 저장소 URL"),
+                fieldWithPath("data.deployments[].repositoryOwner").type(JsonFieldType.STRING)
+                        .description("깃허브 레포지토리 주인"),
                 fieldWithPath("data.deployments[].repositoryLastCommitMessage").type(JsonFieldType.STRING)
                         .description("최근 커밋 메시지"),
                 fieldWithPath("data.deployments[].repositoryLastCommitUserProfile").type(JsonFieldType.STRING)
                         .description("최근 커밋 유저 프로필 URL"),
                 fieldWithPath("data.deployments[].repositoryLastCommitUserName").type(JsonFieldType.STRING)
-                        .description("최근 커밋 유저 이름"),
-                fieldWithPath("data.deployments[].rootDirectory")
-                        .description("루트 디렉토리"),
-                fieldWithPath("data.deployments[].branch").type(JsonFieldType.STRING)
-                        .description("깃허브 브랜치"),
-                fieldWithPath("data.deployments[].framework").type(JsonFieldType.STRING)
-                        .description("사용된 프레임워크"),
+                        .description("최근 커밋 유저 이름")
 
-                fieldWithPath("data.deployments[].envs").type(JsonFieldType.ARRAY)
-                        .description("환경 변수 목록"),
-                fieldWithPath("data.deployments[].envs[].envId").type(JsonFieldType.STRING)
-                        .description("환경 변수 ID"),
-                fieldWithPath("data.deployments[].envs[].key").type(JsonFieldType.STRING)
-                        .description("환경 변수 키"),
-                fieldWithPath("data.deployments[].envs[].value").type(JsonFieldType.STRING)
-                        .description("환경 변수 값"),
-
-                fieldWithPath("data.deployments[].hostingResponses").type(JsonFieldType.ARRAY)
-                        .description("호스팅 응답 목록"),
-                fieldWithPath("data.deployments[].hostingResponses[].hostingId").type(JsonFieldType.NUMBER)
-                        .description("호스팅 ID"),
-                fieldWithPath("data.deployments[].hostingResponses[].hostingPort").type(JsonFieldType.NUMBER)
-                        .description("호스팅 포트"),
-                fieldWithPath("data.deployments[].hostingResponses[].serviceType").type(JsonFieldType.STRING)
-                        .description("호스팅 서비스 타입"),
-                fieldWithPath("data.deployments[].hostingResponses[].detailDomainName").type(JsonFieldType.STRING)
-                        .description("호스팅 서브 도메인 이름")
         };
     }
 
@@ -97,12 +93,13 @@ public class RestDocsUtils {
                 fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 항목 수"), // Changed from `total`
                 fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"), // Changed from `totalPages`
                 fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("프로젝트 목록"),
+                fieldWithPath("data.content[].webhookToken").type(JsonFieldType.STRING).description("웹 훅 토큰"),
                 fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("프로젝트 ID"),
                 fieldWithPath("data.content[].userId").type(JsonFieldType.NUMBER).description("사용자 ID"), // Changed from `userid`
                 fieldWithPath("data.content[].projectName").type(JsonFieldType.STRING).description("프로젝트 이름"),
                 fieldWithPath("data.content[].domainName").type(JsonFieldType.STRING).description("도메인 이름"),
-                fieldWithPath("data.content[].createdAt").type(JsonFieldType.ARRAY).description("생성 일시"),
-                fieldWithPath("data.content[].updatedAt").type(JsonFieldType.ARRAY).description("수정 일시"),
+                fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("생성 일시"),
+                fieldWithPath("data.content[].updatedAt").type(JsonFieldType.STRING).description("수정 일시"),
                 fieldWithPath("data.content[].deployments").type(JsonFieldType.ARRAY).description("배포 정보")
 
         };

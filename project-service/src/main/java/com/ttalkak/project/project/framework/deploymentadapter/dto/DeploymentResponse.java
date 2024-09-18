@@ -31,7 +31,7 @@ public class DeploymentResponse {
     private String repositoryOwner;
 
     @Builder
-    public DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String branch, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, String repositoryOwner, String framework) {
+    public DeploymentResponse(Long deploymentId, Long projectId, String status, String serviceType, String repositoryName, String repositoryUrl, String repositoryLastCommitMessage, String repositoryLastCommitUserProfile, String repositoryLastCommitUserName, String repositoryOwner) {
         this.deploymentId = deploymentId;
         this.projectId = projectId;
         this.status = status;

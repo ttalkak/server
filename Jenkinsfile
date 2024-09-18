@@ -16,121 +16,146 @@ pipeline {
             }
         }
 
-        // stage('Test Services') {
-        //     parallel {
-        //         stage('Test Eureka Server') {
-        //             when {
-        //                 changeset "eureka-server/**"
-        //             }
-        //             steps {
-        //                 script {
-        //                     // Eureka Server 테스트 코드 실행
-        //                     sh """
-        //                     cd eureka-server
-        //                     chmod +x gradlew
-        //                     ./gradlew test
-        //                     """
-        //                 }
-        //             }
-        //         }
+        stage('Test Services') {
+            parallel {
+//                 stage('Test Eureka Server') {
+//                     when {
+//                         changeset "eureka-server/**"
+//                     }
+//                     steps {
+//                         script {
+//                             // Eureka Server 테스트 코드 실행
+//                             sh """
+//                             cd eureka-server
+//                             chmod +x gradlew
+//                             ./gradlew test
+//                             """
+//                         }
+//                     }
+//                 }
+//
+//                 stage('Test Config Server') {
+//                     when {
+//                         changeset "config-server/**"
+//                     }
+//                     steps {
+//                         script {
+//                             // Config Server 테스트 코드 실행
+//                             sh """
+//                             cd config-server
+//                             chmod +x gradlew
+//                             ./gradlew test
+//                             """
+//                         }
+//                     }
+//                 }
+//
+//                 stage('Test Gateway Service') {
+//                     when {
+//                         changeset "gateway-service/**"
+//                     }
+//                     steps {
+//                         script {
+//                             // Gateway Service 테스트 코드 실행
+//                             sh """
+//                             cd gateway-service
+//                             chmod +x gradlew
+//                             ./gradlew test
+//                             """
+//                         }
+//                     }
+//                 }
+//
+//                 stage('Test User Service') {
+//                     when {
+//                         changeset "user-service/**"
+//                     }
+//                     steps {
+//                         script {
+//                             // User Service 테스트 코드 실행
+//                             sh """
+//                             cd user-service
+//                             chmod +x gradlew
+//                             ./gradlew test
+//                             """
+//                         }
+//                     }
+//                 }
+//
+//                 stage('Test Compute Service') {
+//                     when {
+//                         changeset "compute-service/**"
+//                     }
+//                     steps {
+//                         script {
+//                             // Compute Service 테스트 코드 실행
+//                             sh """
+//                             cd compute-service
+//                             chmod +x gradlew
+//                             ./gradlew test
+//                             """
+//                         }
+//                     }
+//                 }
 
-        //         stage('Test Config Server') {
-        //             when {
-        //                 changeset "config-server/**"
-        //             }
-        //             steps {
-        //                 script {
-        //                     // Config Server 테스트 코드 실행
-        //                     sh """
-        //                     cd config-server
-        //                     chmod +x gradlew
-        //                     ./gradlew test
-        //                     """
-        //                 }
-        //             }
-        //         }
+                stage('Test Deployment Service') {
+                    when {
+                        changeset "deployment-service/**"
+                    }
+                    steps {
+                        script {
+                            // Deployment Service 테스트 코드 실행
+                            sh """
+                            cd deployment-service
+                            chmod +x gradlew
+                            ./gradlew test
+                            ./gradlew openapi3
+                            """
+                        }
+                    }
+                }
 
-        //         stage('Test Gateway Service') {
-        //             when {
-        //                 changeset "gateway-service/**"
-        //             }
-        //             steps {
-        //                 script {
-        //                     // Gateway Service 테스트 코드 실행
-        //                     sh """
-        //                     cd gateway-service
-        //                     chmod +x gradlew
-        //                     ./gradlew test
-        //                     """
-        //                 }
-        //             }
-        //         }
+                stage('Test Project Service') {
+                    when {
+                        changeset "project-service/**"
+                    }
+                    steps {
+                        script {
+                            // Project Service 테스트 코드 실행
+                            sh """
+                            cd project-service
+                            chmod +x gradlew
+                            ./gradlew test
+                            ./gradlew openapi3
+                            """
+                        }
+                    }
+                }
+            }
+        }
 
-        //         stage('Test User Service') {
-        //             when {
-        //                 changeset "user-service/**"
-        //             }
-        //             steps {
-        //                 script {
-        //                     // User Service 테스트 코드 실행
-        //                     sh """
-        //                     cd user-service
-        //                     chmod +x gradlew
-        //                     ./gradlew test
-        //                     """
-        //                 }
-        //             }
-        //         }
+        stage('documentation') {
+            when {
+                anyOf {
+                    changeset "deployment-service/**"
+                    changeset "project-service/**"
+                }
+            }
+            steps {
+                sh """
+                # 기존 document-service 컨테이너 중지 및 삭제
+                docker ps -q --filter "name=document-service" | xargs -r docker stop
+                docker ps -aq --filter "name=document-service" | xargs -r docker rm
 
-        //         stage('Test Compute Service') {
-        //             when {
-        //                 changeset "compute-service/**"
-        //             }
-        //             steps {
-        //                 script {
-        //                     // Compute Service 테스트 코드 실행
-        //                     sh """
-        //                     cd compute-service
-        //                     chmod +x gradlew
-        //                     ./gradlew test
-        //                     """
-        //                 }
-        //             }
-        //         }
+                # API 문서 파일 복사
+                cp deployment-service/build/resources/test/docs/ttalkak-deployment-api-docs.yaml /home/ubuntu/ttalkak/docs/deployment-api-docs.yaml
+                cp project-service/build/resources/test/docs/ttalkak-project-api-docs.yaml /home/ubuntu/ttalkak/docs/project-api-docs.yaml
 
-        //         stage('Test Deployment Service') {
-        //             when {
-        //                 changeset "deployment-service/**"
-        //             }
-        //             steps {
-        //                 script {
-        //                     // Deployment Service 테스트 코드 실행
-        //                     sh """
-        //                     cd deployment-service
-        //                     chmod +x gradlew
-        //                     ./gradlew test
-        //                     """
-        //                 }
-        //             }
-        //         }
-
-        //         stage('Test Project Service') {
-        //             when {
-        //                 changeset "project-service/**"
-        //             }
-        //             steps {
-        //                 script {
-        //                     // Project Service 테스트 코드 실행
-        //                     sh """
-        //                     cd project-service
-        //                     chmod +x gradlew
-        //                     ./gradlew test
-        //                     """
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                # document-service 컨테이너 실행
+                docker run --name document-service -p 10000:8080 -e SWAGGER_JSON=/docs/index.html -v /home/ubuntu/ttalkak/docs:/docs swaggerapi/swagger-ui
+                """
+            }
+        }
 
         stage('Build and Deploy Services') {
             parallel {

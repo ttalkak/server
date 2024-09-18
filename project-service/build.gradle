@@ -44,18 +44,25 @@ test {
     outputs.dir snippetsDir
 }
 
-asciidoctor {
-    inputs.dir snippetsDir
-    configurations 'asciidoctorExt'
-    dependsOn test
+openapi3 {
+    servers = [
+            { url = "http://localhost:8080" },
+            { url = "https://www.ttalkak.com" }
+    ]
+    title = 'TTALKAK API Documentation'
+    description = '딸깍 프로젝트 배포 API 문서입니다.'
+    version = '0.0.1'
+    outputFileNamePrefix = 'ttalkak-project-api-docs'
+    format = 'yaml'
+    outputDirectory = 'build/resources/test/docs'
 }
 
-bootJar {
-    dependsOn asciidoctor
-    from ("${asciidoctor.outputDir}/html5") {
-        into 'static/docs'
-    }
-}
+//bootJar {
+//    dependsOn asciidoctor
+//    from ("${asciidoctor.outputDir}/html5") {
+//        into 'static/docs'
+//    }
+//}
 
 dependencies {
     // 스프링 웹 의존성
@@ -121,7 +128,31 @@ dependencyManagement {
     }
 }
 
+tasks.register('openapi3-security-schemes') {
+    dependsOn 'openapi3'
+    doFirst {
+        def swaggerUIFile = file("${openapi3.outputDirectory}/${openapi3.outputFileNamePrefix}.${openapi3.format}")
+
+        def securitySchemesContent = "  securitySchemes:\n" +         \
+                                             "    APIKey:\n" +         \
+                                             "      type: apiKey\n" +         \
+                                             "      name: Authorization\n" +         \
+                                             "      in: header\n" +        \
+                                             "security:\n" +
+                "  - APIKey: []  # Apply the security scheme here"
+
+        swaggerUIFile.append securitySchemesContent
+    }
+}
+
+tasks.named('asciidoctor') {
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+
 tasks.named('test') {
+    outputs.dir snippetsDir
     useJUnitPlatform()
 }
 //tasks.withType(Test).configureEach {

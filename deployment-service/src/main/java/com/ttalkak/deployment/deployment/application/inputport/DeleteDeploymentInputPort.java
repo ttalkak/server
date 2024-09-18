@@ -3,11 +3,14 @@ package com.ttalkak.deployment.deployment.application.inputport;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
+import com.ttalkak.deployment.deployment.application.outputport.DomainOutputPort;
+import com.ttalkak.deployment.deployment.application.outputport.HostingOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.ProjectOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.DeleteDeploymentUsecase;
 import com.ttalkak.deployment.deployment.domain.event.CommandEvent;
 import com.ttalkak.deployment.deployment.domain.event.UpdateDeploymentStatusEvent;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
+import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
 import com.ttalkak.deployment.deployment.framework.kafka.ChangeStatusProducer;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.common.global.error.ErrorCode;
@@ -26,6 +29,8 @@ import java.util.Objects;
 public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
     private final DeploymentOutputPort deploymentOutputPort;
     private final ProjectOutputPort projectOutputPort;
+    private final DomainOutputPort domainOutputPort;
+    private final HostingOutputPort hostingOutputPort;
 
     private final ChangeStatusProducer changeStatusProducer;
 
@@ -57,6 +62,11 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
         List<DeploymentEntity> deploymentEntities = deploymentOutputPort.findAllByProjectId(projectId);
         for(DeploymentEntity deploymentEntity : deploymentEntities) {
             deploymentEntity.deleteDeployment();
+            HostingEntity findHosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType());
+            if(findHosting == null){
+                throw new BusinessException(ErrorCode.NOT_EXISTS_HOSTING);
+            }
+            domainOutputPort.deleteDomainKey(findHosting.getId().toString());
         }
         deploymentOutputPort.saveAll(deploymentEntities);
 
