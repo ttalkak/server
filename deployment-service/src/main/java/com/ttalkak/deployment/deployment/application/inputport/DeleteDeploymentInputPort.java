@@ -69,6 +69,5 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
             domainOutputPort.deleteDomainKey(findHosting.getId().toString());
         }
         deploymentOutputPort.saveAll(deploymentEntities);
-
     }
 }
