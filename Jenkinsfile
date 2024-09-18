@@ -155,9 +155,8 @@ pipeline {
                 docker run -d \
                   --name document-service \
                   -p 10000:8080 \
-                  -e SWAGGER_JSON=/docs/index.yaml \
-                  -e URLS_PRIMARY_NAME=Deployment \
-                  -e URLS="[ { \"url\": \"/docs/deployment-api-docs.yaml\", \"name\": \"Deployment\" }, { \"url\": \"/docs/project-api-docs.yaml\", \"name\": \"Project\" } ]" \
+                  -e URLS_PRIMARY_NAME=Index \
+                  -e URLS="[ { url: '/docs/index.yaml', name: 'Index' },{ url: '/docs/deployment-api-docs.yaml', name: 'Deployment' }, { url: '/docs/project-api-docs.yaml', name: 'Project' } ]" \
                   -v /var/lib/jenkins/workspace/ttalkak/docs:/docs \
                   swaggerapi/swagger-ui
                   """

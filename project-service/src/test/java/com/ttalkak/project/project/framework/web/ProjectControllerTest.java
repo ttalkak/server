@@ -377,7 +377,6 @@ class ProjectControllerTest extends RestDocsSupport {
     @Test
     @DisplayName("중복되지 않는 도메인")
     void 중복되지_않는_도메인() throws Exception {
-
         // given
         DomainNameRequest domainNameRequest = new DomainNameRequest("domain");
 
