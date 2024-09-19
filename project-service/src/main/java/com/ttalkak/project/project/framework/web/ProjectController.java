@@ -3,10 +3,10 @@ package com.ttalkak.project.project.framework.web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ttalkak.project.common.ApiResponse;
 import com.ttalkak.project.common.WebAdapter;
-import com.ttalkak.project.project.application.usercase.CreateProjectUseCase;
-import com.ttalkak.project.project.application.usercase.DeleteProjectUseCase;
-import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
-import com.ttalkak.project.project.application.usercase.UpdateProjectUseCase;
+import com.ttalkak.project.project.application.usecase.CreateProjectUseCase;
+import com.ttalkak.project.project.application.usecase.DeleteProjectUseCase;
+import com.ttalkak.project.project.application.usecase.GetProjectUseCase;
+import com.ttalkak.project.project.application.usecase.UpdateProjectUseCase;
 import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
 import com.ttalkak.project.project.framework.web.request.ProjectCreateRequest;
 import com.ttalkak.project.project.framework.web.request.ProjectUpdateRequest;
@@ -16,15 +16,11 @@ import com.ttalkak.project.project.framework.web.response.ProjectPageResponse;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController

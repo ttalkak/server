@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -19,16 +20,19 @@ public class ProjectCreateResponse {
 
     private String domainName;
 
+    private String expirationDate;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     @Builder
-    public ProjectCreateResponse(Long id, Long userId, String projectName, String domainName, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProjectCreateResponse(Long id, Long userId, String projectName, String domainName, String expirationDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.projectName = projectName;
         this.domainName = domainName;
+        this.expirationDate = expirationDate;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -39,6 +43,7 @@ public class ProjectCreateResponse {
                 .userId(projectEntity.getUserId())
                 .projectName(projectEntity.getProjectName())
                 .domainName(projectEntity.getDomainName())
+                .expirationDate(projectEntity.getExpirationDate())
                 .createdAt(projectEntity.getCreatedAt())
                 .updatedAt(projectEntity.getUpdatedAt())
                 .build();

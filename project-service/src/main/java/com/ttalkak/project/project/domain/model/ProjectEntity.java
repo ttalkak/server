@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -26,6 +27,8 @@ public class ProjectEntity extends BaseEntity {
 
     private String domainName;
 
+    private String expirationDate;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private ProjectStatus status = ProjectStatus.ACTIVE;
@@ -39,18 +42,18 @@ public class ProjectEntity extends BaseEntity {
     }
 
     @Builder
-    private ProjectEntity(Long id, Long userId, String projectName, String domainName, ProjectStatus status) {
+    private ProjectEntity(Long id, Long userId, String projectName, String domainName, ProjectStatus status, String expirationDate) {
         this.id = id;
         this.userId = userId;
         this.projectName = projectName;
         this.domainName = domainName;
+        this.expirationDate = expirationDate;
     }
 
     public ProjectEditor.ProjectEditorBuilder toEditor() {
         return ProjectEditor.builder()
                 .projectName(this.projectName)
                 .domainName(this.domainName);
-
     }
 
     public void edit(ProjectEditor projectEditor) {

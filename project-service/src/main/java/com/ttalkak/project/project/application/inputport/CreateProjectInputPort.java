@@ -5,7 +5,7 @@ import com.ttalkak.project.common.error.ErrorCode;
 import com.ttalkak.project.common.exception.BusinessException;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.outputport.SaveProjectOutputPort;
-import com.ttalkak.project.project.application.usercase.CreateProjectUseCase;
+import com.ttalkak.project.project.application.usecase.CreateProjectUseCase;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.framework.web.request.ProjectCreateRequest;
 import com.ttalkak.project.project.framework.web.response.ProjectCreateResponse;
@@ -41,6 +41,7 @@ public class CreateProjectInputPort implements CreateProjectUseCase {
                 .projectName(projectCreateRequest.getProjectName())
                 .domainName(projectCreateRequest.getDomainName())
                 .userId(userId)
+                .expirationDate(projectCreateRequest.getExpirationDate())
                 .build();
 
         ProjectEntity result = saveProjectOutputPort.save(projectEntity);

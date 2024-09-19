@@ -1,7 +1,7 @@
 package com.ttalkak.project.project.framework.web;
 
 import com.ttalkak.project.common.WebAdapter;
-import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
+import com.ttalkak.project.project.application.usecase.GetProjectUseCase;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import com.ttalkak.project.project.framework.web.response.ProjectWebHookResponse;
 import lombok.RequiredArgsConstructor;
