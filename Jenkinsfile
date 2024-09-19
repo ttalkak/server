@@ -140,6 +140,7 @@ pipeline {
                 anyOf {
                     changeset "deployment-service/**"
                     changeset "project-service/**"
+                    changeset "user-service/**"
                 }
             }
             steps {
