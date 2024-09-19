@@ -19,7 +19,6 @@ public class DeleteTransactionConsumer {
     private final ObjectMapper objectMapper;
 
     private final DeleteProjectUseCase deleteProjectUseCase;
-
     /**
      * 프로젝트 삭제 과정중에 에러 발생시 롤백 처리한다.
      * @param record
@@ -31,5 +30,4 @@ public class DeleteTransactionConsumer {
         DeletedEvent deletedEvent = objectMapper.readValue(record.value(), DeletedEvent.class);
         deleteProjectUseCase.rollbackStatusProject(deletedEvent.getProjectId());
     }
-
 }
