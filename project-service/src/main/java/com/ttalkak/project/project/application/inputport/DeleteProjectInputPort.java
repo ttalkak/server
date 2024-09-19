@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ttalkak.project.common.UseCase;
 import com.ttalkak.project.project.application.outputport.DeleteProjectOutputPort;
 import com.ttalkak.project.project.application.outputport.EventOutputPort;
-import com.ttalkak.project.project.application.usercase.DeleteProjectUseCase;
+import com.ttalkak.project.project.application.usecase.DeleteProjectUseCase;
 import com.ttalkak.project.project.domain.event.ProjectEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;

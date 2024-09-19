@@ -1,4 +1,4 @@
-package com.ttalkak.project.project.application.usercase;
+package com.ttalkak.project.project.application.usecase;
 
 import com.ttalkak.project.project.framework.web.request.ProjectCreateRequest;
 import com.ttalkak.project.project.framework.web.response.ProjectCreateResponse;

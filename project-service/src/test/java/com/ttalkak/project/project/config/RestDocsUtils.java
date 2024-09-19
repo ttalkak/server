@@ -34,6 +34,8 @@ public class RestDocsUtils {
                         .description("도메인명"),
                 fieldWithPath("data.webhookToken").type(JsonFieldType.STRING)
                         .description("웹 훅 토큰"),
+                fieldWithPath("data.expirationDate").type(JsonFieldType.STRING)
+                        .description("웹 훅 토큰"),
                 fieldWithPath("data.createdAt").type(JsonFieldType.STRING)
                         .description("생성일시"),
                 fieldWithPath("data.updatedAt").type(JsonFieldType.STRING)
@@ -47,6 +49,8 @@ public class RestDocsUtils {
                         .description("프로젝트 ID"),
                 fieldWithPath("data.userId").type(JsonFieldType.NUMBER)
                         .description("유저 ID"),
+                fieldWithPath("data.expirationDate").type(JsonFieldType.STRING)
+                        .description("프로젝트 만료기간"),
                 fieldWithPath("data.projectName").type(JsonFieldType.STRING)
                         .description("프로젝트명"),
                 fieldWithPath("data.domainName").type(JsonFieldType.STRING)
@@ -95,6 +99,7 @@ public class RestDocsUtils {
                 fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("프로젝트 목록"),
                 fieldWithPath("data.content[].webhookToken").type(JsonFieldType.STRING).description("웹 훅 토큰"),
                 fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("프로젝트 ID"),
+                fieldWithPath("data.content[].expirationDate").type(JsonFieldType.STRING).description("프로젝트 만료기간"),
                 fieldWithPath("data.content[].userId").type(JsonFieldType.NUMBER).description("사용자 ID"), // Changed from `userid`
                 fieldWithPath("data.content[].projectName").type(JsonFieldType.STRING).description("프로젝트 이름"),
                 fieldWithPath("data.content[].domainName").type(JsonFieldType.STRING).description("도메인 이름"),

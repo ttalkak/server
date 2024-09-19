@@ -1,7 +1,7 @@
 package com.ttalkak.project.project.framework.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ttalkak.project.project.application.usercase.DeleteProjectUseCase;
+import com.ttalkak.project.project.application.usecase.DeleteProjectUseCase;
 import com.ttalkak.project.project.domain.event.DeletedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

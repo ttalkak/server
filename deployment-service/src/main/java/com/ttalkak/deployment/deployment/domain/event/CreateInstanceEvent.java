@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -28,13 +29,15 @@ public class CreateInstanceEvent implements Serializable {
 
     private String rootDirectory;
 
+    private String expirationDate;
+
     private List<EnvEvent> envs;
 
     private List<DatabaseEvent> databases;
 
     private Long version;
 
-    public CreateInstanceEvent(DeploymentEvent deployment, HostingEvent hosting, GithubInfoEvent githubInfo, List<EnvEvent> envs, List<DatabaseEvent> database, Long version) {
+    public CreateInstanceEvent(DeploymentEvent deployment, HostingEvent hosting, GithubInfoEvent githubInfo, List<EnvEvent> envs, List<DatabaseEvent> database, Long version, String expirationDate) {
         this.deploymentId = deployment.getDeploymentId().toString();
         this.port = String.valueOf(hosting.getHostingPort());
         this.subdomainName = hosting.getSubdomainName();
@@ -46,5 +49,6 @@ public class CreateInstanceEvent implements Serializable {
         this.envs = envs;
         this.databases = database;
         this.version = version;
+        this.expirationDate = expirationDate;
     }
 }

@@ -1,7 +1,7 @@
 package com.ttalkak.project.project.framework.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ttalkak.project.project.application.usercase.UpdateProjectUseCase;
+import com.ttalkak.project.project.application.usecase.UpdateProjectUseCase;
 import com.ttalkak.project.project.domain.event.DomainNameEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

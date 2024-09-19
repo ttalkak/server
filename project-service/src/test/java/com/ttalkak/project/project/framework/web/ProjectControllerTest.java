@@ -1,12 +1,10 @@
 package com.ttalkak.project.project.framework.web;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ttalkak.project.project.application.usercase.CreateProjectUseCase;
-import com.ttalkak.project.project.application.usercase.DeleteProjectUseCase;
-import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
-import com.ttalkak.project.project.application.usercase.UpdateProjectUseCase;
+import com.ttalkak.project.project.application.usecase.CreateProjectUseCase;
+import com.ttalkak.project.project.application.usecase.DeleteProjectUseCase;
+import com.ttalkak.project.project.application.usecase.GetProjectUseCase;
+import com.ttalkak.project.project.application.usecase.UpdateProjectUseCase;
 import com.ttalkak.project.project.config.RestDocsUtils;
 import com.ttalkak.project.project.framework.deploymentadapter.dto.DeploymentResponse;
 import com.ttalkak.project.project.framework.deploymentadapter.dto.EnvResponse;
@@ -21,21 +19,18 @@ import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import com.ttalkak.project.project.support.RestDocsSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
@@ -82,12 +77,16 @@ class ProjectControllerTest extends RestDocsSupport {
     void 프로젝트_생성_테스트() throws Exception {
 
         // given
-        ProjectCreateRequest projectCreateRequest = new ProjectCreateRequest("project", "domain");
+        ProjectCreateRequest projectCreateRequest = new ProjectCreateRequest(
+                "project",
+                "domain",
+                "9999-12-31");
         ProjectCreateResponse projectCreateResponse = ProjectCreateResponse.builder()
                 .id(1L)
                 .userId(1L)
                 .projectName("project")
                 .domainName("domain")
+                .expirationDate("9999-12-31")
                 .createdAt(fixedClock)
                 .updatedAt(fixedClock)
                 .build();
@@ -115,7 +114,9 @@ class ProjectControllerTest extends RestDocsSupport {
                                         fieldWithPath("projectName").type(JsonFieldType.STRING)
                                                 .description("프로젝트명"),
                                         fieldWithPath("domainName").type(JsonFieldType.STRING)
-                                                .description("도메인명")
+                                                .description("도메인명"),
+                                        fieldWithPath("expirationDate").type(JsonFieldType.STRING)
+                                                .description("결제 만료기간")
                                 )
                                 .responseFields(
                                         RestDocsUtils.combineFields(
@@ -178,6 +179,7 @@ class ProjectControllerTest extends RestDocsSupport {
                 .userId(1L)
                 .projectName("project")
                 .domainName("domain")
+                .expirationDate("2024-10-11")
                 .createdAt(fixedClock)
                 .updatedAt(fixedClock)
                 .webhookToken("githubWebhookToken")
@@ -230,6 +232,7 @@ class ProjectControllerTest extends RestDocsSupport {
                 .projectName("project1")
                 .domainName("domain1")
                 .webhookToken("githubWebhookToken")
+                .expirationDate("9999-12-31")
                 .createdAt(fixedClock)
                 .updatedAt(fixedClock)
                 .build();
@@ -240,6 +243,7 @@ class ProjectControllerTest extends RestDocsSupport {
                 .userId(1L)
                 .projectName("project2")
                 .domainName("domain2")
+                .expirationDate("9999-12-31")
                 .webhookToken("githubWebhookToken")
                 .createdAt(fixedClock)
                 .updatedAt(fixedClock)
@@ -295,6 +299,7 @@ class ProjectControllerTest extends RestDocsSupport {
         ProjectUpdateRequest projectUpdateRequest = ProjectUpdateRequest.builder()
                 .projectName("updatedProject")
                 .domainName("updatedDomain")
+                .expirationDate("2024-11-11")
                 .build();
 
         ProjectResponse projectResponse = ProjectResponse
@@ -303,6 +308,7 @@ class ProjectControllerTest extends RestDocsSupport {
                 .id(1L)
                 .projectName("updatedProject")
                 .domainName("updatedDomain")
+                .expirationDate("9999-12-31")
                 .webhookToken("githubWebhookToken")
                 .createdAt(fixedClock)
                 .updatedAt(fixedClock)
@@ -320,18 +326,20 @@ class ProjectControllerTest extends RestDocsSupport {
         perform.andExpect(status().isOk())
                 .andDo(this.restDocs.document(resource(
                         ResourceSnippetParameters.builder()
+                                .tag("프로젝트")
+                                .summary("프로젝트를 수정할 수 있습니다.")
                                 .pathParameters(
-                                parameterWithName("projectId").description("프로젝트 ID")
-                        )
-                                .responseFields(
-                                RestDocsUtils.combineFields(
-                                        RestDocsUtils.getCommonResponseFields(),
-                                        RestDocsUtils.getProjectResponseFields(),
-                                        new FieldDescriptor[]{
-                                                fieldWithPath("data.deployments").type(JsonFieldType.NULL).description("배포 목록")
-                                        }
+                                        parameterWithName("projectId").description("프로젝트 ID")
                                 )
-                        ).build()
+                                .responseFields(
+                                        RestDocsUtils.combineFields(
+                                                RestDocsUtils.getCommonResponseFields(),
+                                                RestDocsUtils.getProjectResponseFields(),
+                                                new FieldDescriptor[]{
+                                                        fieldWithPath("data.deployments").type(JsonFieldType.NULL).description("배포 목록")
+                                                }
+                                        )
+                                ).build()
                 )));
 
         // then

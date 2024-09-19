@@ -6,7 +6,7 @@ import com.ttalkak.project.common.exception.BusinessException;
 import com.ttalkak.project.project.application.outputport.EventOutputPort;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.outputport.SaveProjectOutputPort;
-import com.ttalkak.project.project.application.usercase.UpdateProjectUseCase;
+import com.ttalkak.project.project.application.usecase.UpdateProjectUseCase;
 import com.ttalkak.project.project.domain.event.DomainNameEvent;
 import com.ttalkak.project.project.domain.model.vo.ProjectEditor;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
@@ -51,6 +51,7 @@ public class UpdateProjectInputPort implements UpdateProjectUseCase {
         ProjectEditor projectEditor = projectEditorBuilder
                 .projectName(projectUpdateRequest.getProjectName())
                 .domainName(projectUpdateRequest.getDomainName())
+                .expirationDate(projectUpdateRequest.getExpirationDate())
                 .build();
 
         projectEntity.edit(projectEditor);
