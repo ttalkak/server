@@ -28,6 +28,6 @@ class EmailController (
     fun confirmEmailCode(
         @RequestBody request: EmailConfirmRequest,
     ) {
-        return confirmCodeUseCase.confirmCode(request.email, request.code)
+        return confirmCodeUseCase.confirmCode(request.userId, request.email, request.code)
     }
 }

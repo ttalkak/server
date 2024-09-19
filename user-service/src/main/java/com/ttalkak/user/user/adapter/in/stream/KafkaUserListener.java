@@ -21,6 +21,6 @@ public class KafkaUserListener {
 
         log.info("유저 이메일 인증 로직 실행 - 발송 이메일 : {}", request.getEmail());
 
-        userEmailVerifyUseCase.verifyEmail(request.getEmail());
+        userEmailVerifyUseCase.verifyEmail(request.getUserId(), request.getEmail());
     }
 }
