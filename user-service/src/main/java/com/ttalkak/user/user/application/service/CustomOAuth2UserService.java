@@ -45,7 +45,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		ProviderType providerType = ProviderType.valueOf(registrationId.toUpperCase());
 		OAuth2Response response = CustomOAuthUserFactory.parseOAuth2Response(providerType, oauth2User.getAttributes());
 
-		String username = response.getEmail();
+		String username = response.getName() + "_" + response.getProviderId();
 
 		AtomicBoolean isNewUser = new AtomicBoolean(false);
 		User user = loadUserPort.loadUser(username).orElseGet(() -> {
