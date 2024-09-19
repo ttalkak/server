@@ -211,7 +211,7 @@ pipeline {
 
                 stage('Build and Deploy Notification Server') {
                     when {
-                        changeset "notification-server/**"
+                        changeset "notification-service/**"
                     }
                     steps {
                         script {

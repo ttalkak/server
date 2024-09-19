@@ -19,7 +19,7 @@ class RedisConfig {
 
     @Value("\${spring.data.redis.port}")
     private var port: Int? = null
-    
+
 
     @Value("\${spring.data.redis.password}")
     private lateinit var password: String
@@ -30,7 +30,6 @@ class RedisConfig {
         config.password = RedisPassword.of(password)
         return LettuceConnectionFactory(config)
     }
-
 
     @Bean
     fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
