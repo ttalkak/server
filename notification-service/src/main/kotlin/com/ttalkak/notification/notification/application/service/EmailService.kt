@@ -36,12 +36,12 @@ class EmailService (
         // TODO: User 서비스로 이메일 인증 처리
     }
 
-    override fun sendCode(email: String) {
+    override fun sendCode(email: String, nickname: String) {
         val code = (100000..999999).random().toString()
 
         saveCodePort.saveCode(email, code)
 
-        val params = mapOf("code" to code)
+        val params = mapOf("code" to code, "nickname" to nickname)
 
         sendEmail(
             "email/verify_member_mail",
