@@ -218,14 +218,14 @@ pipeline {
 
                             // 기존 notification-server 컨테이너 중지 및 삭제
                             sh """
-                            docker-compose -f docker-compose-prod.yml stop notification-server || true
-                            docker-compose -f docker-compose-prod.yml rm -f notification-server || true
+                            docker-compose -f docker-compose-prod.yml stop notification-service || true
+                            docker-compose -f docker-compose-prod.yml rm -f notification-service || true
                             """
 
                             // 해당 컨테이너만 재시작
                             sh """
-                            docker-compose -f docker-compose-prod.yml build --no-cache notification-server
-                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build notification-server
+                            docker-compose -f docker-compose-prod.yml build --no-cache notification-service
+                            docker-compose -f docker-compose-prod.yml up -d --no-deps --build notification-service
                             """
                         }
                     }

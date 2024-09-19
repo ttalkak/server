@@ -31,6 +31,7 @@ class RedisConfig {
         return LettuceConnectionFactory(config)
     }
 
+
     @Bean
     fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
         val redisTemplate = RedisTemplate<String, Any>()
