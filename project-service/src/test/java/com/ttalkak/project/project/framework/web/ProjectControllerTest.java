@@ -81,6 +81,7 @@ class ProjectControllerTest extends RestDocsSupport {
                 "project",
                 "domain",
                 "9999-12-31");
+
         ProjectCreateResponse projectCreateResponse = ProjectCreateResponse.builder()
                 .id(1L)
                 .userId(1L)
