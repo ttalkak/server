@@ -60,7 +60,7 @@ public class ProjectEntity extends BaseEntity {
     public void edit(ProjectEditor projectEditor) {
         this.projectName = projectEditor.getProjectName();
         this.domainName = projectEditor.getDomainName();
-        this.expirationDate = projectEditor.getProjectName();
+        this.expirationDate = projectEditor.getExpirationDate();
     }
 
     public void rollbackDeletedStatus() {
