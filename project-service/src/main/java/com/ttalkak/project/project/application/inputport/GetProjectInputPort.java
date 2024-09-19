@@ -3,7 +3,7 @@ package com.ttalkak.project.project.application.inputport;
 import com.ttalkak.project.common.UseCase;
 import com.ttalkak.project.project.application.outputport.DeploymentOutputPort;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
-import com.ttalkak.project.project.application.usercase.GetProjectUseCase;
+import com.ttalkak.project.project.application.usecase.GetProjectUseCase;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
 import com.ttalkak.project.project.framework.web.response.ProjectPageResponse;
@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Transactional
 @UseCase

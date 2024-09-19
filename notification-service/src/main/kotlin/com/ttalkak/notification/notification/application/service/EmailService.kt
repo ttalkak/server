@@ -24,7 +24,7 @@ class EmailService (
 ): ConfirmCodeUseCase, SendCodeUseCase {
     private val log = KotlinLogging.logger {}
 
-    override fun confirmCode(email: String, code: String) {
+    override fun confirmCode(userId: Long, email: String, code: String) {
         val savedCode = loadCodePort.findCode(email).orElseThrow{
             IllegalArgumentException("인증 코드가 존재하지 않습니다.")
         }
@@ -33,15 +33,15 @@ class EmailService (
             throw IllegalArgumentException("인증 코드가 일치하지 않습니다.")
         }
 
-        // TODO: User 서비스로 이메일 인증 처리
+        EmailConfirmEvent(userId = userId, email = email).let(verifyEmailEventPort::verifyEmail)
     }
 
-    override fun sendCode(email: String) {
+    override fun sendCode(email: String, nickname: String) {
         val code = (100000..999999).random().toString()
 
         saveCodePort.saveCode(email, code)
 
-        val params = mapOf("code" to code)
+        val params = mapOf("code" to code, "nickname" to nickname)
 
         sendEmail(
             "email/verify_member_mail",
@@ -76,10 +76,6 @@ class EmailService (
             mailSender.send(message)
             log.info {
                 "이메일 인증 코드 메일 발송 성공: $email"
-            }
-
-            EmailConfirmEvent(email).also {
-                verifyEmailEventPort.verifyEmail(it)
             }
         } catch (e: Exception) {
             log.error(e) {

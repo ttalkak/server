@@ -4,5 +4,5 @@ enum class RunningStatus {
     RUNNING,
     STOPPED,
     DELETED,
-    PENDING
+    PENDING,
 }

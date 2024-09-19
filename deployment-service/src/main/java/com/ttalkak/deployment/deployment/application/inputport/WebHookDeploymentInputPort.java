@@ -63,7 +63,7 @@ public class WebHookDeploymentInputPort implements WebHookDeploymentUsecase {
         );
         DeploymentEvent deploymentEvent = new DeploymentEvent(deployment.getId(), deployment.getProjectId(), envEvents, deployment.getServiceType().toString());
         GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory(), deployment.getGithubInfo().getBranch());
-        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, null, savedVersion.getVersion());
+        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, null, savedVersion.getVersion(), null);
 
 
         try {
@@ -72,6 +72,4 @@ public class WebHookDeploymentInputPort implements WebHookDeploymentUsecase {
             throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
         }
     }
-
-
 }

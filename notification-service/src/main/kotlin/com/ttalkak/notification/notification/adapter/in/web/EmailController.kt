@@ -21,13 +21,13 @@ class EmailController (
     fun sendEmailCode(
         @RequestBody request: EmailCodeRequest,
     ) {
-        sendCodeUseCase.sendCode(request.email)
+        sendCodeUseCase.sendCode(request.email, request.nickname)
     }
 
     @PostMapping("/confirm")
     fun confirmEmailCode(
         @RequestBody request: EmailConfirmRequest,
     ) {
-        return confirmCodeUseCase.confirmCode(request.email, request.code)
+        return confirmCodeUseCase.confirmCode(request.userId, request.email, request.code)
     }
 }

@@ -13,5 +13,4 @@ public class DeploymentServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(DeploymentServiceApplication.class, args);
     }
-
 }

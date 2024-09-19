@@ -14,7 +14,7 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
     @Modifying
     void updateGithubToken(String username, String accessToken);
 
-    @Query("UPDATE UserEntity u SET u.isEmailVerified = true WHERE u.email = :email")
+    @Query("UPDATE UserEntity u SET u.isEmailVerified = true, u.email = :email WHERE u.id = :userId")
     @Modifying
-    void verifyEmail(String email);
+    void verifyEmail(Long userId, String email);
 }

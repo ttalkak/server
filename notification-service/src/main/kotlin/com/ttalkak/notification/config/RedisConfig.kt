@@ -20,6 +20,7 @@ class RedisConfig {
     @Value("\${spring.data.redis.port}")
     private var port: Int? = null
 
+
     @Value("\${spring.data.redis.password}")
     private lateinit var password: String
 

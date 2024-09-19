@@ -23,6 +23,4 @@ public class DeploymentAdapter implements DeploymentOutputPort {
     public List<DeploymentResponse> getDeployments(Long projectId) {
         return deploymentFeignClient.getDeployments(projectId);
     }
-
-
 }

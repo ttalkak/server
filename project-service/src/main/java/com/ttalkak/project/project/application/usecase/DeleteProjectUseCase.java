@@ -1,4 +1,4 @@
-package com.ttalkak.project.project.application.usercase;
+package com.ttalkak.project.project.application.usecase;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 

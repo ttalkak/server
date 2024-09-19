@@ -67,11 +67,11 @@ public class AuthenticationService implements AuthenticationUseCase, UserEmailVe
     }
 
     @Override
-    public void verifyEmail(String email) {
-        loadUserPort.loadUser(email).orElseThrow(
+    public void verifyEmail(Long userId, String email) {
+        loadUserPort.loadUser(userId).orElseThrow(
             () -> new IllegalArgumentException("사용자를 찾을 수 없습니다.")
         );
 
-        verifyEmailUserPort.verifyEmail(email);
+        verifyEmailUserPort.verifyEmail(userId, email);
     }
 }

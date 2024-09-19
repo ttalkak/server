@@ -4,8 +4,9 @@ interface ConfirmCodeUseCase {
     /**
      * 인증 코드를 확인한다.
      *
+     * @param userId 사용자 ID
      * @param email 이메일
      * @param code 인증 코드
      */
-    fun confirmCode(email: String, code: String)
+    fun confirmCode(userId: Long, email: String, code: String)
 }
