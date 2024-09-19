@@ -1,7 +1,6 @@
 package com.ttalkak.deployment.deployment.framework.web;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.ttalkak.deployment.config.JpaConfig;
 import com.ttalkak.deployment.deployment.application.usecase.*;
 import com.ttalkak.deployment.deployment.domain.event.CommandEvent;
 import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseType;
