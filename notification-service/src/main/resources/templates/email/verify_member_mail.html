@@ -36,19 +36,5 @@
     <div style="border-top: 1px solid #DDD; padding: 5px;">
     </div>
 </div>
-<script>
-    const copyButton = document.querySelector('#copy-code-button')
-    const code = document.querySelector('#code').innerText
-    copyButton.addEventListener('click', () => {
-        navigator.clipboard.writeText(code);
-
-        const originalText = copyButton.innerText;
-        copyButton.innerText = '복사 완료';
-        setTimeout(() => {
-            copyButton.innerText = originalText;
-        }, 2000);
-
-    })
-</script>
 </body>
 </html>
