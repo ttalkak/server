@@ -4,6 +4,7 @@ import com.ttalkak.compute.common.SocketAdapter
 import com.ttalkak.compute.compute.adapter.`in`.socket.request.ComputeRunningRequest
 import com.ttalkak.compute.compute.adapter.`in`.socket.request.ComputeStatusRequest
 import com.ttalkak.compute.compute.application.port.`in`.*
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.MessageMapping
@@ -17,8 +18,14 @@ class ComputeSocketController(
     private val computeStatusUseCase: ComputeStatusUseCase,
     private val upsertRunningUseCase: UpsertRunningUseCase,
 ) {
+    private val log = KotlinLogging.logger {  }
+    
     @MessageMapping("/compute/connect")
     fun compute(@Payload request: ComputeStatusRequest) {
+        log.info { 
+            "컴퓨터 연결 요청 (/compute/connect): $request"
+        }
+
         val command = ConnectCommand(
             userId = request.userId,
             computeType = request.computerType,
@@ -37,6 +44,10 @@ class ComputeSocketController(
      */
     @MessageMapping("/compute/ping")
     fun ping(@Payload request: ComputeStatusRequest) {
+        log.info {
+            "컴퓨터 실시간 데이터 요청 (/compute/ping): $request"
+        }
+        
         val command = ConnectCommand(
             userId = request.userId,
             computeType = request.computerType,
@@ -71,6 +82,10 @@ class ComputeSocketController(
         @Header("X-USER-ID") userId: Long,
         @Payload request: ComputeRunningRequest
     ) {
+        log.info {
+            "컴퓨터 생성 응답 요청 (/compute/$deploymentId/status): $request"
+        }
+
         val command = RunningCommand(
             deploymentId = deploymentId,
             status = request.status,
