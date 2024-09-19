@@ -51,6 +51,7 @@ public class UpdateProjectInputPort implements UpdateProjectUseCase {
         ProjectEditor projectEditor = projectEditorBuilder
                 .projectName(projectUpdateRequest.getProjectName())
                 .domainName(projectUpdateRequest.getDomainName())
+                .expirationDate(projectUpdateRequest.getExpirationDate())
                 .build();
 
         projectEntity.edit(projectEditor);

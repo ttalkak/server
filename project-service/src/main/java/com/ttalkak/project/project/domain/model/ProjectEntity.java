@@ -53,12 +53,14 @@ public class ProjectEntity extends BaseEntity {
     public ProjectEditor.ProjectEditorBuilder toEditor() {
         return ProjectEditor.builder()
                 .projectName(this.projectName)
-                .domainName(this.domainName);
+                .domainName(this.domainName)
+                .expirationDate(this.expirationDate);
     }
 
     public void edit(ProjectEditor projectEditor) {
         this.projectName = projectEditor.getProjectName();
         this.domainName = projectEditor.getDomainName();
+        this.expirationDate = projectEditor.getProjectName();
     }
 
     public void rollbackDeletedStatus() {

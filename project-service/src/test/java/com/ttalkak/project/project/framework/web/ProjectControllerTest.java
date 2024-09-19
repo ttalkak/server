@@ -299,6 +299,7 @@ class ProjectControllerTest extends RestDocsSupport {
         ProjectUpdateRequest projectUpdateRequest = ProjectUpdateRequest.builder()
                 .projectName("updatedProject")
                 .domainName("updatedDomain")
+                .expirationDate("2024-11-11")
                 .build();
 
         ProjectResponse projectResponse = ProjectResponse
