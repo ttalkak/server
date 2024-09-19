@@ -51,7 +51,7 @@ public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort, Verif
     }
 
     @Override
-    public void verifyEmail(String email) {
-        userJpaRepository.verifyEmail(email);
+    public void verifyEmail(Long userId, String email) {
+        userJpaRepository.verifyEmail(userId, email);
     }
 }
