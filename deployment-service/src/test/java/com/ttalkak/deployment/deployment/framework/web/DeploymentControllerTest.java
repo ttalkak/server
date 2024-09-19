@@ -21,7 +21,9 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.*;
@@ -441,137 +443,135 @@ class DeploymentControllerTest extends RestDocsSupport {
 //        Mockito.verify(commandDeploymentStatusUsecase, Mockito.times(1)).commandDeploymentStatus(Mockito.any(DeploymentCommandStatusRequest.class));
 //    }
 //
-//    @DisplayName("배포 수정")
-//    @Test
-//    void updateDeployment() throws Exception {
-//        // given
-//        GithubRepositoryRequest githubRepositoryRequest = GithubRepositoryRequest.builder()
-//                .repositoryName("repo-name")
-//                .repositoryUrl("https://github.com/repo-url")
-//                .repositoryLastCommitMessage("Initial commit")
-//                .repositoryLastCommitUserProfile("https://github.com/user/profile")
-//                .repositoryLastCommitUserName("userName")
-//                .rootDirectory("root/")
-//                .branch("main")
-//                .build();
-//
-//        EnvUpdateRequest env1 = new EnvUpdateRequest("key1", "value1");
-//        EnvUpdateRequest env2 = new EnvUpdateRequest("key2", "value2");
-//
-//        List<EnvUpdateRequest> envs = List.of(env1, env2);
-//
-//        DeploymentUpdateRequest request = DeploymentUpdateRequest.builder()
-//                .deploymentId(1L)
-//                .githubRepositoryRequest(githubRepositoryRequest)
-//                .hostingPort(8080)
-//                .envs(envs)
-//                .build();
-//
-//        DeploymentDetailResponse response = DeploymentDetailResponse.builder()
-//                .deploymentId(1L)
-//                .projectId(1L)
-//                .status(DeploymentStatus.RUNNING)
-//                .serviceType(ServiceType.BACKEND)
-//                .repositoryName("repo-name")
-//                .repositoryUrl("https://github.com/repo-url")
-//                .branch("main")
-//                .framework("Spring Boot")
-//                .envs(envs.stream().map(env -> new EnvResponse(env.getKey(), env.getValue())).collect(Collectors.toList()))
-//                .build();
-//
-//
-//        when(updateDeploymentUsecase.updateDeployment(any(Long.class), any(DeploymentUpdateRequest.class)))
-//                .thenReturn(response);
-//
-//        // when
-//        // when
-//        ResultActions perform = mockMvc.perform(
-//                        patch("/v1/deployment")
-//                                .content(objectMapper.writeValueAsString(request))
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                                .accept(MediaType.APPLICATION_JSON)
-//                                .header("X-USER-ID", 1L)
-//                )
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andDo(document("deployment-update",
-//                        requestFields(
-//                                fieldWithPath("deploymentId").type(JsonFieldType.NUMBER)
-//                                        .description("수정할 배포의 ID"),
-//                                fieldWithPath("hostingPort").type(JsonFieldType.NUMBER)
-//                                        .description("호스팅 포트"),
-//                                fieldWithPath("githubRepositoryRequest.repositoryName").type(JsonFieldType.STRING)
-//                                        .description("깃허브 저장소 이름"),
-//                                fieldWithPath("githubRepositoryRequest.repositoryUrl").type(JsonFieldType.STRING)
-//                                        .description("깃허브 저장소 URL"),
-//                                fieldWithPath("githubRepositoryRequest.repositoryLastCommitMessage").type(JsonFieldType.STRING)
-//                                        .description("최근 커밋 메시지"),
-//                                fieldWithPath("githubRepositoryRequest.repositoryLastCommitUserProfile").type(JsonFieldType.STRING)
-//                                        .description("최근 커밋 유저 프로필 URL"),
-//                                fieldWithPath("githubRepositoryRequest.repositoryLastCommitUserName").type(JsonFieldType.STRING)
-//                                        .description("최근 커밋 유저 이름"),
-//                                fieldWithPath("githubRepositoryRequest.rootDirectory").type(JsonFieldType.STRING)
-//                                        .description("루트 디렉토리 경로"),
-//                                fieldWithPath("githubRepositoryRequest.branch").type(JsonFieldType.STRING)
-//                                        .description("깃허브 브랜치"),
-//                                fieldWithPath("envs[].key").type(JsonFieldType.STRING)
-//                                        .description("환경 변수 키"),
-//                                fieldWithPath("envs[].value").type(JsonFieldType.STRING)
-//                                        .description("환경 변수 값"),
-//                                fieldWithPath("databaseUpdateRequests").type(JsonFieldType.ARRAY).optional()
-//                                        .description("데이터베이스 업데이트 요청 목록"),
-//                                fieldWithPath("databaseUpdateRequests[].id").type(JsonFieldType.NUMBER).optional()
-//                                        .description("데이터베이스 ID"),
-//                                fieldWithPath("databaseUpdateRequests[].databaseType").type(JsonFieldType.STRING).optional()
-//                                        .description("데이터베이스 타입"),
-//                                fieldWithPath("databaseUpdateRequests[].username").type(JsonFieldType.STRING).optional()
-//                                        .description("데이터베이스 사용자 이름"),
-//                                fieldWithPath("databaseUpdateRequests[].password").type(JsonFieldType.STRING).optional()
-//                                        .description("데이터베이스 비밀번호"),
-//                                fieldWithPath("databaseUpdateRequests[].port").type(JsonFieldType.NUMBER).optional()
-//                                        .description("데이터베이스 포트번호")
-//                        ),
-//                        responseFields(
-//                                fieldWithPath("success").type(JsonFieldType.BOOLEAN)
-//                                        .description("요청 성공 여부"),
-//                                fieldWithPath("message").type(JsonFieldType.STRING).optional()
-//                                        .description("응답 메시지 (예: 'OK')"),
-//                                fieldWithPath("status").type(JsonFieldType.NUMBER)
-//                                        .description("응답 코드 (예: 201)"),
-//                                fieldWithPath("data.deploymentId").type(JsonFieldType.NUMBER)
-//                                        .description("수정된 배포의 ID"),
-//                                fieldWithPath("data.projectId").type(JsonFieldType.NUMBER)
-//                                        .description("프로젝트의 ID"),
-//                                fieldWithPath("data.status").type(JsonFieldType.STRING)
-//                                        .description("배포 상태 (예: READY, RUNNING, ERROR)"),
-//                                fieldWithPath("data.serviceType").type(JsonFieldType.STRING)
-//                                        .description("서비스 유형 (예: FRONTEND, BACKEND)"),
-//                                fieldWithPath("data.repositoryName").type(JsonFieldType.STRING)
-//                                        .description("깃허브 저장소 이름"),
-//                                fieldWithPath("data.repositoryUrl").type(JsonFieldType.STRING)
-//                                        .description("깃허브 저장소 URL"),
-//                                fieldWithPath("data.repositoryLastCommitMessage").type(JsonFieldType.STRING).optional()
-//                                        .description("최근 커밋 메시지"),
-//                                fieldWithPath("data.repositoryLastCommitUserProfile").type(JsonFieldType.STRING).optional()
-//                                        .description("최근 커밋 유저 프로필 URL"),
-//                                fieldWithPath("data.repositoryLastCommitUserName").type(JsonFieldType.STRING).optional()
-//                                        .description("최근 커밋 유저 이름"),
-//                                fieldWithPath("data.branch").type(JsonFieldType.STRING)
-//                                        .description("깃허브 브랜치"),
-//                                fieldWithPath("data.framework").type(JsonFieldType.STRING)
-//                                        .description("사용된 프레임워크"),
-//                                fieldWithPath("data.envs").type(JsonFieldType.ARRAY)
-//                                        .description("환경 변수 목록"),
-//                                fieldWithPath("data.envs[].envId").type(JsonFieldType.NUMBER).optional()
-//                                        .description("환경 변수 ID"), // 추가된 필드
-//                                fieldWithPath("data.envs[].key").type(JsonFieldType.STRING)
-//                                        .description("환경 변수 키"),
-//                                fieldWithPath("data.envs[].value").type(JsonFieldType.STRING)
-//                                        .description("환경 변수 값"),
-//                                fieldWithPath("data.hostingResponses").ignored(), // 응답에 포함되지 않았으므로 무시
-//                                fieldWithPath("data.databaseResponses").type(JsonFieldType.ARRAY).optional()
-//                                        .description("데이터베이스 응답 목록")
-//                        )
-//                ));
-//    }
+    @DisplayName("배포 수정")
+    @Test
+    void updateDeployment() throws Exception {
+        // given
+        GithubRepositoryRequest githubRepositoryRequest = GithubRepositoryRequest.builder()
+                .repositoryName("repo-name")
+                .repositoryUrl("https://github.com/repo-url")
+                .rootDirectory("root/")
+                .branch("main")
+                .build();
+
+        EnvUpdateRequest env1 = new EnvUpdateRequest("key1", "value1");
+        EnvUpdateRequest env2 = new EnvUpdateRequest("key2", "value2");
+
+        List<EnvUpdateRequest> envs = List.of(env1, env2);
+
+        DeploymentUpdateRequest request = DeploymentUpdateRequest.builder()
+                .deploymentId(1L)
+                .githubRepositoryRequest(githubRepositoryRequest)
+                .hostingPort(8080)
+                .envs(envs)
+                .build();
+
+        VersionResponse versionResponse1 = VersionResponse.builder()
+                .id(1L)
+                .version(1L)
+                .logUrl("s3 link")
+                .repositoryLastCommitMessage("feat : 생성 기능")
+                .repositoryLastCommitUserName("sgo722")
+                .repositoryLastCommitUserProfile("https://avatars.githubusercontent.com/u/88089193?s=400&u=23e66c8a4b8160d64b3f10887576034d2bccec21&v=4")
+                .build();
+        VersionResponse versionResponse2 = VersionResponse.builder()
+                .id(2L)
+                .version(2L)
+                .logUrl("s3 link")
+                .repositoryLastCommitMessage("feat : 수정 기능")
+                .repositoryLastCommitUserName("sunsuking")
+                .repositoryLastCommitUserProfile("https://avatars.githubusercontent.com/u/88089193?s=400&u=23e66c8a4b8160d64b3f10887576034d2bccec21&v=4")
+                .build();
+
+        List<VersionResponse> versionResponses = List.of(versionResponse1, versionResponse2);
+
+
+        DeploymentDetailResponse response = DeploymentDetailResponse.builder()
+                .deploymentId(1L)
+                .projectId(1L)
+                .status(DeploymentStatus.RUNNING)
+                .serviceType(ServiceType.BACKEND)
+                .repositoryName("repo-name")
+                .repositoryUrl("https://github.com/repo-url")
+                .repositoryOwner("sgo722")
+                .branch("main")
+                .framework("Spring Boot")
+                .payloadURL("webhookToken관련 URL")
+                .envs(envs.stream().map(env -> new EnvResponse(env.getKey(), env.getValue())).collect(Collectors.toList()))
+                .versions(versionResponses)
+                .hostingResponse(
+                        HostingResponse.builder()
+                                .hostingId(1L)
+                                .serviceType(ServiceType.BACKEND)
+                                .detailDomainName("backend.ttalkak.com")
+                                .hostingPort(8080)
+                                .build()
+                )
+                .build();
+
+
+        when(updateDeploymentUsecase.updateDeployment(any(Long.class), any(DeploymentUpdateRequest.class)))
+                .thenReturn(response);
+
+        // when
+        // when
+        ResultActions perform = mockMvc.perform(
+                        patch("/v1/deployment")
+                                .content(toJson(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .header("X-USER-ID", 1L)
+                );
+        perform.andExpect(status().isOk())
+                .andDo(this.restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .requestFields(
+                                fieldWithPath("deploymentId").type(JsonFieldType.NUMBER).description("수정할 배포의 ID"),
+                                fieldWithPath("hostingPort").type(JsonFieldType.NUMBER).description("호스팅 포트"),
+                                fieldWithPath("githubRepositoryRequest.repositoryName").type(JsonFieldType.STRING).description("깃허브 저장소 이름"),
+                                fieldWithPath("githubRepositoryRequest.repositoryUrl").type(JsonFieldType.STRING).description("최근 커밋 유저 이름"),
+                                fieldWithPath("githubRepositoryRequest.rootDirectory").type(JsonFieldType.STRING).description("루트 디렉토리 경로"),
+                                fieldWithPath("githubRepositoryRequest.branch").type(JsonFieldType.STRING).description("깃허브 브랜치"),
+                                fieldWithPath("envs[].key").type(JsonFieldType.STRING).description("환경 변수 키"),
+                                fieldWithPath("envs[].value").type(JsonFieldType.STRING).description("환경 변수 값"),
+                                fieldWithPath("databaseUpdateRequests").type(JsonFieldType.ARRAY).optional().description("데이터베이스 업데이트 요청 목록"),
+                                fieldWithPath("databaseUpdateRequests[].id").type(JsonFieldType.NUMBER).optional().description("데이터베이스 ID"),
+                                fieldWithPath("databaseUpdateRequests[].databaseType").type(JsonFieldType.STRING).optional().description("데이터베이스 타입"),
+                                fieldWithPath("databaseUpdateRequests[].username").type(JsonFieldType.STRING).optional().description("데이터베이스 사용자 이름"),
+                                fieldWithPath("databaseUpdateRequests[].password").type(JsonFieldType.STRING).optional().description("데이터베이스 비밀번호"),
+                                fieldWithPath("databaseUpdateRequests[].port").type(JsonFieldType.NUMBER).optional().description("데이터베이스 포트번호")
+                        )
+                                .responseFields(
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("요청 성공 여부"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).optional().description("응답 메시지 (예: 'OK')"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("응답 코드 (예: 201)"),
+                                fieldWithPath("data.deploymentId").type(JsonFieldType.NUMBER).description("수정된 배포의 ID"),
+                                fieldWithPath("data.projectId").type(JsonFieldType.NUMBER).description("프로젝트의 ID"),
+                                fieldWithPath("data.status").type(JsonFieldType.STRING).description("배포 상태 (예: READY, RUNNING, ERROR)"),
+                                fieldWithPath("data.serviceType").type(JsonFieldType.STRING).description("서비스 유형 (예: FRONTEND, BACKEND)"),
+                                fieldWithPath("data.repositoryName").type(JsonFieldType.STRING).description("깃허브 저장소 이름"),
+                                fieldWithPath("data.repositoryUrl").type(JsonFieldType.STRING).description("깃허브 저장소 URL"),
+                                fieldWithPath("data.payloadURL").type(JsonFieldType.STRING).description("payloadURL"),
+                                fieldWithPath("data.versions[].id").type(JsonFieldType.NUMBER).description("버전 PK"),
+                                fieldWithPath("data.versions[].version").type(JsonFieldType.NUMBER).description("해당 배포된 프로젝트에 대한 버전"),
+                                fieldWithPath("data.versions[].logUrl").type(JsonFieldType.STRING).description("배포된 프로젝트 logURL"),
+                                fieldWithPath("data.repositoryOwner").type(JsonFieldType.STRING).optional().description("레포지토리 주인"),
+                                fieldWithPath("data.versions[].repositoryLastCommitMessage").type(JsonFieldType.STRING).description("깃허브 레포지토리 마지막 커밋 메시지"),
+                                fieldWithPath("data.versions[].repositoryLastCommitUserProfile").type(JsonFieldType.STRING).description("깃허브 레포지토리 커밋 유저 프로필 이미지"),
+                                fieldWithPath("data.versions[].repositoryLastCommitUserName").type(JsonFieldType.STRING).description("깃허브 레포지토리 마지막 커밋 유저 이름"),fieldWithPath("data.repositoryLastCommitMessage").type(JsonFieldType.STRING).optional().description("최근 커밋 메시지"),
+                                fieldWithPath("data.branch").type(JsonFieldType.STRING).description("깃허브 브랜치"),
+                                fieldWithPath("data.framework").type(JsonFieldType.STRING).description("사용된 프레임워크"),
+                                fieldWithPath("data.envs").type(JsonFieldType.ARRAY).description("환경 변수 목록"),
+                                fieldWithPath("data.envs[].envId").type(JsonFieldType.NUMBER).optional().description("환경 변수 ID"), // 추가된 필드
+                                fieldWithPath("data.envs[].key").type(JsonFieldType.STRING).description("환경 변수 키"),
+                                fieldWithPath("data.envs[].value").type(JsonFieldType.STRING).description("환경 변수 값"),
+                                fieldWithPath("data.databaseResponses").type(JsonFieldType.ARRAY).optional().description("데이터베이스 응답 목록"),
+                                fieldWithPath("data.hostingResponse").type(JsonFieldType.OBJECT).description("호스팅 정보"),
+                                fieldWithPath("data.hostingResponse.hostingId").type(JsonFieldType.NUMBER).description("호스팅 ID"),
+                                fieldWithPath("data.hostingResponse.serviceType").type(JsonFieldType.STRING).description("호스팅 서비스 타입"),
+                                fieldWithPath("data.hostingResponse.detailDomainName").type(JsonFieldType.STRING).description("호스팅 서브 도메인 이름"),
+                                fieldWithPath("data.hostingResponse.hostingPort").type(JsonFieldType.NUMBER).description("호스팅 포트")
+                        ).build()
+                )));
+    }
 }
