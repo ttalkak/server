@@ -179,6 +179,7 @@ class ProjectControllerTest extends RestDocsSupport {
                 .userId(1L)
                 .projectName("project")
                 .domainName("domain")
+                .expirationDate("2024-10-11")
                 .createdAt(fixedClock)
                 .updatedAt(fixedClock)
                 .webhookToken("githubWebhookToken")

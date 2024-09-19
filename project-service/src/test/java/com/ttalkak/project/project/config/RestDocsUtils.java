@@ -34,7 +34,7 @@ public class RestDocsUtils {
                         .description("도메인명"),
                 fieldWithPath("data.webhookToken").type(JsonFieldType.STRING)
                         .description("웹 훅 토큰"),
-                fieldWithPath("data.expirationDate").type(JsonFieldType.NULL)
+                fieldWithPath("data.expirationDate").type(JsonFieldType.STRING)
                         .description("웹 훅 토큰"),
                 fieldWithPath("data.createdAt").type(JsonFieldType.STRING)
                         .description("생성일시"),
