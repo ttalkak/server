@@ -52,7 +52,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			log.info("신규 유저 생성 응답: {}", response);
 
 			isNewUser.set(true);
-			String encodedPassword = passwordEncoder.encode(response.getEmail());
+			String encodedPassword = passwordEncoder.encode(response.getProviderId());
 			UserEntity entity = saveUserPort.save(
 					username,
 					encodedPassword,
