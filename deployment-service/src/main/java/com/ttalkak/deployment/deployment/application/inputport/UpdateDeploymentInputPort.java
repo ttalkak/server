@@ -1,6 +1,7 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
 import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutputPort;
+import com.ttalkak.deployment.deployment.application.outputport.DomainOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.HostingOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.ProjectOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUsecase;
@@ -11,6 +12,7 @@ import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
+import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainRequest;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
@@ -40,6 +42,8 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
     private final EnvOutputPort envOutputPort;
 
     private final HostingOutputPort hostingOutputPort;
+
+    private final DomainOutputPort domainOutputPort;
 
     @Override
     public DeploymentDetailResponse updateDeployment(Long userId, DeploymentUpdateRequest deploymentUpdateRequest) {
@@ -90,7 +94,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
                     }));
         });
 
-//        Env 데이터 수정
+        // Env 데이터 수정
         List<EnvEvent> envs = new ArrayList<>();
         deploymentEntity.getEnvs().clear();
         for(EnvUpdateRequest envUpdateRequest : deploymentUpdateRequest.getEnvs()){
@@ -111,9 +115,14 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
 
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deploymentEntity);
 
-        // 업데이트 내역 알림 민준수 ===============================================
+        // 도메인 이름 수정
+        domainOutputPort.updateDomainKey(new DomainRequest(
 
+                hosting.getId().toString(),
+                projectInfo.getDomainName() + " " + hosting.getServiceType().toString(),
+                hosting.getDetailSubDomainName()
+                ));
         // TO Do List
-        return DeploymentDetailResponse.mapToDTO(savedDeployment, hosting, null);
+        return DeploymentDetailResponse.mapToDTO(savedDeployment, hosting, deploymentEntity.getVersions());
     }
 }
