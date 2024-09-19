@@ -413,8 +413,6 @@ class ProjectControllerTest extends RestDocsSupport {
                                 ).build()
                         )
                 ));
-        // then
-        perform.andDo(print());
     }
 
 }
