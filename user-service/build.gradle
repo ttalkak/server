@@ -1,9 +1,16 @@
+buildscript {
+    ext {
+        restdocsApiSpecVersion = '0.18.2'
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.3'
     id 'io.spring.dependency-management' version '1.1.6'
     id "org.sonarqube" version "4.0.0.2929"
     id 'org.jetbrains.kotlin.jvm'
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
 }
 
 group = 'com.ttalkak'
@@ -27,6 +34,18 @@ repositories {
 
 ext {
     set('springCloudVersion', "2023.0.3")
+}
+
+openapi3 {
+    servers = [
+            { url = "https://www.ttalkak.com" }
+    ]
+    title = 'TTALKAK API Documentation'
+    description = '딸깍 프로젝트 배포 API 문서입니다.'
+    version = '0.0.1'
+    outputFileNamePrefix = 'ttalkak-user-api-docs'
+    format = 'yaml'
+    outputDirectory = 'build/resources/test/docs'
 }
 
 dependencies {
@@ -76,6 +95,26 @@ dependencies {
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-access
     implementation 'ch.qos.logback:logback-access:1.5.7'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+}
+
+tasks.register('openapi3-security-schemes') {
+    dependsOn 'openapi3'
+    doFirst {
+        def swaggerUIFile = file("${openapi3.outputDirectory}/${openapi3.outputFileNamePrefix}.${openapi3.format}")
+
+        def securitySchemesContent = "  securitySchemes:\n" +         \
+                                             "    APIKey:\n" +         \
+                                             "      type: apiKey\n" +         \
+                                             "      name: Authorization\n" +         \
+                                             "      in: header\n" +        \
+                                             "security:\n" +
+                "  - APIKey: []"
+
+        swaggerUIFile.append securitySchemesContent
+    }
 }
 
 dependencyManagement {
