@@ -156,7 +156,7 @@ pipeline {
                   --name document-service \
                   -p 10000:8080 \
                   -e URLS_PRIMARY_NAME=User \
-                  -e URLS="[ { url: '/docs/user-api.docs.yaml', name: 'User' },{ url: '/docs/deployment-api-docs.yaml', name: 'Deployment' }, { url: '/docs/project-api-docs.yaml', name: 'Project' } ]" \
+                  -e URLS="[ { url: '/docs/user-api-docs.yaml', name: 'User' },{ url: '/docs/deployment-api-docs.yaml', name: 'Deployment' }, { url: '/docs/project-api-docs.yaml', name: 'Project' } ]" \
                   -v /var/lib/jenkins/workspace/ttalkak/docs:/usr/share/nginx/html/docs/ \
                   swaggerapi/swagger-ui
                   """

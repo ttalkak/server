@@ -28,7 +28,7 @@ public class GithubResponse implements OAuth2Response {
 	public String getEmail() {
 		Object email = attribute.get("email");
 		if (email == null) {
-			return null;
+			return null; 
 		}
 		return email.toString();
 	}
