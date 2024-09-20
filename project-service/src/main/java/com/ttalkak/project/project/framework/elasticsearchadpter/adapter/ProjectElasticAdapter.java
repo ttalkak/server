@@ -7,6 +7,7 @@ import com.ttalkak.project.project.domain.model.LogEntryDocument;
 import com.ttalkak.project.project.framework.jpaadapter.repository.LogRepository;
 import com.ttalkak.project.project.framework.web.request.SearchLogRequest;
 import com.ttalkak.project.project.framework.web.response.LogPageResponse;
+import com.ttalkak.project.project.framework.web.response.LogResponse;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -17,6 +18,12 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.filter.Filters;
+import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregator;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregator;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.domain.Sort;
@@ -24,10 +31,7 @@ import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @PersistenceAdapter
@@ -45,7 +49,7 @@ public class ProjectElasticAdapter implements LoadElasticSearchOutputPort {
      * @throws IOException
      */
     @Override
-    public List<LogEntryDocument> getLogsByPageable(SearchLogRequest request) throws IOException {
+    public LogPageResponse getLogsByPageable(SearchLogRequest request) throws IOException {
 
         SearchRequest searchRequest = new SearchRequest("pgrok");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -79,7 +83,28 @@ public class ProjectElasticAdapter implements LoadElasticSearchOutputPort {
             mainQuery.must(QueryBuilders.termQuery("deploymentId", request.getDeploymentId()));
         }
 
+        // 집계 쿼리
+        FiltersAggregator.KeyedFilter[] statusFilters = new FiltersAggregator.KeyedFilter[] {
+                new FiltersAggregator.KeyedFilter("2xx", QueryBuilders.prefixQuery("status", "2")),
+                new FiltersAggregator.KeyedFilter("3xx", QueryBuilders.prefixQuery("status", "3")),
+                new FiltersAggregator.KeyedFilter("4xx", QueryBuilders.prefixQuery("status", "4")),
+                new FiltersAggregator.KeyedFilter("5xx", QueryBuilders.prefixQuery("status", "5"))
+        };
+
+        // 명시적인 method 버킷 생성
+        FiltersAggregationBuilder methodAgg = AggregationBuilders.filters("method_counts",
+                new FiltersAggregator.KeyedFilter("GET", QueryBuilders.termQuery("method", "GET")),
+                new FiltersAggregator.KeyedFilter("POST", QueryBuilders.termQuery("method", "POST")),
+                new FiltersAggregator.KeyedFilter("PUT", QueryBuilders.termQuery("method", "PUT")),
+                new FiltersAggregator.KeyedFilter("DELETE", QueryBuilders.termQuery("method", "DELETE")),
+                new FiltersAggregator.KeyedFilter("PATCH", QueryBuilders.termQuery("method", "PATCH"))
+        );
+
         searchSourceBuilder.query(mainQuery);
+
+        // 집계함수 추가
+        searchSourceBuilder.aggregation(AggregationBuilders.filters("status_counts", statusFilters));
+        searchSourceBuilder.aggregation(methodAgg);
 
         // 정렬
         if("desc".equals(request.getSort())) {
@@ -101,14 +126,13 @@ public class ProjectElasticAdapter implements LoadElasticSearchOutputPort {
     }
 
     /** LogEntryDocument 로 캐스팅 */
-    private List<LogEntryDocument> convertSearchResponseToDocuments(SearchResponse searchResponse) {
-        List<LogEntryDocument> logs = new ArrayList<>();
+    private LogPageResponse convertSearchResponseToDocuments(SearchResponse searchResponse) {
 
+        List<LogResponse> logs = new ArrayList<>();
         for (SearchHit hit : searchResponse.getHits()) {
             Map<String, Object> sourceAsMap = hit.getSourceAsMap();
 
-            LogEntryDocument logEntryDocument = LogEntryDocument.builder()
-                    .id(hit.getId())
+            LogResponse logResponse = LogResponse.builder()
                     .timestamp((String) sourceAsMap.get("@timestamp"))
                     .deploymentId((String) sourceAsMap.get("deploymentId"))
                     .ip((String) sourceAsMap.get("ip"))
@@ -119,10 +143,26 @@ public class ProjectElasticAdapter implements LoadElasticSearchOutputPort {
                     .duration((Double) sourceAsMap.get("duration"))
                     .build();
 
-            logs.add(logEntryDocument);
+            logs.add(logResponse);
         }
 
-        return logs;
+        Map<String, Long> methodCounts = new HashMap<>();
+        Filters methodBuckets = searchResponse.getAggregations().get("method_counts");
+        for(Filters.Bucket bucket : methodBuckets.getBuckets()) {
+            String method = bucket.getKeyAsString();
+            long count = bucket.getDocCount();
+            methodCounts.put(method, count);
+        }
+
+        Map<String, Long> statusCounts = new HashMap<>();
+        Filters statusBuckets = searchResponse.getAggregations().get("status_counts");
+        for(Filters.Bucket bucket : statusBuckets.getBuckets()) {
+            String status = bucket.getKeyAsString();
+            long count = bucket.getDocCount();
+            statusCounts.put(status, count);
+        }
+
+        return new LogPageResponse(logs, methodCounts, statusCounts);
     }
 
     /** 상태 쿼리 추가 */
@@ -132,7 +172,7 @@ public class ProjectElasticAdapter implements LoadElasticSearchOutputPort {
         for(String statusCode : status) {
             statusQuery.should(QueryBuilders.prefixQuery("status", statusCode));
         }
-
+        statusQuery.minimumShouldMatch(1);
         return statusQuery;
     }
 
