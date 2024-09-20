@@ -19,4 +19,4 @@ jobs:
 
       - name: Push changes to upper repository (GitLab)
         run: |
-          git subtree push --prefix=server https://lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git main  # 하위 트리의 변경 사항을 상위 트리로 푸시
+          git subtree push --prefix=. https://lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git main:server
