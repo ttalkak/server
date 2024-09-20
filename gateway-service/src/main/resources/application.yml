@@ -33,6 +33,13 @@ spring:
           filters:
             - AuthenticationHeaderFilter
 
+        - id: project-service-elastic
+          uri: lb://PROJECT-SERVICE
+          predicates:
+            - Path=/elastic/log/**
+          filters:
+            - AuthenticationHeaderFilter
+
         - id: compute-service-ws
           uri: lb:ws://COMPUTE-SERVICE
           predicates:

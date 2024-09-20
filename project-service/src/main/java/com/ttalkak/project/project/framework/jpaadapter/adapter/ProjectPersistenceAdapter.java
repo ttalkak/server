@@ -4,14 +4,29 @@ import com.ttalkak.project.common.PersistenceAdapter;
 import com.ttalkak.project.common.error.ErrorCode;
 import com.ttalkak.project.common.exception.EntityNotFoundException;
 import com.ttalkak.project.project.application.outputport.DeleteProjectOutputPort;
+import com.ttalkak.project.project.application.outputport.LoadElasticSearchOutputPort;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
+import com.ttalkak.project.project.domain.model.LogEntryDocument;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.domain.model.vo.ProjectStatus;
+import com.ttalkak.project.project.framework.jpaadapter.repository.LogRepository;
 import com.ttalkak.project.project.framework.jpaadapter.repository.ProjectJpaRepository;
 import com.ttalkak.project.project.application.outputport.SaveProjectOutputPort;
+import com.ttalkak.project.project.framework.web.request.SearchLogRequest;
+import com.ttalkak.project.project.framework.web.response.LogPageResponse;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
