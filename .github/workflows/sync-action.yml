@@ -3,7 +3,7 @@ name: Sync subtree to upper repository
 on:
   push:
     branches:
-      - master  # 하위 트리의 main 브랜치에 변경 사항이 있을 때 트리거
+      - master  # 하위 트리의 master 브랜치에 변경 사항이 있을 때 트리거
 
 jobs:
   sync-subtree:
@@ -11,12 +11,14 @@ jobs:
 
     steps:
       - name: Checkout submodule
-        uses: actions/checkout@v2  # 하위 트리의 코드를 체크아웃하여 가져옵니다.
+        uses: actions/checkout@v2  # 현재 리포지토리의 코드를 체크아웃
 
-      - name: Add remote only if not exists
+      - name: Authenticate to GitLab
         run: |
-          git remote | grep upper || git remote add upper https://lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git  # 원격 저장소가 없을 때만 추가
+          git config --global user.name "sgo722"
+          git config --global user.email "sgo722@naver.com"
+          git remote add upper https://oauth2:${{ secrets.GITLAB_TOKEN }}@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git  # GitLab 저장소에 인증을 추가
 
-      - name: Push changes to upper repository (GitLab)
+      - name: Push changes to upper repository
         run: |
-          git push upper master:refs/heads/server
+          git push upper master:refs/heads/server  # master 브랜치를 server 브랜치로 푸시
