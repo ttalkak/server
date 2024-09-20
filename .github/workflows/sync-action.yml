@@ -17,7 +17,7 @@ jobs:
         run: |
           git config --global user.name "양준영"
           git config --global user.email "sgo722@naver.com"
-          git remote add upper https://oauth2:${{ secrets.GITLAB_TOKENS }}@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git  # GitLab 저장소에 인증을 추가
+          git remote add upper https://oauth2:9-hymdP5xVN_HrdaNw8Y@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git  # GitLab 저장소에 인증을 추가
 
       - name: Push changes to upper repository
         run: |
