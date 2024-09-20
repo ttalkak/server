@@ -15,7 +15,7 @@ jobs:
 
       - name: Authenticate to GitLab
         run: |
-          git config --global user.name "sgo722@naver.com"
+          git config --global user.name "양준영"
           git config --global user.email "sgo722@naver.com"
           git remote add upper https://oauth2:${{ secrets.GITLAB_TOKEN }}@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git  # GitLab 저장소에 인증을 추가
 
