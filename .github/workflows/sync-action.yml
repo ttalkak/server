@@ -19,4 +19,4 @@ jobs:
 
       - name: Push changes to upper repository (GitLab)
         run: |
-          git subtree push --prefix=. https://lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git master:server
+          git push upper master:refs/heads/server
