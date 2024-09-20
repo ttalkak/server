@@ -10,7 +10,7 @@ import org.springframework.kafka.core.KafkaTemplate
 
 @StreamAdapter
 class EmailEventKafkaProducer (
-    private val kafkaTemplate: KafkaTemplate<String, String>
+    private val kafkaTemplate: KafkaTemplate<String, EmailConfirmEvent>
 ): VerifyEmailEventPort {
     @Value("\${producer.topics.verify-user-email.name}")
     private lateinit var verifyUserEmailTopic: String
@@ -22,7 +22,7 @@ class EmailEventKafkaProducer (
             "이메일 인증 성공 완료 후 유저 서비스에 이메일 인증 성공 요청 전송: ${event.email}"
         }
 
-        kafkaTemplate.send(verifyUserEmailTopic, Json.serialize(event)).thenAccept {
+        kafkaTemplate.send(verifyUserEmailTopic, event).thenAccept {
             log.info { "이메일 인증 성공 요청 전송 성공: ${event.email}" }
         }.exceptionally {
             log.error(it) { "이메일 인증 성공 요청 전송 실패: ${event.email}" }
