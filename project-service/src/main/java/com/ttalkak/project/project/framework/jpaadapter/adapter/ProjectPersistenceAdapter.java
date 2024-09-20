@@ -79,7 +79,7 @@ public class ProjectPersistenceAdapter implements SaveProjectOutputPort,
      * @return
      */
     @Override
-    public Page<ProjectEntity> findMyPrjectsContinsSearchKeyWord(Pageable pageable, Long userId, String searchKeyword) {
+    public Page<ProjectEntity> findMyProjectsContainsSearchKeyWord(Pageable pageable, Long userId, String searchKeyword) {
         return projectJpaRepository.findMyProjectsContainsSearchKeyWord(pageable, userId, searchKeyword);
     }
 
