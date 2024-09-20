@@ -5,20 +5,27 @@ import com.ttalkak.project.project.application.outputport.DeploymentOutputPort;
 import com.ttalkak.project.project.application.outputport.LoadProjectOutputPort;
 import com.ttalkak.project.project.application.usecase.GetProjectUseCase;
 import com.ttalkak.project.project.domain.model.ProjectEntity;
+import com.ttalkak.project.project.framework.deploymentadapter.dto.DeploymentResponse;
 import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
 import com.ttalkak.project.project.framework.web.response.ProjectPageResponse;
 import com.ttalkak.project.project.framework.web.response.ProjectResponse;
 import com.ttalkak.project.project.framework.web.response.ProjectWebHookResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+@Slf4j
 @Transactional
 @UseCase
 @RequiredArgsConstructor
 public class GetProjectInputPort implements GetProjectUseCase {
 
+    private static final Logger log = LoggerFactory.getLogger(GetProjectInputPort.class);
     private final LoadProjectOutputPort loadProjectOutputPort;
 
     private final DeploymentOutputPort deploymentOutputPort;
@@ -32,7 +39,11 @@ public class GetProjectInputPort implements GetProjectUseCase {
     public ProjectResponse getProject(Long projectId) {
         ProjectEntity result = loadProjectOutputPort.findById(projectId);
         ProjectResponse projectResponse = ProjectResponse.mapToResponse(result);
+        List<DeploymentResponse> deployments = deploymentOutputPort.getDeployments(projectId);
         projectResponse.setDeployments(deploymentOutputPort.getDeployments(projectId));
+
+
+        log.info("getDeploymentsByProjectId: {} :: {}", projectId, deployments);
         return projectResponse;
     }
 
