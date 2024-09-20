@@ -22,6 +22,8 @@ public class CorsConfig {
 
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedOrigin("http://localhost:5173");
+        configuration.addAllowedOrigin("https://docs.ttalkak.com");
+        configuration.addAllowedOrigin("https://ttalkak.com");
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type", "refreshToken", "Set-Cookie"));
