@@ -23,6 +23,7 @@ class EmailController (
         @RequestBody request: EmailCodeRequest,
     ): ApiResponse<Void> {
         sendCodeUseCase.sendCode(request.email, request.nickname)
+
         return ApiResponse.empty()
     }
 
@@ -31,6 +32,7 @@ class EmailController (
         @RequestBody request: EmailConfirmRequest,
     ): ApiResponse<Void> {
         confirmCodeUseCase.confirmCode(request.userId, request.email, request.code)
+
         return ApiResponse.empty()
     }
 }
