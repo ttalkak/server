@@ -12,10 +12,7 @@ import com.ttalkak.project.project.framework.deploymentadapter.dto.HostingRespon
 import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
 import com.ttalkak.project.project.framework.web.request.ProjectCreateRequest;
 import com.ttalkak.project.project.framework.web.request.ProjectUpdateRequest;
-import com.ttalkak.project.project.framework.web.response.DomainNameResponse;
-import com.ttalkak.project.project.framework.web.response.ProjectCreateResponse;
-import com.ttalkak.project.project.framework.web.response.ProjectPageResponse;
-import com.ttalkak.project.project.framework.web.response.ProjectDetailResponse;
+import com.ttalkak.project.project.framework.web.response.*;
 import com.ttalkak.project.project.support.RestDocsSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -226,7 +223,7 @@ class ProjectControllerTest extends RestDocsSupport {
         // given
         Long userId = 1L;
 
-        ProjectDetailResponse projectDetailResponse1 = ProjectDetailResponse.builder()
+        ProjectSearchResponse projectSearchResponse1 = ProjectSearchResponse.builder()
                 .id(1L)
                 .userId(1L)
                 .projectName("project1")
@@ -236,9 +233,8 @@ class ProjectControllerTest extends RestDocsSupport {
                 .createdAt(fixedClock)
                 .updatedAt(fixedClock)
                 .build();
-        projectDetailResponse1.setDeployments(new ArrayList<>());
 
-        ProjectDetailResponse projectDetailResponse2 = ProjectDetailResponse.builder()
+        ProjectSearchResponse projectSearchResponse2 = ProjectSearchResponse.builder()
                 .id(1L)
                 .userId(1L)
                 .projectName("project2")
@@ -249,10 +245,9 @@ class ProjectControllerTest extends RestDocsSupport {
                 .updatedAt(fixedClock)
                 .build();
 
-        projectDetailResponse2.setDeployments(new ArrayList<>());
 
         ProjectPageResponse projectPageResponse = ProjectPageResponse.builder()
-                .content(Arrays.asList(projectDetailResponse1, projectDetailResponse2))
+                .content(Arrays.asList(projectSearchResponse1, projectSearchResponse2))
                 .build();
 
         when(getProjectUseCase.getProjects(any(Pageable.class), any(String.class), eq(userId))).thenReturn(projectPageResponse);
