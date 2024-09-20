@@ -2,12 +2,10 @@ package com.ttalkak.project.project.application.inputport;
 
 import com.ttalkak.project.common.UseCase;
 import com.ttalkak.project.project.application.outputport.LoadElasticSearchOutputPort;
-import com.ttalkak.project.project.application.usercase.GetElasticSearchUseCase;
+import com.ttalkak.project.project.application.usecase.GetElasticSearchUseCase;
 import com.ttalkak.project.project.domain.model.LogEntryDocument;
 import com.ttalkak.project.project.framework.web.request.SearchLogRequest;
-import com.ttalkak.project.project.framework.web.response.LogPageResponse;
 import lombok.RequiredArgsConstructor;
-import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
