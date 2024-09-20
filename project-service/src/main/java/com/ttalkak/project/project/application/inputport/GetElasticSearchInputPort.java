@@ -5,6 +5,7 @@ import com.ttalkak.project.project.application.outputport.LoadElasticSearchOutpu
 import com.ttalkak.project.project.application.usecase.GetElasticSearchUseCase;
 import com.ttalkak.project.project.domain.model.LogEntryDocument;
 import com.ttalkak.project.project.framework.web.request.SearchLogRequest;
+import com.ttalkak.project.project.framework.web.response.LogPageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,7 @@ public class GetElasticSearchInputPort implements GetElasticSearchUseCase {
      * @throws IOException
      */
     @Override
-    public List<LogEntryDocument> getLogsByPageable(SearchLogRequest searchLogRequest) throws IOException {
+    public LogPageResponse getLogsByPageable(SearchLogRequest searchLogRequest) throws IOException {
         return loadElasticSearchOutputPort.getLogsByPageable(searchLogRequest);
     }
 

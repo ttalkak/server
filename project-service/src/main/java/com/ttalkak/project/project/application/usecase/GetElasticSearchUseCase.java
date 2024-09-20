@@ -11,5 +11,5 @@ import java.util.List;
 public interface GetElasticSearchUseCase {
 
     /** 페이징 처리한 로그 조회 */
-    List<LogEntryDocument> getLogsByPageable(SearchLogRequest searchLogRequest) throws IOException;
+    LogPageResponse getLogsByPageable(SearchLogRequest searchLogRequest) throws IOException;
 }
