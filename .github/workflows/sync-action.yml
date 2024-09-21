@@ -43,4 +43,4 @@ jobs:
         run: |
           git add .
           git commit -m "${{ steps.last_commit.outputs.message }}"  # 최근 커밋 메시지를 사용
-          git push upper master
+          git push -f upper master
