@@ -31,4 +31,4 @@ jobs:
 
       - name: Push changes to upper repository
         run: |
-          git subtree push --prefix . upper master:server
+          git push upper master:server
