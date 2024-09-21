@@ -19,9 +19,9 @@ jobs:
       # 2. 상위 리포지토리에 대한 인증 설정
       - name: Set up Git
         run: |
-          git config --global user.name "Your Name"
-          git config --global user.email "your-email@example.com"
-          git remote add upper https://oauth2:${{ secrets.UPPER_REPO_TOKEN }}@gitlab.com/your-group/upper-repo.git
+          git config --global user.name "양준영"
+          git config --global user.email "sgo722@naver.com"
+          git remote add upper https://oauth2:9-hymdP5xVN_HrdaNw8Y@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
 
       # 3. 하위 리포지토리에서 최근 커밋 메시지 가져오기
       - name: Get last commit message
