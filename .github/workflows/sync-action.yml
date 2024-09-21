@@ -16,7 +16,6 @@ jobs:
       - name: Remove .github directory
         run: |
           rm -rf .github  # .github 디렉토리 삭제
-          rm -rf .gitignore  # .gitignore 파일 삭제
 
       - name: Authenticate to GitLab and add remote
         run: |
@@ -27,9 +26,10 @@ jobs:
 
       - name: Push changes to upper repository
         run: |
+          git fetch upper  # GitLab 저장소 최신 상태 가져오기
           git checkout upper/master  # GitLab의 master 브랜치 체크아웃
           mkdir -p server  # server 디렉토리가 없으면 생성
-          cp -r * server/  # 모든 파일을 server 디렉토리로 복사
+          rsync -av --exclude='server' ./ server/  # server 디렉토리를 제외하고 모든 파일을 복사
           git add server/
           git commit -m "Sync from Github master branch to server directory"
-          git push upper HEAD:master  # GitLab의 master 브랜치에 푸시
+          git push upper HEAD:master  # GitLab master 브랜치에 푸시
