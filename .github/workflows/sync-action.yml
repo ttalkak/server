@@ -31,4 +31,4 @@ jobs:
 
       - name: Push changes to upper repository
         run: |
-          git push upper master:server
+          git subtree push --prefix . upper master:server  # GitHub 전체 내용을 GitLab master 브랜치의 server 디렉토리로 푸시
