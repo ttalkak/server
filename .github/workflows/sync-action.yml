@@ -21,7 +21,7 @@ jobs:
 
       - name : Remove Github Actions workflow directory
         run : |
-          git filter-repo --path .github --invert-paths # github 디렉토리 삭제
+          git filter-repo --path .github --invert-paths --force # github 디렉토리 삭제
 
       - name: Authenticate to GitLab
         run: |
