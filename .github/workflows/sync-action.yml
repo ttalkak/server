@@ -1,32 +1,28 @@
-name: subtree-matrix
+name: Sync subtree to upper repository
 
-on: [push]
+on:
+  push:
+    branches:
+      - master  # 하위 트리의 master 브랜치에 변경 사항이 있을 때 트리거
 
 jobs:
-  sync-downstream:
-
+  sync-subtree:
     runs-on: ubuntu-latest
 
-    name: Push entire GitHub contents to GitLab's server directory
-
     steps:
-      # GitHub 리포지토리 체크아웃
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+      - name: Checkout submodule
+        uses: actions/checkout@v2  # 현재 리포지토리의 코드를 체크아웃
 
-      - name: Setup Git
+      - name: Remove .github directory
+        run: |
+          rm -rf .github  # .github 디렉토리 삭제
+
+      - name: Authenticate to GitLab
         run: |
           git config --global user.name "양준영"
           git config --global user.email "sgo722@naver.com"
-          git remote add upper https://oauth2:9-hymdP5xVN_HrdaNw8Y@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
+          git remote add upper https://oauth2:9-hymdP5xVN_HrdaNw8Y@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git  # GitLab 저장소에 인증을 추가
 
-      # GitHub 루트 디렉토리 전체를 GitLab의 server 디렉토리에 서브트리로 푸시
-      - name: Push Subtree to GitLab's server directory
-        uses: nxtlvlsoftware/git-subtree-action@1.1
-        with:
-          repo: 'https://oauth2:9-hymdP5xVN_HrdaNw8Y@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git'
-          path: '.'   # GitHub의 전체 루트 디렉토리를 서브트리로 푸시
-          prefix: 'server' # GitLab에서 이 내용을 server 디렉토리로 푸시
-          branch: master   # GitLab의 master 브랜치로 푸시
-          force: true      # 강제 푸시
+      - name: Push changes to upper repository
+        run: |
+          git subtree push --prefix . upper master:server  # GitHub 전체 내용을 GitLab master 브랜치의 server 디렉토리로 푸시
