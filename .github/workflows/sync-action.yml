@@ -1,40 +1,46 @@
-name: Sync subtree to upper repository
+name: Sync to upper repository
 
 on:
   push:
     branches:
-      - master  # master 브랜치에 변경 사항이 있을 때 트리거
+      - master  # 하위 리포지토리의 master 브랜치에 변경 사항이 발생하면 실행
 
 jobs:
-  sync-subtree:
+  sync-to-upper:
     runs-on: ubuntu-latest
 
     steps:
-      # GitHub 리포지토리 체크아웃
+      # 1. 하위 리포지토리 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      # GitLab 인증 설정
-      - name: Authenticate to GitLab
+      # 2. 상위 리포지토리에 대한 인증 설정
+      - name: Set up Git
         run: |
-          git config --global user.name "양준영"
-          git config --global user.email "sgo722@naver.com"
-          git remote add upper https://oauth2:9-hymdP5xVN_HrdaNw8Y@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
+          git config --global user.name "Your Name"
+          git config --global user.email "your-email@example.com"
+          git remote add upper https://oauth2:${{ secrets.UPPER_REPO_TOKEN }}@gitlab.com/your-group/upper-repo.git
 
-      # .github 디렉토리를 제외하고 푸시
-      - name: Remove .github from subtree
+      # 3. 하위 리포지토리에서 최근 커밋 메시지 가져오기
+      - name: Get last commit message
+        id: last_commit
         run: |
-          git rm -r --cached .github  # .github 디렉토리를 임시로 제거
-          git commit -m "Remove .github directory for subtree push"
+          last_commit_msg=$(git log -1 --pretty=%B)
+          echo "::set-output name=message::$last_commit_msg"
 
-      # 서브트리 푸시
-      - name: Push changes to GitLab's server directory
+      # 4. 상위 리포지토리의 특정 디렉토리로 모든 내용 복사
+      - name: Copy all files to /server directory in upper repo
         run: |
-          git subtree push --prefix=. upper master  # GitHub 전체 내용을 GitLab master 브랜치의 server 디렉토리로 푸시
+          git fetch upper
+          git checkout master
+          mkdir -p server  # 상위 리포지토리의 /server 디렉토리를 생성
+          rsync -av --exclude='.git' . ./server  # 모든 파일을 /server 디렉토리로 복사
 
-      # .github 디렉토리 복원
-      - name: Restore .github directory
+      # 5. 상위 리포지토리에 푸시
+      - name: Push to upper repository
         run: |
-          git reset --hard HEAD~1  # .github 디렉토리 복원
+          git add .
+          git commit -m "${{ steps.last_commit.outputs.message }}"  # 최근 커밋 메시지를 사용
+          git push upper master
