@@ -32,7 +32,7 @@ jobs:
       # 서브트리 푸시
       - name: Push changes to GitLab's server directory
         run: |
-          git subtree push --prefix=. upper master:server  # GitHub 전체 내용을 GitLab master 브랜치의 server 디렉토리로 푸시
+          git subtree push --prefix=. upper master  # GitHub 전체 내용을 GitLab master 브랜치의 server 디렉토리로 푸시
 
       # .github 디렉토리 복원
       - name: Restore .github directory
