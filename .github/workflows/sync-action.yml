@@ -21,4 +21,4 @@ jobs:
 
       - name: Push changes to upper repository
         run: |
-          git push upper master:refs/heads/server  # master 브랜치를 server 브랜치로 푸시
+          git subtree push --prefix . upper master:server
