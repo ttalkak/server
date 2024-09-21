@@ -13,16 +13,6 @@ jobs:
       - name: Checkout submodule
         uses: actions/checkout@v2  # 현재 리포지토리의 코드를 체크아웃
 
-      - name : Install git filter-repo
-        run : |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          pip3 install git-filter-repo
-
-      - name : Remove Github Actions workflow directory
-        run : |
-          git filter-repo --path .github --invert-paths --force # github 디렉토리 삭제
-
       - name: Authenticate to GitLab
         run: |
           git config --global user.name "양준영"
@@ -31,4 +21,4 @@ jobs:
 
       - name: Push changes to upper repository
         run: |
-          git subtree push --prefix . upper master:server  # GitHub 전체 내용을 GitLab master 브랜치의 server 디렉토리로 푸시
+          git subtree push --prefix . upper master:server --force
