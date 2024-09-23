@@ -76,7 +76,7 @@ public class ProjectElasticAdapter implements LoadElasticSearchOutputPort {
 
         // deploymentId 쿼리 추가
         if(request.getDeploymentId() != null) {
-            mainQuery.must(QueryBuilders.termQuery("deploymentId", request.getDeploymentId()));
+            mainQuery.must(QueryBuilders.termQuery("deploymentId", String.valueOf(request.getDeploymentId()) ));
         }
 
         // http status 별 개수 집계쿼리
