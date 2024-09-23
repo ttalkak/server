@@ -58,6 +58,8 @@ public class ProjectElasticAdapter implements LoadElasticSearchOutputPort {
                 .lte(request.getTo());
         mainQuery.must(timestampRange);
 
+        mainQuery.must(QueryBuilders.termQuery("deploymentId", String.valueOf(request.getDeploymentId())));
+
         // 상태 쿼리 추가
         if(request.getStatus() != null && request.getStatus().length > 0) {
             BoolQueryBuilder statusQuery = buildStatusQuery(request.getStatus());
