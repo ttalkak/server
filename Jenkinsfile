@@ -348,7 +348,7 @@ pipeline {
         stage('Update GitLab Repository') {
             steps {
                 withCredentials([usernamePassword(credentialsId: "${GITLAB_CREDENTIALS_ID}", passwordVariable: 'GITLAB_PASSWORD', usernameVariable: 'GITLAB_USERNAME'),
-                                 string(credentialsId: "${GITHUB_CREDENTIALS_ID}", variable: 'GITHUB_TOKEN')]) {
+                                 string(credentialsId: "${github-access-token}", variable: 'GITHUB_TOKEN')]) {
                     sh '''
                         git config --global user.email "sgo722@naver.com"
                         git config --global user.name "sgo722"
