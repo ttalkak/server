@@ -50,21 +50,14 @@ class ComputeCachePersistenceAdapter(
 
     override fun loadCompute(userId: Long): Optional<ComputeUser> {
         val status = statusRepository.findByUserId(userId).orElseThrow {
-            RuntimeException("해당 유저의 상태가 존재하지 않습니다.")
-        }
-
-        log.info {
-            "status: $status"
+            RuntimeException("상태가 존재하지 않습니다.")
         }
 
         return computeUserCacheRepository.findById(userId).map {
-            log.info {
-                "computeUserCache it: $it"
-            }
             ComputeUser(
                 userId = it.userId,
                 computeType = it.computeType,
-                remainCompute = max(status.maxCompute - it.usedCompute, 1),
+                remainCompute = status.maxCompute - it.usedCompute,
                 remainMemory = status.maxMemory - it.usedMemory,
                 remainCPU = status.maxCPU - it.usedCPU
             )
@@ -73,12 +66,16 @@ class ComputeCachePersistenceAdapter(
 
     override fun loadAllCompute(): List<ComputeUser> {
         return computeUserCacheRepository.findAll().map {
+            val status = statusRepository.findByUserId(it.userId).orElseThrow {
+                RuntimeException("상태가 존재하지 않습니다.")
+            }
+
             ComputeUser(
                 userId = it.userId,
                 computeType = it.computeType,
-                remainCompute = it.usedCompute,
-                remainMemory = it.usedMemory,
-                remainCPU = it.usedCPU
+                remainCompute = status.maxCompute - it.usedCompute,
+                remainMemory = status.maxMemory - it.usedMemory,
+                remainCPU = status.maxCPU - it.usedCPU
             )
         }
     }
