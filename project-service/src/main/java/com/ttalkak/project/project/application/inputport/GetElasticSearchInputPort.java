@@ -39,7 +39,7 @@ public class GetElasticSearchInputPort implements GetElasticSearchUseCase {
      * @throws Exception
      */
     @Override
-    public MonitoringInfoResponse getAIMonitoringInfo(Long deploymentId) throws Exception {
+    public MonitoringInfoResponse getAIMonitoringInfo(String deploymentId) throws Exception {
         return loadElasticSearchOutputPort.getAIMonitoringInfo(deploymentId);
     }
 

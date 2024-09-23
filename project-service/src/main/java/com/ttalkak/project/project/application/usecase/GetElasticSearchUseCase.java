@@ -10,6 +10,6 @@ public interface GetElasticSearchUseCase {
     LogPageResponse getLogsByPageable(SearchLogRequest searchLogRequest) throws Exception;
 
     /** AI 모니터링 정보 제공 */
-    MonitoringInfoResponse getAIMonitoringInfo(Long deploymentId) throws Exception;
+    MonitoringInfoResponse getAIMonitoringInfo(String deploymentId) throws Exception;
 
 }

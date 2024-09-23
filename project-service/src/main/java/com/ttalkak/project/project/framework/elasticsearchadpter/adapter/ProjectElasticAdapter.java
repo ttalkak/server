@@ -117,7 +117,7 @@ public class ProjectElasticAdapter implements LoadElasticSearchOutputPort {
      * @throws Exception
      */
     @Override
-    public MonitoringInfoResponse getAIMonitoringInfo(Long deploymentId) throws Exception {
+    public MonitoringInfoResponse getAIMonitoringInfo(String deploymentId) throws Exception {
         SearchRequest searchRequest = new SearchRequest("pgrok");
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 
