@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @WebAdapter
 @RequiredArgsConstructor
-@RequestMapping("/elastic")
+@RequestMapping("/v1/log")
 public class ElasticSearchController {
 
     private final GetElasticSearchUseCase getElasticSearchUseCase;
@@ -30,7 +30,7 @@ public class ElasticSearchController {
      * @param searchLogRequest
      * @return
      */
-    @GetMapping("/log/search")
+    @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<LogPageResponse> getLogsByPageable(
             @RequestHeader("X-USER-ID") Long userId,
@@ -40,7 +40,7 @@ public class ElasticSearchController {
         return ApiResponse.success(pages);
     }
 
-    @GetMapping("/log/test")
+    @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<MonitoringInfoResponse> getMonitoringInfo() throws Exception {
 
