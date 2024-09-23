@@ -15,3 +15,4 @@ COPY --from=build /app/build/libs/*.jar /app/app.jar
 
 # 5. 스프링 부트 앱 실행
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "/app/app.jar"]
+
