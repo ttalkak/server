@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.*;
 
-import static com.ttalkak.project.project.framework.elasticsearchadpter.adapter.SearchResponseConverter.toTopErrorSummaryResponse;
+import static com.ttalkak.project.project.framework.elasticsearchadpter.adapter.SearchResponseConverter.toMonitoringInfoResponse;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -124,8 +124,8 @@ public class ProjectElasticAdapter implements LoadElasticSearchOutputPort {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery()
                 .must(QueryBuilders.rangeQuery("@timestamp")
                         .gte("now-7d/d")
-                        .lt("now/d"))
-                .must(QueryBuilders.termsQuery("deploymentId", deploymentId));
+                        .lte("now/d"))
+                .must(QueryBuilders.termQuery("deploymentId", deploymentId));
 
         sourceBuilder.query(boolQuery);
 
@@ -135,20 +135,37 @@ public class ProjectElasticAdapter implements LoadElasticSearchOutputPort {
         };
 
         TermsAggregationBuilder topPathsAgg = AggregationBuilders.terms("top_paths")
-                .field("paths")
+                .field("path")
                 .size(3);
 
         sourceBuilder.aggregation(
-                AggregationBuilders.filters("error_filters", filters)
+                AggregationBuilders.filters("error_types", filters)
                         .subAggregation(topPathsAgg)
 
+        );
+
+        sourceBuilder.aggregation(
+                AggregationBuilders.terms("method_usage")
+                        .field("method")
+                        .size(3)
+        );
+
+        sourceBuilder.aggregation(
+                AggregationBuilders.terms("top_ips")
+                        .field("ip")
+                        .size(3)
+        );
+
+        sourceBuilder.aggregation(
+                AggregationBuilders.avg("avg_response_time")
+                        .field("duration")
         );
 
         sourceBuilder.size(0); // 집계 결과만 필요하므로 검색 결과는 0개
         searchRequest.source(sourceBuilder);
         SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
 
-        return toTopErrorSummaryResponse(searchResponse);
+        return toMonitoringInfoResponse(searchResponse);
     }
 
     /** LogEntryDocument 로 캐스팅 */

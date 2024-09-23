@@ -6,6 +6,7 @@ import com.ttalkak.project.project.application.usecase.GetElasticSearchUseCase;
 import com.ttalkak.project.project.domain.model.LogEntryDocument;
 import com.ttalkak.project.project.framework.web.request.SearchLogRequest;
 import com.ttalkak.project.project.framework.web.response.LogPageResponse;
+import com.ttalkak.project.project.framework.web.response.MonitoringInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class ElasticSearchController {
      * @param searchLogRequest
      * @return
      */
-    @PostMapping("/log/search")
+    @GetMapping("/log/search")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<LogPageResponse> getLogsByPageable(
             @RequestHeader("X-USER-ID") Long userId,
@@ -37,6 +38,14 @@ public class ElasticSearchController {
 
         LogPageResponse pages = getElasticSearchUseCase.getLogsByPageable(searchLogRequest);
         return ApiResponse.success(pages);
+    }
+
+    @GetMapping("/log/test")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<MonitoringInfoResponse> getMonitoringInfo() throws Exception {
+
+        MonitoringInfoResponse m = getElasticSearchUseCase.getAIMonitoringInfo("42");
+        return ApiResponse.success(m);
     }
 
 }

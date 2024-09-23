@@ -1,58 +1,60 @@
 package com.ttalkak.project.project.framework.web.response;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.elasticsearch.action.search.SearchResponse;
-import org.springframework.context.annotation.Bean;
 
 import java.util.Collections;
 import java.util.List;
 
+@Builder
 public class MonitoringInfoResponse {
 
-    private final int totalErrors;
+    private final long totalErrors;
+    private final double avgResponseTime;
+    private final List<AccessIpInfo> accessIpInfos;
+    private final List<UsedMethodInfo> usedMethodInfos;
     private final List<ErrorCategory> errorCategories;
 
     @Builder
-    public MonitoringInfoResponse(int totalErrors, List<ErrorCategory> errorCategories) {
-        this.totalErrors = totalErrors;
-        this.errorCategories = errorCategories;
+    public static class AccessIpInfo {
+        private final String ip;
+        private final long count;
     }
 
+    @Builder
+    public static class UsedMethodInfo {
+        private final String method;
+        private final long count;
+    }
+
+    @Builder
     public static class ErrorCategory {
         private final String category;
-        private final int count;
+        private final long count;
         private final List<ErrorPath> topPaths;
-
-        @Builder
-        public ErrorCategory(String category, int count, List<ErrorPath> topPaths) {
-            this.category = category;
-            this.count = count;
-            this.topPaths = topPaths;
-        }
 
         List<ErrorPath> getTopPaths() {
             return Collections.unmodifiableList(topPaths);
         }
     }
 
+    @Builder
     public static class ErrorPath {
         private final String path;
-        private final int count;
+        private final long count;
+    }
 
+    List<AccessIpInfo> getAccessIpInfos() {
+        return Collections.unmodifiableList(accessIpInfos);
+    }
 
-        @Builder
-        public ErrorPath(String path, int count) {
-            this.path = path;
-            this.count = count;
-        }
+    List<UsedMethodInfo> getUsedMethodInfos() {
+        return Collections.unmodifiableList(usedMethodInfos);
     }
 
     List<ErrorCategory> getErrorCategories() {
         return Collections.unmodifiableList(errorCategories);
     }
+
 
 
 }
