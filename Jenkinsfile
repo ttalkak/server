@@ -345,5 +345,37 @@ pipeline {
                 }
             }
         }
+
+                stage('Update GitLab Repository') {
+                    steps {
+                        withCredentials([usernamePassword(credentialsId: "${GITLAB_CREDENTIALS_ID}", passwordVariable: 'GITLAB_PASSWORD', usernameVariable: 'GITLAB_USERNAME'),
+                                         string(credentialsId: "${GITHUB_CREDENTIALS_ID}", variable: 'GITHUB_TOKEN')]) {
+                            sh '''
+                                git config --global user.email "sgo722@naver.com"
+                                git config --global user.name "sgo722"
+
+                                # Clone GitLab repository
+                                # git clone https://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@lab.ssafy.com/s11-webmobile1-sub2/S11P12C209.git
+                                git clone https://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@lab.ssafy.com/s11-webmobile1-sub2/S11P12C209.git
+                                cd S11P12C209
+
+                                # Add backend subtree (to ensure it remains updated)
+                                git subtree pull --prefix=backend https://${GITHUB_TOKEN}@${GITHUB_BACKEND_REPO_URL} main
+
+                                # Add frontend subtree
+                                git subtree pull --prefix=frontend https://${GITHUB_TOKEN}@${GITHUB_FRONTEND_REPO_URL} main
+
+                                # Set remote URL for GitLab
+                                git remote set-url origin https://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@lab.ssafy.com/s11-webmobile1-sub2/S11P12C209.git
+
+                                # Ensure there are changes to commit and force push
+                                git add .
+                                git commit -m "Update subtrees" || true
+                                git push --force origin main
+                            '''
+                        }
+                    }
+                }
+            }
     }
 }
