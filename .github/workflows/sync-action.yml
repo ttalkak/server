@@ -16,7 +16,7 @@ jobs:
       - name: Push changes to upper repository
         run: |
           
-          git config --global user.name "양준영".
+          git config --global user.name "sgo722".
           git config --global user.email "sgo722@naver.com"
           git clone https://oauth2:9-hymdP5xVN_HrdaNw8Y@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
           cd S11P21C108
