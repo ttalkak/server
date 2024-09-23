@@ -18,9 +18,10 @@ public class SearchResponseConverter {
     public static MonitoringInfoResponse toMonitoringInfoResponse (SearchResponse searchResponse) {
 
         // ip 호출 집계쿼리
-        ParsedStringTerms topIpsAgg = searchResponse.getAggregations().get("top_ips");
+        ParsedStringTerms topIpsAgg = searchResponse.getAggregations()
+                .get("top_ips");
         List<MonitoringInfoResponse.AccessIpInfo> accessIpInfoList = new ArrayList<>();
-        for(Terms.Bucket bucket : topIpsAgg.getBuckets()) {
+        for (Terms.Bucket bucket : topIpsAgg.getBuckets()) {
             String ip = bucket.getKeyAsString();
             long count = bucket.getDocCount();
 
@@ -31,9 +32,10 @@ public class SearchResponseConverter {
         }
 
         // 메서드 사용 빈도 집계쿼리
-        ParsedStringTerms methodUsageAgg = searchResponse.getAggregations().get("method_usage");
+        ParsedStringTerms methodUsageAgg = searchResponse.getAggregations()
+                .get("method_usage");
         List<MonitoringInfoResponse.UsedMethodInfo> usedMethodInfoList = new ArrayList<>();
-        for(Terms.Bucket bucket : methodUsageAgg.getBuckets()) {
+        for (Terms.Bucket bucket : methodUsageAgg.getBuckets()) {
             String method = bucket.getKeyAsString();
             long count = bucket.getDocCount();
 
@@ -46,18 +48,20 @@ public class SearchResponseConverter {
 
         // 에러 집계쿼리
         long totalErrors = 0;
-        ParsedFilters errorTypeAgg = searchResponse.getAggregations().get("error_types");
+        ParsedFilters errorTypeAgg = searchResponse.getAggregations()
+                .get("error_types");
         List<MonitoringInfoResponse.ErrorCategory> errorCategories = new ArrayList<>();
 
-        for( Filters.Bucket bucket : errorTypeAgg.getBuckets()) {
+        for (Filters.Bucket bucket : errorTypeAgg.getBuckets()) {
             String category = bucket.getKeyAsString();
             long bucketDocCount = bucket.getDocCount();
             totalErrors += bucketDocCount;
 
             List<MonitoringInfoResponse.ErrorPath> errorPaths = new ArrayList<>();
 
-            ParsedTerms topPathsAgg = bucket.getAggregations().get("top_paths");
-            for(Terms.Bucket pathBucket : topPathsAgg.getBuckets()) {
+            ParsedTerms topPathsAgg = bucket.getAggregations()
+                    .get("top_paths");
+            for (Terms.Bucket pathBucket : topPathsAgg.getBuckets()) {
 
                 MonitoringInfoResponse.ErrorPath errorPath = MonitoringInfoResponse.ErrorPath.builder()
                         .path(pathBucket.getKeyAsString())
@@ -77,8 +81,13 @@ public class SearchResponseConverter {
         }
 
         // 평균 응답시간
-        ParsedAvg avgResponseAgg = searchResponse.getAggregations().get("avg_response");
-        double avgResponseTime = avgResponseAgg.getValue();
+        ParsedAvg avgResponseAgg = searchResponse.getAggregations()
+                .get("avg_response");
+        double avgResponseTime = 0;
+        if (avgResponseAgg != null) {
+            avgResponseTime = avgResponseAgg.getValue();
+        }
+
 
         // 반환값
         MonitoringInfoResponse result = MonitoringInfoResponse.builder()
