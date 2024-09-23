@@ -6,6 +6,7 @@ import com.ttalkak.compute.compute.adapter.out.cache.entity.RunningCache
 import com.ttalkak.compute.compute.adapter.out.cache.repository.ComputePortCacheRepository
 import com.ttalkak.compute.compute.adapter.out.cache.repository.ComputeUserCacheRepository
 import com.ttalkak.compute.compute.adapter.out.cache.repository.RunningCacheRepository
+import com.ttalkak.compute.compute.adapter.out.persistence.repository.StatusRepository
 import com.ttalkak.compute.compute.application.port.out.*
 import com.ttalkak.compute.compute.domain.ComputeRunning
 import com.ttalkak.compute.compute.domain.ComputeUser
@@ -18,7 +19,8 @@ import java.util.*
 class ComputeCachePersistenceAdapter(
     private val computeUserCacheRepository: ComputeUserCacheRepository,
     private val runningCacheRepository: RunningCacheRepository,
-    private val computePortCacheRepository: ComputePortCacheRepository
+    private val computePortCacheRepository: ComputePortCacheRepository,
+    private val statusRepository: StatusRepository
 ): SaveComputePort, LoadComputePort, SaveRunningPort, LoadRunningPort, LoadPortPort {
     private val log = KotlinLogging.logger {  }
 
@@ -45,14 +47,16 @@ class ComputeCachePersistenceAdapter(
     }
 
     override fun loadCompute(userId: Long): Optional<ComputeUser> {
-        // TODO: 해당 부분 수정 필요함.
+        val status = statusRepository.findByUserId(userId).orElseThrow {
+            RuntimeException("해당 유저의 상태가 존재하지 않습니다.")
+        }
         return computeUserCacheRepository.findById(userId).map {
                 ComputeUser(
                     userId = it.userId,
                     computeType = it.computeType,
-                    remainCompute = it.usedCompute,
-                    remainMemory = it.usedMemory,
-                    remainCPU = it.usedCPU
+                    remainCompute = status.maxCompute - it.usedCompute,
+                    remainMemory = status.maxMemory - it.usedMemory,
+                    remainCPU = status.maxCPU - it.usedCPU
                 )
             }
     }
