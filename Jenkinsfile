@@ -345,7 +345,6 @@ pipeline {
             }
         }
 
-
         stage('Update GitLab Repository') {
             steps {
                 withCredentials([usernamePassword(credentialsId: "${GITLAB_CREDENTIALS_ID}", passwordVariable: 'GITLAB_PASSWORD', usernameVariable: 'GITLAB_USERNAME'),
