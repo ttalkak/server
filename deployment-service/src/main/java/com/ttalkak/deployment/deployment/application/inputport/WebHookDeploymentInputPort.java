@@ -34,7 +34,7 @@ public class WebHookDeploymentInputPort implements WebHookDeploymentUsecase {
     public void createDeploymentWebHook(ServiceType serviceType, String webhookToken, WebHookCommand command) {
         ProjectWebHookResponse response = projectOutputPort.getWebHookProject(webhookToken);
 
-        DeploymentEntity deployment = deploymentOutputPort.findByProjectIdAndServiceType(response.getProjectId(), serviceType.name()).orElseThrow(
+        DeploymentEntity deployment = deploymentOutputPort.findByProjectIdAndServiceType(response.getProjectId(), serviceType).orElseThrow(
                 () -> new BusinessException(ErrorCode.NOT_EXISTS_DEPLOYMENT)
         );
 
