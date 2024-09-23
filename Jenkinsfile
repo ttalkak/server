@@ -16,6 +16,7 @@ pipeline {
             }
         }
         
+        
         stage('Test Services') {
             parallel {
                 // stage('Test Eureka Server') {
