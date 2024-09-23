@@ -51,5 +51,5 @@ class ComputeCreateSocketListener(
         simpleMessagingTemplate.convertAndSend("/sub/compute-create/${deployerId}", Json.serialize(listOf(mainContainer)))
     }
 
-    private fun parseGithubLink(baseURL: String, branch: String): String = baseURL.replace(".git", "/archive/refs/heads/") + branch + ".zip"
+    private fun parseGithubLink(baseURL: String, branch: String): String = "$baseURL/archive/refs/heads/$branch.zip"
 }
