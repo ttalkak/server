@@ -370,7 +370,11 @@ pipeline {
 
                         # Ensure there are changes to commit and force push
                         git add .
-                        g
-
+                        git commit -m "Update subtrees" || true
+                        git push --force origin master
+                    '''
+                }
+            }
+        }
     }
 }
