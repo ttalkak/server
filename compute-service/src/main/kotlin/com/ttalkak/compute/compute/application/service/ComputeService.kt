@@ -40,7 +40,7 @@ class ComputeService (
 
     override fun allocate(command: AllocateCommand): AllocateCompute {
         loadComputePort.loadAllCompute().forEach {
-            if (command.computeCount <= it.remainCompute && command.useMemory <= it.remainMemory) {
+            if (command.computeCount <= it.remainCompute) {
                 val availablePorts = loadStatusPort.loadStatus(it.userId).orElseThrow {
                     IllegalArgumentException("유저에 알맞는 상태가 존재하지 않습니다.")
                 }.let { status ->
