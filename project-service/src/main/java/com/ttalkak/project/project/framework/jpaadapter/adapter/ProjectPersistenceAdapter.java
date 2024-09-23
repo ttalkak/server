@@ -56,6 +56,7 @@ public class ProjectPersistenceAdapter implements SaveProjectOutputPort,
         ProjectEntity projectEntity = projectJpaRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_PROJECT));
 
+
         if(projectEntity.getStatus() == ProjectStatus.DELETED) throw new EntityNotFoundException(ErrorCode.NOT_EXISTS_PROJECT);
         return projectEntity;
     }
