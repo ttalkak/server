@@ -28,7 +28,7 @@ public class HostingAdapter implements HostingOutputPort {
 
     @Override
     public HostingEntity findByProjectIdAndServiceType(Long projectId, ServiceType serviceType) {
-        return hostingRepository.findByProjectIdAndServiceType(projectId, serviceType.name())
+        return hostingRepository.findByProjectIdAndServiceType(projectId, serviceType)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_EXISTS_HOSTING));
     }
 }

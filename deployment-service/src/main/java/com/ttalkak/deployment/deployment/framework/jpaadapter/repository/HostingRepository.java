@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface HostingRepository extends JpaRepository<HostingEntity, Long> {
     @Query("SELECT h FROM HostingEntity h WHERE h.projectId = :projectId AND h.serviceType = :serviceType")
-    Optional<HostingEntity> findByProjectIdAndServiceType(Long projectId, String serviceType);
+    Optional<HostingEntity> findByProjectIdAndServiceType(Long projectId, ServiceType serviceType);
 }
