@@ -5,6 +5,7 @@ import com.ttalkak.project.project.framework.web.response.MonitoringInfoResponse
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.aggregations.bucket.filter.Filters;
 import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilters;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.ParsedAvg;
@@ -17,9 +18,9 @@ public class SearchResponseConverter {
     public static MonitoringInfoResponse toMonitoringInfoResponse (SearchResponse searchResponse) {
 
         // ip 호출 집계쿼리
-        ParsedFilters topIpsAgg = searchResponse.getAggregations().get("top_ips");
+        ParsedStringTerms topIpsAgg = searchResponse.getAggregations().get("top_ips");
         List<MonitoringInfoResponse.AccessIpInfo> accessIpInfoList = new ArrayList<>();
-        for(Filters.Bucket bucket : topIpsAgg.getBuckets()) {
+        for(Terms.Bucket bucket : topIpsAgg.getBuckets()) {
             String ip = bucket.getKeyAsString();
             long count = bucket.getDocCount();
 
@@ -30,9 +31,9 @@ public class SearchResponseConverter {
         }
 
         // 메서드 사용 빈도 집계쿼리
-        ParsedFilters methodUsageAgg = searchResponse.getAggregations().get("method_usage");
+        ParsedStringTerms methodUsageAgg = searchResponse.getAggregations().get("method_usage");
         List<MonitoringInfoResponse.UsedMethodInfo> usedMethodInfoList = new ArrayList<>();
-        for(Filters.Bucket bucket : methodUsageAgg.getBuckets()) {
+        for(Terms.Bucket bucket : methodUsageAgg.getBuckets()) {
             String method = bucket.getKeyAsString();
             long count = bucket.getDocCount();
 
