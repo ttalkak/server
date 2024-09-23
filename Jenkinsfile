@@ -349,8 +349,8 @@ pipeline {
 
         stage('Update GitLab Repository') {
             steps {
-                withCredentials([usernamePassword(credentialsId: "${GITLAB_CREDENTIALS_ID}", passwordVariable: 'GITLAB_PASSWORD', usernameVariable: 'GITLAB_USERNAME'),
-                                 string(credentialsId: "${GITHUB_CREDENTIALS_ID}", variable: 'GITHUB_TOKEN')]) {
+                withCredentials([usernamePassword(credentialsId: GITLAB_CREDENTIALS_ID, passwordVariable: 'GITLAB_PASSWORD', usernameVariable: 'GITLAB_USERNAME'),
+                                 string(credentialsId: GITHUB_CREDENTIALS_ID, variable: 'GITHUB_TOKEN')]) {
                     sh '''
                         git config --global user.email "sgo722@naver.com"
                         git config --global user.name "sgo722"
@@ -370,11 +370,7 @@ pipeline {
 
                         # Ensure there are changes to commit and force push
                         git add .
-                        git commit -m "Update subtrees" || true
-                        git push --force origin master
-                    '''
-                }
-            }
-        }
+                        g
+
     }
 }
