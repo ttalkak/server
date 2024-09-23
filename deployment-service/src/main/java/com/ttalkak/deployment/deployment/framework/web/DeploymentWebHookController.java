@@ -20,7 +20,7 @@ public class DeploymentWebHookController {
 
     @PostMapping("/backend/{webhookToken}")
     public void deploymentWebHook(
-            @PathVariable String webhookToken,
+            @PathVariable("webhookToken") String webhookToken,
             @RequestBody DeploymentWebHookRequest deploymentWebHookRequest
     ){
         WebHookCommand command = new WebHookCommand(
@@ -35,7 +35,7 @@ public class DeploymentWebHookController {
 
     @PostMapping("/frontend/{webhookToken}")
     public void deploymentWebHookFrontend(
-            @PathVariable String webhookToken,
+            @PathVariable("webhookToken") String webhookToken,
             @RequestBody DeploymentWebHookRequest deploymentWebHookRequest
     ){
         WebHookCommand command = new WebHookCommand(
