@@ -7,13 +7,11 @@ import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentWebHookRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.WebHookCommit;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @WebAdapter
 @RequiredArgsConstructor
+@RestController
 @RequestMapping("/webhook/deployment")
 public class DeploymentWebHookController {
     private final WebHookDeploymentUsecase webHookDeploymentUsecase;
