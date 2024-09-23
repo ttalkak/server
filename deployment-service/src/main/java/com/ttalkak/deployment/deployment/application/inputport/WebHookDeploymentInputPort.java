@@ -41,7 +41,7 @@ public class WebHookDeploymentInputPort implements WebHookDeploymentUsecase {
         // 배포 상태 변환
         deployment.setStatus(DeploymentStatus.PENDING);
 
-        VersionEntity versionEntity = versionOutputPort.findById(deployment.getId());
+        VersionEntity versionEntity = versionOutputPort.findLastVersionByDeploymentId(deployment.getId());
 
         Long newVersionId = versionEntity.getVersion() + 1;
 
