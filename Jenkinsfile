@@ -321,7 +321,6 @@ pipeline {
                 }
 
 
-
                 stage('Build and Deploy Project Service') {
                     when {
                         changeset "project-service/**"

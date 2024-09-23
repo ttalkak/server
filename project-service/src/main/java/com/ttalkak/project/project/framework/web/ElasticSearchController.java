@@ -33,12 +33,10 @@ public class ElasticSearchController {
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<LogPageResponse> getLogsByPageable(
             @RequestHeader("X-USER-ID") Long userId,
-            @RequestBody SearchLogRequest searchLogRequest) throws IOException {
+            @RequestBody SearchLogRequest searchLogRequest) throws Exception {
 
         LogPageResponse pages = getElasticSearchUseCase.getLogsByPageable(searchLogRequest);
         return ApiResponse.success(pages);
     }
-
-
 
 }

@@ -8,7 +8,8 @@ import com.ttalkak.project.project.domain.model.ProjectEntity;
 import com.ttalkak.project.project.framework.deploymentadapter.dto.DeploymentResponse;
 import com.ttalkak.project.project.framework.web.request.DomainNameRequest;
 import com.ttalkak.project.project.framework.web.response.ProjectPageResponse;
-import com.ttalkak.project.project.framework.web.response.ProjectResponse;
+import com.ttalkak.project.project.framework.web.response.ProjectDetailResponse;
+import com.ttalkak.project.project.framework.web.response.ProjectSearchResponse;
 import com.ttalkak.project.project.framework.web.response.ProjectWebHookResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -35,22 +36,19 @@ public class GetProjectInputPort implements GetProjectUseCase {
      * @return
      */
     @Override
-    public ProjectResponse getProject(Long projectId) {
+    public ProjectDetailResponse getProject(Long projectId) {
         ProjectEntity result = loadProjectOutputPort.findById(projectId);
-        ProjectResponse projectResponse = ProjectResponse.mapToResponse(result);
+        ProjectDetailResponse projectDetailResponse = ProjectDetailResponse.mapToResponse(result);
         List<DeploymentResponse> deployments = deploymentOutputPort.getDeployments(projectId);
-        projectResponse.setDeployments(deploymentOutputPort.getDeployments(projectId));
-
-
-        log.info("getDeploymentsByProjectId: {} :: {}", projectId, deployments);
-        return projectResponse;
+        projectDetailResponse.setDeployments(deployments);
+        return projectDetailResponse;
     }
 
     @Override
-    public ProjectResponse getFeignProject(Long projectId) {
+    public ProjectDetailResponse getFeignProject(Long projectId) {
         ProjectEntity result = loadProjectOutputPort.findById(projectId);
-        ProjectResponse projectResponse = ProjectResponse.mapToResponse(result);
-        return projectResponse;
+        ProjectDetailResponse projectDetailResponse = ProjectDetailResponse.mapToResponse(result);
+        return projectDetailResponse;
     }
 
     @Override
@@ -74,9 +72,9 @@ public class GetProjectInputPort implements GetProjectUseCase {
         if(searchKeyword == null || searchKeyword.isEmpty()) {
             projects = loadProjectOutputPort.findMyProjects(pageable, userId);
         } else {
-            projects = loadProjectOutputPort.findMyPrjectsContinsSearchKeyWord(pageable, userId, searchKeyword);
+            projects = loadProjectOutputPort.findMyProjectsContainsSearchKeyWord(pageable, userId, searchKeyword);
         }
-        Page<ProjectResponse> page = projects.map(ProjectResponse::mapToResponse);
+        Page<ProjectSearchResponse> page = projects.map(ProjectSearchResponse::mapToResponse);
 
         ProjectPageResponse projectPageResponse = ProjectPageResponse.builder()
                 .content(page.getContent())
@@ -90,7 +88,7 @@ public class GetProjectInputPort implements GetProjectUseCase {
     }
 
     /**
-     * 모메인명 중복 체크
+     * 도메인명 중복 체크
      * @param domainNameRequest
      * @return
      */

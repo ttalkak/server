@@ -13,7 +13,7 @@ public class SearchLogRequest {
     private Instant to;
     private String[] method; // GET, POST, PUT, PATCH, DELETE
     private String[] status; // 2 3 4 5
-    private String deploymentId;
+    private Long deploymentId;
     private Integer page = 0;
     private Integer size = 50;
     private String sort = "desc";
