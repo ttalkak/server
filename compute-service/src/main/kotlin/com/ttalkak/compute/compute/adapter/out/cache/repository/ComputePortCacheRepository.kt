@@ -7,22 +7,22 @@ import org.springframework.stereotype.Repository
 @Repository
 class ComputePortCacheRepository {
     @Resource(name = "redisTemplate")
-    private lateinit var listOperations: ListOperations<String, Int>
+    private lateinit var listOperations: ListOperations<String, String>
 
     companion object {
         const val COMPUTE_PORT_CACHE_KEY = "computePortCache"
     }
 
     fun save(userId: Long, port: Int) {
-        listOperations.leftPush(key(userId), port)
+        listOperations.leftPush(key(userId), port.toString())
     }
 
     fun delete(userId: Long, port: Int) {
-        listOperations.remove(key(userId), 1, port)
+        listOperations.remove(key(userId), 1, port.toString())
     }
 
     fun findAll(userId: Long): List<Int> {
-        return listOperations.range(key(userId), 0, -1) ?: emptyList()
+        return listOperations.range(key(userId), 0, -1)?.map { it.toInt() } ?: emptyList()
     }
 
     private fun key(userId: Long) = "$COMPUTE_PORT_CACHE_KEY:$userId"
