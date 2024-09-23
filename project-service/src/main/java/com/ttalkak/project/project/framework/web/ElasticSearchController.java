@@ -9,10 +9,12 @@ import com.ttalkak.project.project.framework.web.response.LogPageResponse;
 import com.ttalkak.project.project.framework.web.response.MonitoringInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 
 @Slf4j
@@ -34,7 +36,24 @@ public class ElasticSearchController {
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<LogPageResponse> getLogsByPageable(
             @RequestHeader("X-USER-ID") Long userId,
-            @RequestBody SearchLogRequest searchLogRequest) throws Exception {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to,
+            @RequestParam(required = false) String[] method,
+            @RequestParam(required = false) String[] status,
+            @RequestParam(required = false) Long deploymentId,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "desc") String sort) throws Exception {
+        SearchLogRequest searchLogRequest = SearchLogRequest.builder()
+                .from(from)
+                .to(to)
+                .method(method)
+                .status(status)
+                .deploymentId(deploymentId)
+                .page(page)
+                .size(size)
+                .sort(sort)
+                .build();
 
         LogPageResponse pages = getElasticSearchUseCase.getLogsByPageable(searchLogRequest);
         return ApiResponse.success(pages);
