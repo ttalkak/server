@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
       <change beforePath="$PROJECT_DIR$/.github/workflows/sync-action.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/sync-action.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -377,7 +376,7 @@
       <workItem from="1726582630333" duration="3000" />
       <workItem from="1726587118289" duration="957000" />
       <workItem from="1727052158565" duration="2000000" />
-      <workItem from="1727073035310" duration="1498000" />
+      <workItem from="1727073035310" duration="1745000" />
     </task>
     <task id="LOCAL-00001" summary="도커 컴포즈 수정">
       <option name="closed" value="true" />
