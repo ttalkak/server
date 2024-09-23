@@ -14,6 +14,8 @@ import com.ttalkak.compute.compute.domain.ComputerType
 import com.ttalkak.compute.compute.domain.RunningStatus
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 @PersistenceAdapter
 class ComputeCachePersistenceAdapter(
@@ -50,15 +52,23 @@ class ComputeCachePersistenceAdapter(
         val status = statusRepository.findByUserId(userId).orElseThrow {
             RuntimeException("해당 유저의 상태가 존재하지 않습니다.")
         }
+
+        log.info {
+            "status: $status"
+        }
+
         return computeUserCacheRepository.findById(userId).map {
-                ComputeUser(
-                    userId = it.userId,
-                    computeType = it.computeType,
-                    remainCompute = status.maxCompute - it.usedCompute,
-                    remainMemory = status.maxMemory - it.usedMemory,
-                    remainCPU = status.maxCPU - it.usedCPU
-                )
+            log.info {
+                "computeUserCache it: $it"
             }
+            ComputeUser(
+                userId = it.userId,
+                computeType = it.computeType,
+                remainCompute = max(status.maxCompute - it.usedCompute, 1),
+                remainMemory = status.maxMemory - it.usedMemory,
+                remainCPU = status.maxCPU - it.usedCPU
+            )
+        }
     }
 
     override fun loadAllCompute(): List<ComputeUser> {
