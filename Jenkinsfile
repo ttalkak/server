@@ -349,6 +349,7 @@ pipeline {
             }
         }
 
+
         stage('Update GitLab Repository') {
             steps {
                 sh '''
