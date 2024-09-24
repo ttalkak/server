@@ -363,11 +363,13 @@ pipeline {
                         git clone https://sgo722%40naver.com:${GITLAB_PASSWORD}@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
                         cd S11P21C108
 
+                        git fetch --all
+
                         git subtree pull --prefix=config https://${GITHUB_TOKEN}@github.com/sunsuking/ddalkak_config.git main --squash
                         git subtree pull --prefix=tunneling https://${GITHUB_TOKEN}@github.com/sunsuking/tunelling.git master --squash
                         git subtree pull --prefix=config https://${GITHUB_TOKEN}@github.com/sunsuking/ddalkak_config.git main --squash
                         git subtree pull --prefix=server https://${GITHUB_TOKEN}@github.com/sunsuking/ddalkak.git master --squash
-//                         git subtree pull --prefix=client https://${GITHUB_TOKEN}@github.com/ljjunh/ttalkak.git master --squash
+                        git subtree pull --prefix=client https://${GITHUB_TOKEN}@github.com/ljjunh/ttalkak.git master --squash
 
                         # Set remote URL for GitLab
                         git remote set-url origin https://sgo722%40naver.com:${GITLAB_PASSWORD}@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
