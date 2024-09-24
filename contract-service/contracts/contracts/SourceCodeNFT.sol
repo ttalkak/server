@@ -2,11 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract SourceCodeNFT is ERC721 {
-    uint256 public currentTokenId = 0;
-
+contract SourceCodeToken is ERC20 {
     struct SourceCodeMetadata {
         string name;
         string commit;
@@ -15,26 +13,35 @@ contract SourceCodeNFT is ERC721 {
         uint256 timestamp;
     }
 
+    uint256 public totalMintedTokens = 0;
+
     mapping(uint256 => SourceCodeMetadata) public metadataMapping;
 
-    constructor() ERC721("SourceCodeNFT", "TNF") {}
+    constructor() ERC20("SourceCodeToken", "SCT") {}
 
-    function mintSourceCodeNFT(
+    function mintSourceCodeToken(
         string memory name,
         string memory commit,
         string memory version,
-        string[] memory fileHashes
+        string[] memory fileHashes,
+        uint256 amount
     ) public returns (uint256) {
-        currentTokenId += 1;
-        metadataMapping[currentTokenId] = SourceCodeMetadata({
+        // Increment the token ID
+        totalMintedTokens += 1;
+
+        // Store the metadata associated with this minting
+        metadataMapping[totalMintedTokens] = SourceCodeMetadata({
             name: name,
             commit: commit,
             version: version,
             fileHashes: fileHashes,
             timestamp: block.timestamp
         });
-        _mint(msg.sender, currentTokenId);
-        return currentTokenId;
+
+        // Mint the specified amount of tokens to the sender
+        _mint(msg.sender, amount);
+
+        return totalMintedTokens;
     }
 
     function getMetadata(uint256 tokenId)

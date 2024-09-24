@@ -5,6 +5,7 @@ import com.ttalkak.compute.common.util.Json
 import com.ttalkak.compute.compute.application.port.`in`.StatusCommand
 import com.ttalkak.compute.compute.application.port.`in`.UpdateStatusUseCase
 import com.ttalkak.compute.compute.domain.ComputeCreateEvent
+import com.ttalkak.compute.compute.domain.RunningCommand
 import com.ttalkak.compute.compute.domain.UpdateComputeStatusEvent
 import com.ttalkak.compute.compute.domain.UserCreateEvent
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -60,6 +61,7 @@ class KafkaComputeListener(
 
         updateStatusUseCase.upsertStatus(response.userId, command)
     }
+
     @KafkaListener(topics = ["\${consumer.topics.command-deployment-status.name}"], groupId = "\${spring.kafka.consumer.group-id}")
     fun updateComputeStatus(@Payload record: String) {
         val response = Json.deserialize(record, UpdateComputeStatusEvent::class.java)
@@ -69,5 +71,20 @@ class KafkaComputeListener(
         }
 
         redisTemplate.convertAndSend(computeUpdateChannel.topic, Json.serialize(response))
+    }
+
+    @KafkaListener(topics = ["\${consumer.topics.rebuild-compute.name}"], groupId = "\${spring.kafka.consumer.group-id}")
+    fun rebuildCompute(@Payload record: String) {
+        val response = Json.deserialize(record, ComputeCreateEvent::class.java)
+        log.info {
+            "컴퓨터 재배포 이벤트 발생: ${response.deploymentId}"
+        }
+
+        val event = UpdateComputeStatusEvent(
+            deploymentId = response.deploymentId,
+            command = RunningCommand.REBUILD
+        )
+
+        redisTemplate.convertAndSend(computeUpdateChannel.topic, Json.serialize(event))
     }
 }

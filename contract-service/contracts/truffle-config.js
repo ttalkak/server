@@ -1,7 +1,9 @@
 require('dotenv').config();
-const { MNEMONIC, PROJECT_ID } = process.env;
+const { MNEMONIC } = process.env;
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
+
+console.log(MNEMONIC)
 
 module.exports = {
   /**
@@ -26,20 +28,10 @@ module.exports = {
      port: 7545,            // Standard Ethereum port (default: none)
      network_id: "5777"       // Any network (default: none)
     },
-    goerli: {
-      provider: () => new HDWalletProvider(MNEMONIC, `https://goerli.infura.io/v3/${PROJECT_ID}`),
-      network_id: '5',
-      gas: 4465030,
-    },
-    sepolia: {
-      provider: () => new HDWalletProvider(MNEMONIC, `https://sepolia.infura.io/v3/${PROJECT_ID}`),
-      network_id: '11155111',
-      gas: 4465030
-    },
-    mumbai: {
-        provider: () => new HDWalletProvider(MNEMONIC, `https://polygon-mumbai.infura.io/v3/${PROJECT_ID}`),
-        network_id: '80001',
-        gas: 4465030
+    ssafy: {
+      provider: () => new HDWalletProvider(MNEMONIC, `https://rpc.ssafy-blockchain.com`),
+      network_id: '31221',
+      gas: 0
     }
   },
 
