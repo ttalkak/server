@@ -28,6 +28,7 @@ consumers:
     update-hosting-status:
       name: update_hosting_status
 
+
 aws:
   access-key:
   secret-key:
