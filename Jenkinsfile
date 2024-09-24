@@ -367,7 +367,7 @@ pipeline {
                         git subtree pull --prefix=client https://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@github.com/ljjunh/ttalkak.git master --squash
 
                         # Set remote URL for GitLab
-                        git remote set-url origin https://oauth2:9-hymdP5xVN_HrdaNw8Y@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.gitcd S11P21C108
+                        git remote set-url origin https://oauth2:9-hymdP5xVN_HrdaNw8Y@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
 
                         # Ensure there are changes to commit and force push
                         git add .
