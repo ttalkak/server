@@ -168,7 +168,7 @@ pipeline {
         }
 
         stage('Build and Deploy Services') {
-            parallel {
+            //parallel {
                 stage('Build and Deploy Eureka Server') {
                     when {
                         changeset "eureka-server/**"
@@ -343,7 +343,7 @@ pipeline {
                             docker-compose -f docker-compose-prod.yml build --no-cache project-service
                             docker-compose -f docker-compose-prod.yml up -d --no-deps --build project-service
                             """
-                        }
+                        //}
                     }
                 }
             }
