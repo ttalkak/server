@@ -3,7 +3,7 @@ pipeline {
 
     environment {
             GITLAB_CREDENTIALS_ID = 'GITLAB_CREDENTIALS_ID' // GitLab 인증 정보 ID
-            GITHUB_CREDENTIALS_ID = 'GITHUB_CREDENTIALS_ID' // GitLab 인증 정보 ID
+            GITHUB_TOKEN = 'GITHUB_TOKEN' // GitLab 인증 정보 ID
     }
 
     stages {
@@ -354,7 +354,7 @@ pipeline {
         stage('Update GitLab Repository') {
             steps {
                 withCredentials([usernamePassword(credentialsId: GITLAB_CREDENTIALS_ID, passwordVariable: 'GITLAB_PASSWORD', usernameVariable: 'GITLAB_USERNAME'),
-                                 usernamePassword(credentialsId: GITHUB_CREDENTIALS_ID, passwordVariable: 'GITHUB_TOKEN'), usernameVariable: 'GITHUB_USERNAME']) {
+                                 string(credentialsId: GITHUB_TOKEN, variable: 'GITHUB_TOKEN')]) {
                     sh '''
                         git config --global user.email "sgo722@naver.com"
                         git config --global user.name "sgo722"
