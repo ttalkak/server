@@ -17,7 +17,6 @@ pipeline {
                         sh 'cp /home/ubuntu/secret/config/application.yml src/main/resources'
                     }
                 }
-
             }
         }
 
