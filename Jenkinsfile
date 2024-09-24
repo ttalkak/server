@@ -364,6 +364,8 @@ pipeline {
 
                         git fetch --all
 
+                        git reset --hard origin/master
+
                         git subtree pull --prefix=config https://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@github.com/sunsuking/ddalkak_config.git main --squash
                         git subtree pull --prefix=tunneling https://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@github.com/sunsuking/tunelling.git master --squash
                         git subtree pull --prefix=config https://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@github.com/sunsuking/ddalkak_config.git main --squash
