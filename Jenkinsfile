@@ -6,7 +6,6 @@ pipeline {
                 GITHUB_TOKEN = 'GITHUB_TOKEN' // GitLab 인증 정보 ID
         }
 
-    
     stages {
         stage('Checkout') {
             steps {
