@@ -201,7 +201,7 @@ class DeploymentControllerTest extends RestDocsSupport {
                 .repositoryUrl("sgo722")
                 .branch("main")
                 .framework("Spring Boot")
-                .payloadURL("https://ttalkak.com/webhook/deployment/backend/{webhooktoken}")
+                .payloadURL("https://api.ttalkak.com/webhook/deployment/backend/{webhooktoken}")
                 .hostingResponse(
                         HostingResponse.builder()
                                 .hostingId(1L)
