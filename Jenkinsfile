@@ -2,9 +2,6 @@ pipeline {
     agent any
 
     environment {
-            DOCKER_HUB_REPO = 'sonjiseokk/freezetag'
-            DOCKER_HUB_CREDENTIALS_ID = 'dockerhub2'
-            NETWORK_NAME = 'my-network'
             GITLAB_CREDENTIALS_ID = 'GITLAB_CREDENTIALS_ID' // GitLab 인증 정보 ID
             GITHUB_CREDENTIALS_ID = 'GITHUB_CREDENTIALS_ID' // GitLab 인증 정보 ID
     }
@@ -357,7 +354,7 @@ pipeline {
         stage('Update GitLab Repository') {
             steps {
                 withCredentials([usernamePassword(credentialsId: GITLAB_CREDENTIALS_ID, passwordVariable: 'GITLAB_PASSWORD', usernameVariable: 'GITLAB_USERNAME'),
-                                 string(credentialsId: GITHUB_CREDENTIALS_ID, variable: 'GITHUB_TOKEN')]) {
+                                 usernamePassword(credentialsId: GITHUB_CREDENTIALS_ID, passwordVariable: 'GITHUB_TOKEN')]) {
                     sh '''
                         git config --global user.email "sgo722@naver.com"
                         git config --global user.name "sgo722"
