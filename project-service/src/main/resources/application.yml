@@ -22,13 +22,12 @@ consumers:
       name: delete-project-exception
     update-domain-name-exception:
       name: update-domain-name-exception
+
   group-id:
     project-deletion-group:
       name: project_deletion_group
     update-hosting-status:
       name: update_hosting_status
 
-aws:
-  access-key: dsdasd
-  secret-key: sadasd
+
 
