@@ -1,5 +1,5 @@
-const SourceCodeNFT = artifacts.require("SourceCodeNFT");
+const SourceCodeToken = artifacts.require("SourceCodeToken");
 
 module.exports = function (deployer) {
-    deployer.deploy(SourceCodeNFT);
+    deployer.deploy(SourceCodeToken);
 };

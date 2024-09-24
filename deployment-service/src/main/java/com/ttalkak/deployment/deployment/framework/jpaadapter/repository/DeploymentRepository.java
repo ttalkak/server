@@ -1,6 +1,7 @@
 package com.ttalkak.deployment.deployment.framework.jpaadapter.repository;
 
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
+import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,5 @@ public interface DeploymentRepository extends JpaRepository<DeploymentEntity, Lo
     List<DeploymentEntity> searchDeploymentByGithubRepoName(@Param("githubRepoName") String githubRepoName, Pageable pageable);
 
     @Query("select d from DeploymentEntity d where d.projectId = :projectId and d.serviceType = :serviceType")
-    List<DeploymentEntity> findByProjectIdAndServiceType(@Param("projectId") Long projectId, @Param("serviceType") String serviceType);
+    List<DeploymentEntity> findByProjectIdAndServiceType(@Param("projectId") Long projectId, @Param("serviceType") ServiceType serviceType);
 }
