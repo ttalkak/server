@@ -360,7 +360,7 @@ pipeline {
 
                         # Clone GitLab repository
                         rm -rf S11P21C108
-                        git clone https://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
+                        git clone https://sgo722%40naver.com:${GITLAB_PASSWORD}@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
                         cd S11P21C108
 
                         git subtree pull --prefix=config https://${GITHUB_TOKEN}@github.com/sunsuking/ddalkak_config.git main --squash
@@ -370,7 +370,7 @@ pipeline {
                         git subtree pull --prefix=client https://${GITHUB_TOKEN}@github.com/ljjunh/ttalkak.git master --squash
 
                         # Set remote URL for GitLab
-                        git remote set-url origin https://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
+                        git remote set-url origin https://sgo722%40naver.com:${GITLAB_PASSWORD}@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
 
                         # Ensure there are changes to commit and force push
                         git add .
