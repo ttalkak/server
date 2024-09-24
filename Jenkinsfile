@@ -9,6 +9,7 @@ pipeline {
             GITHUB_CREDENTIALS_ID = 'GITHUB_CREDENTIALS_ID' // GitLab 인증 정보 ID
     }
 
+    
     stages {
         stage('Checkout') {
             steps {
