@@ -355,6 +355,7 @@ pipeline {
                         git config --global user.name "sgo722"
 
                         # Clone GitLab repository
+                        rm -rf S11P21C108
                         git clone https://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@lab.ssafy.com/s11-blochain-transaction-sub1/S11P21C108.git
                         cd S11P21C108
 
