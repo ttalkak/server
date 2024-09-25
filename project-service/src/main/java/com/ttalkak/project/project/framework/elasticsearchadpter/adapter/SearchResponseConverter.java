@@ -1,10 +1,13 @@
 package com.ttalkak.project.project.framework.elasticsearchadpter.adapter;
 
-import co.elastic.clients.elasticsearch.ml.Filter;
+import com.ttalkak.project.project.framework.web.response.LogHistogramResponse;
 import com.ttalkak.project.project.framework.web.response.MonitoringInfoResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.filter.Filters;
 import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilters;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
+import org.elasticsearch.search.aggregations.bucket.histogram.ParsedDateHistogram;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -15,7 +18,28 @@ import java.util.List;
 
 public class SearchResponseConverter {
 
+    public static List<LogHistogramResponse> toLogHistogramResponse(SearchResponse searchResponse) {
+        List<LogHistogramResponse> response = new ArrayList<>();
+
+        ParsedDateHistogram aggCount = searchResponse.getAggregations().get("daily_request_count");
+        for (Histogram.Bucket bucket : aggCount.getBuckets()) {
+            String timestamp = bucket.getKeyAsString();
+            long docCount = bucket.getDocCount();
+
+            response.add(LogHistogramResponse.builder()
+                    .timestamp(timestamp)
+                    .docCount(docCount)
+                    .build());
+        }
+
+        return response;
+    }
+
     public static MonitoringInfoResponse toMonitoringInfoResponse (SearchResponse searchResponse) {
+
+        long totalDocCount = 0L;
+        SearchHits hits = searchResponse.getHits();
+        totalDocCount = hits.getTotalHits().value;
 
         // ip 호출 집계쿼리
         ParsedStringTerms topIpsAgg = searchResponse.getAggregations()
@@ -82,7 +106,7 @@ public class SearchResponseConverter {
 
         // 평균 응답시간
         ParsedAvg avgResponseAgg = searchResponse.getAggregations()
-                .get("avg_response");
+                .get("avg_response_time");
         double avgResponseTime = 0;
         if (avgResponseAgg != null) {
             avgResponseTime = avgResponseAgg.getValue();
@@ -90,7 +114,8 @@ public class SearchResponseConverter {
 
 
         // 반환값
-        MonitoringInfoResponse result = MonitoringInfoResponse.builder()
+        MonitoringInfoResponse response = MonitoringInfoResponse.builder()
+                .totalDocCount(totalDocCount)
                 .avgResponseTime(avgResponseTime)
                 .totalErrors(totalErrors)
                 .accessIpInfos(accessIpInfoList)
@@ -98,6 +123,6 @@ public class SearchResponseConverter {
                 .errorCategories(errorCategories)
                 .build();
 
-        return result;
+        return response;
     }
 }

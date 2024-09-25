@@ -1,6 +1,7 @@
 # 1. 빌드 환경 설정
 FROM gradle:8.8-jdk17 AS build
 WORKDIR /app
+
 COPY . .
 
 # 2. Gradle 빌드
@@ -15,4 +16,3 @@ COPY --from=build /app/build/libs/*.jar /app/app.jar
 
 # 5. 스프링 부트 앱 실행
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "/app/app.jar"]
-

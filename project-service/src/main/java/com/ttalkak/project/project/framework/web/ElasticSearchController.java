@@ -3,10 +3,10 @@ package com.ttalkak.project.project.framework.web;
 import com.ttalkak.project.common.ApiResponse;
 import com.ttalkak.project.common.WebAdapter;
 import com.ttalkak.project.project.application.usecase.GetElasticSearchUseCase;
+import com.ttalkak.project.project.application.usecase.GetLLMUseCase;
 import com.ttalkak.project.project.domain.model.LogEntryDocument;
 import com.ttalkak.project.project.framework.web.request.SearchLogRequest;
-import com.ttalkak.project.project.framework.web.response.LogPageResponse;
-import com.ttalkak.project.project.framework.web.response.MonitoringInfoResponse;
+import com.ttalkak.project.project.framework.web.response.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -25,12 +27,21 @@ import java.util.List;
 public class ElasticSearchController {
 
     private final GetElasticSearchUseCase getElasticSearchUseCase;
+    private final GetLLMUseCase getLLMUseCase;
 
     /**
      * 페이징 처리한 로그 조회
      * @param userId
-     * @param searchLogRequest
+     * @param from
+     * @param to
+     * @param method
+     * @param status
+     * @param deploymentId
+     * @param page
+     * @param size
+     * @param sort
      * @return
+     * @throws Exception
      */
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
@@ -59,12 +70,29 @@ public class ElasticSearchController {
         return ApiResponse.success(pages);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/histogram")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<MonitoringInfoResponse> getMonitoringInfo() throws Exception {
+    public ApiResponse<List<LogHistogramResponse>> getLogHistogram(
+            @RequestHeader("X-USER-ID") Long userId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to,
+            @RequestParam(required = false) Long deploymentId
+    ) throws Exception {
 
-        MonitoringInfoResponse m = getElasticSearchUseCase.getAIMonitoringInfo("42");
-        return ApiResponse.success(m);
+        return ApiResponse.success(getElasticSearchUseCase.getLogHistogram(from, to, deploymentId));
+    }
+
+//    @GetMapping("/test")
+//    @ResponseStatus(HttpStatus.OK)
+//    public ApiResponse<MonitoringInfoResponse> getMonitoringInfo() throws Exception {
+//
+//        MonitoringInfoResponse m = getElasticSearchUseCase.getAIMonitoringInfo("42");
+//        return ApiResponse.success(m);
+//    }
+    @GetMapping("/monitioring/{deploymentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<AIMonitoringResponse> getMonitoringInfo(@PathVariable String deploymentId) throws Exception {
+        return ApiResponse.success(getLLMUseCase.getMonitoringInfo(deploymentId));
     }
 
 }
