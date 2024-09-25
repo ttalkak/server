@@ -71,7 +71,7 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
                 throw new BusinessException(ErrorCode.NOT_EXISTS_HOSTING);
             }
             domainOutputPort.deleteDomainKey(findHosting.getId().toString());
+            deploymentOutputPort.save(deploymentEntity);
         }
-        deploymentOutputPort.saveAll(deploymentEntities);
     }
 }
