@@ -80,7 +80,12 @@ public class UpdateDeploymentStatusInputPort implements UpdateDeploymentStatusUs
         );
         DeploymentEvent deploymentEvent = new DeploymentEvent(deploymentEntity.getId(), deploymentEntity.getProjectId(), envEvents, deploymentEntity.getServiceType().toString());
         GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deploymentEntity.getGithubInfo().getRepositoryUrl(), deploymentEntity.getGithubInfo().getRootDirectory(), deploymentEntity.getGithubInfo().getBranch());
-        CreateInstanceEvent createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, null, versionEntity.getVersion(), null);
+        CreateInstanceEvent createInstanceEvent = null;
+        if(deploymentEntity.getDockerfileScript().equals("Docker File Exist")){
+            createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, null, versionEntity.getVersion(), null, true, deploymentEntity.getDockerfileScript());
+        }else{
+            createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, null, versionEntity.getVersion(), null, false, deploymentEntity.getDockerfileScript());
+        }
 
 
         try {

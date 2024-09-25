@@ -35,6 +35,8 @@ public class DeploymentCreateRequest {
 
     private String framework;
 
+    private DockerfileCreateRequest dockerfileCreateRequest;
+
     @Builder
     private DeploymentCreateRequest(Long projectId, String serviceType, GithubRepositoryRequest githubRepositoryRequest, List<DatabaseCreateRequest> databaseCreateRequests,VersionRequest versionRequest, int hostingPort, List<EnvCreateRequest> envs, String framework) {
         this.projectId = projectId;
