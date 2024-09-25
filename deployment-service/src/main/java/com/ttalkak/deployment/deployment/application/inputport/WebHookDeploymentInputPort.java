@@ -65,9 +65,9 @@ public class WebHookDeploymentInputPort implements WebHookDeploymentUsecase {
         GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deployment.getGithubInfo().getRepositoryUrl(), deployment.getGithubInfo().getRootDirectory(), deployment.getGithubInfo().getBranch());
         CreateInstanceEvent createInstanceEvent = null;
         if(deployment.getDockerfileScript().equals("Docker File Exist")){
-            createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, null, versionEntity.getVersion(), null, true, deploymentEntity.getDockerfileScript());
+            createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, null, versionEntity.getVersion(), null, true, deployment.getDockerfileScript());
         }else{
-            createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, null, versionEntity.getVersion(), null, false, deploymentEntity.getDockerfileScript());
+            createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, null, versionEntity.getVersion(), null, false, deployment.getDockerfileScript());
         }
 
         try {
