@@ -61,7 +61,7 @@ public class GetElasticSearchInputPort implements GetElasticSearchUseCase {
 
         return DashBoardHistogramResponse.builder()
                 .histograms(loadElasticSearchOutputPort.getLogHistogram(from, to, deploymentId, interval))
-                .IntervalMinute(duration.toMinutes())
+                .intervalMinute(duration.toMinutes())
                 .build();
     }
 
