@@ -356,6 +356,7 @@ class ProjectControllerTest extends RestDocsSupport {
         // when
         ResultActions perform = mockMvc.perform(
                 delete("/v1/project/{projectId}", projectId)
+                        .header("X-USER-ID", 1L)
                         .contentType(MediaType.APPLICATION_JSON));
 
         perform.andExpect(status().isOk())
