@@ -18,6 +18,12 @@ class ConnectCacheRepository {
         hashOperations.put(CONNECT_CACHE_KEY, userId.toString(), sessionId)
     }
 
+    fun find(sessionId: String): Long? {
+        return hashOperations.entries(CONNECT_CACHE_KEY).filter {
+            it.value == sessionId
+        }.keys.firstOrNull()?.toLong()
+    }
+
     fun exists(userId: Long): Boolean {
         return hashOperations.hasKey(CONNECT_CACHE_KEY, userId.toString())
     }

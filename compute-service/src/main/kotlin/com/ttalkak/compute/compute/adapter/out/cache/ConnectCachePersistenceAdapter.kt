@@ -14,8 +14,10 @@ class ConnectCachePersistenceAdapter(
         connectCacheRepository.save(userId, sessionId)
     }
 
-    override fun disconnect(sessionId: String) {
+    override fun disconnect(sessionId: String): Long {
+        val userId = connectCacheRepository.find(sessionId)
         connectCacheRepository.delete(sessionId)
+        return userId ?: throw IllegalArgumentException("Not found userId")
     }
 
     override fun disconnect(userId: Long) {

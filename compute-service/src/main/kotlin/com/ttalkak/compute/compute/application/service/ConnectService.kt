@@ -14,7 +14,7 @@ class ConnectService(
         createConnectPort.connect(userId, sessionId)
     }
 
-    override fun disconnect(sessionId: String) {
-        removeConnectPort.disconnect(sessionId)
+    override fun disconnect(sessionId: String): Long {
+        return removeConnectPort.disconnect(sessionId)
     }
 }
