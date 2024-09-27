@@ -24,6 +24,10 @@ class ConnectCacheRepository {
         }.keys.firstOrNull()?.toLong()
     }
 
+    fun findKeys(): Set<String> {
+        return hashOperations.keys(CONNECT_CACHE_KEY)
+    }
+
     fun exists(userId: Long): Boolean {
         return hashOperations.hasKey(CONNECT_CACHE_KEY, userId.toString())
     }
