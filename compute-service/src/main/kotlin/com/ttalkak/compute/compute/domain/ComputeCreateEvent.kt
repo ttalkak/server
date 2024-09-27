@@ -9,6 +9,8 @@ data class ComputeCreateEvent(
     val port: Int,
     val repositoryUrl: String,
     val branch: String,
+    val version: Int,
     val rootDirectory: String,
+    val dockerfileExist: Boolean,
     val databases: List<Database>,
 )

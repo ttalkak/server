@@ -28,7 +28,7 @@ class ComputeCreateSocketListener(
 
         val command = AllocateCommand(
             computeCount = response.databases.size + 1,
-            useMemory = 512 * (response.databases.size + 1)
+            useMemory = 0.512 * (response.databases.size + 1)
         )
 
         val allocate = allocateUseCase.allocate(command)
