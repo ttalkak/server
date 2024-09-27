@@ -1,20 +1,37 @@
 package com.ttalkak.compute.compute.application.service
 
 import com.ttalkak.compute.common.UseCase
+import com.ttalkak.compute.compute.application.port.`in`.ComputeUseCase
 import com.ttalkak.compute.compute.application.port.`in`.ConnectUseCase
-import com.ttalkak.compute.compute.application.port.out.CreateConnectPort
-import com.ttalkak.compute.compute.application.port.out.RemoveConnectPort
+import com.ttalkak.compute.compute.application.port.`in`.DisconnectScheduleUseCase
+import com.ttalkak.compute.compute.application.port.out.*
+import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.scheduling.annotation.Scheduled
 
 @UseCase
-class ConnectService(
+class ConnectService (
     private val createConnectPort: CreateConnectPort,
-    private val removeConnectPort: RemoveConnectPort
-): ConnectUseCase {
+    private val removeConnectPort: RemoveConnectPort,
+    private val saveComputePort: SaveComputePort,
+    private val checkConnectPort: CheckConnectPort,
+    private val loadComputePort: LoadComputePort
+): ConnectUseCase, DisconnectScheduleUseCase {
+    private val log = KotlinLogging.logger {}
+
     override fun connect(userId: Long, sessionId: String) {
         createConnectPort.connect(userId, sessionId)
     }
 
-    override fun disconnect(sessionId: String) {
-        removeConnectPort.disconnect(sessionId)
+    override fun disconnect(sessionId: String): Long {
+        return removeConnectPort.disconnect(sessionId)
+    }
+
+    @Scheduled(fixedDelay = 1000 * 60)
+    override fun disconnectSchedule() {
+        loadComputePort.loadAllCompute().filter {
+            !checkConnectPort.isConnected(it.userId)
+        }.forEach {
+            saveComputePort.deleteCompute(it.userId)
+        }
     }
 }
