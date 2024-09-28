@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
       <change beforePath="$PROJECT_DIR$/deployment-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment-service/Dockerfile.prod" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/Dockerfile.prod" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -334,7 +335,7 @@
       <workItem from="1727225332255" duration="1979000" />
       <workItem from="1727334627348" duration="5552000" />
       <workItem from="1727410371747" duration="489000" />
-      <workItem from="1727503262018" duration="547000" />
+      <workItem from="1727503262018" duration="740000" />
     </task>
     <task id="LOCAL-00001" summary="도커 컴포즈 수정">
       <option name="closed" value="true" />
