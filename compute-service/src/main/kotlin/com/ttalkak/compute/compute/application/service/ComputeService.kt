@@ -8,7 +8,6 @@ import com.ttalkak.compute.compute.application.port.out.*
 import com.ttalkak.compute.compute.domain.AllocateCompute
 import com.ttalkak.compute.compute.domain.ComputeRunning
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.web.multipart.MultipartFile
 
 @UseCase
 class ComputeService (

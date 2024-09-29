@@ -6,5 +6,5 @@ enum class RunningStatus {
     DELETED,
     PENDING,
     WAITING,
-    ERROR,
+    ERROR
 }
