@@ -40,7 +40,7 @@ public class InquiryInputPort implements InquiryUsecase {
         HostingEntity hosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType());
 
         // 호스팅 내역이 없고 배포 상태가 에러인 경우에는 삭제인 상태로 수정해줘야 한다.
-        if(hosting == null && deploymentEntity.getStatus() == DeploymentStatus.ERROR ){
+        if(hosting == null){
             deploymentEntity.setStatus(DeploymentStatus.DELETED);
             deploymentOutputPort.save(deploymentEntity);
             return null;
