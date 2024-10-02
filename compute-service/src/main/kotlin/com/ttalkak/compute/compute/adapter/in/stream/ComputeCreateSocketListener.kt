@@ -29,7 +29,7 @@ class ComputeCreateSocketListener(
 
         val containers = mutableListOf(DockerContainer(
             deploymentId = response.deploymentId,
-            serviceType = "${response.serviceType}",
+            serviceType = response.serviceType,
             hasDockerImage = false,
             containerName = "${response.serviceType}-${response.deploymentId}",
             inboundPort = response.port,
@@ -46,7 +46,7 @@ class ComputeCreateSocketListener(
             val database = it.databaseType.parse(it.name, it.username, it.password)
             DockerContainer(
                 deploymentId = response.deploymentId,
-                serviceType = "${response.serviceType}",
+                serviceType = response.serviceType,
                 hasDockerImage = true,
                 containerName = "${response.serviceType}-${response.deploymentId}-db-${it.databaseId}",
                 hasDockerFile = false,
