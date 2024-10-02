@@ -51,7 +51,7 @@ services:
       context: compute-service
       dockerfile: Dockerfile.prod
     ports:
-      - 8000:8000
+      - 15000:15000
     networks:
       - spring-network
     depends_on:
