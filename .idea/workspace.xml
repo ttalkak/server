@@ -5,11 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/DeleteDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/DeleteDeploymentInputPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/InquiryInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/InquiryInputPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentInputPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/application/inputport/UpdateDeploymentInputPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/jpaadapter/adapter/HostingAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/jpaadapter/adapter/HostingAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/DeploymentWebHookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/deployment-service/src/main/java/com/ttalkak/deployment/deployment/framework/web/DeploymentWebHookController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -148,7 +143,7 @@
       <recent name="com.ttalkak.deployment" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.DeploymentControllerTest">
+  <component name="RunManager" selected="Spring Boot.DeploymentServiceApplication">
     <configuration name="DeploymentControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -351,7 +346,7 @@
       <workItem from="1727334627348" duration="5552000" />
       <workItem from="1727410371747" duration="489000" />
       <workItem from="1727503262018" duration="1670000" />
-      <workItem from="1727827666127" duration="5392000" />
+      <workItem from="1727827666127" duration="5572000" />
     </task>
     <task id="LOCAL-00001" summary="도커 컴포즈 수정">
       <option name="closed" value="true" />

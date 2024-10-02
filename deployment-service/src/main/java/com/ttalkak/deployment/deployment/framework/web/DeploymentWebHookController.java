@@ -29,7 +29,12 @@ public class DeploymentWebHookController {
                 deploymentWebHookRequest.getRepository().getUrl(),
                 deploymentWebHookRequest.getSender().getLogin(),
                 deploymentWebHookRequest.getSender().getAvatarUrl(),
-                deploymentWebHookRequest.getCommits().stream().findFirst().orElse(new WebHookCommit("")).getMessage()
+                Optional.ofNullable(deploymentWebHookRequest.getCommits())
+                        .orElse(Collections.emptyList())
+                        .stream()
+                        .findFirst()
+                        .orElse(new WebHookCommit(""))
+                        .getMessage()
         );
         webHookDeploymentUsecase.createDeploymentWebHook(ServiceType.BACKEND, webhookToken, command);
     }
