@@ -14,6 +14,7 @@ class ComputeService (
     private val saveComputePort: SaveComputePort,
     private val saveDeploymentStatusPort: SaveDeploymentStatusPort,
     private val saveRunningPort: SaveRunningPort,
+    private val savePortPort: SavePortPort,
     private val loadRunningPort: LoadRunningPort,
     private val removePortPort: RemovePortPort,
     private val removeDeploymentStatusPort: RemoveDeploymentStatusPort,
@@ -30,6 +31,11 @@ class ComputeService (
             usedMemory = command.usedMemory,
             usedCPU = command.usedCPU
         )
+
+        savePortPort.savePort(
+            userId = command.userId,
+            ports = command.ports
+        )
     }
 
     override fun disconnect(userId: Long) {
@@ -39,12 +45,18 @@ class ComputeService (
         removeDeploymentStatusPort.removeDeploymentStatusByUserId(userId)
     }
 
-    override fun update(connectCommand: ConnectCommand, deploymentCommands: List<DeploymentCommand>) {
-        connect(connectCommand)
+    override fun update(command: StatusUpdateCommand, deploymentCommands: List<DeploymentCommand>) {
+        saveComputePort.saveCompute(
+            userId = command.userId,
+            computeType = command.computeType,
+            usedCompute = command.usedCompute,
+            usedMemory = command.usedMemory,
+            usedCPU = command.usedCPU
+        )
 
         deploymentCommands.forEach {
             saveDeploymentStatusPort.saveDeploymentStatus(
-                userId = connectCommand.userId,
+                userId = command.userId,
                 deploymentId = it.deploymentId,
                 status = it.status,
                 useMemory = it.useMemory,
