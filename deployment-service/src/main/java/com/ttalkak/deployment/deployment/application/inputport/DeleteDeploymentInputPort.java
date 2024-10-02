@@ -17,13 +17,14 @@ import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInf
 import com.ttalkak.deployment.common.global.error.ErrorCode;
 import com.ttalkak.deployment.common.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
-
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -37,9 +38,14 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
 
     @Override
     public void deleteDeployment(Long userId, Long deploymentId) {
+        log.info("======================= deleteDeployment");
+        log.info(userId + " " + deploymentId);
+
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(deploymentId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
         Long projectId = deploymentEntity.getProjectId();
+
+        log.info(deploymentEntity + " deleted project " + projectId);
 
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(projectId);
 
@@ -54,9 +60,15 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUsecase {
         }catch (JsonProcessingException e){
             throw new BusinessException(ErrorCode.KAFKA_PRODUCER_ERROR);
         }
+        log.info(deploymentEntity + " deleted project " + deploymentEntity.getProjectId());
+
         HostingEntity findHosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType());
+        log.info(String.valueOf(findHosting.getServiceType()));
         findHosting.delete();
-        domainOutputPort.deleteDomainKey(findHosting.getId().toString());
+        if(findHosting != null) {
+            domainOutputPort.deleteDomainKey(findHosting.getId().toString());
+        }
+
         deploymentEntity.deleteDeployment();
         deploymentOutputPort.save(deploymentEntity);
     }
