@@ -299,14 +299,15 @@ pipeline {
                             """
                         }
                     }
-                }
-                post {
-                    always {
-                        script {
-                            handlePostBuild('User Service')
+                    post {
+                        always {
+                            script {
+                                handlePostBuild('User Service')
+                            }
                         }
                     }
                 }
+
 
                 stage('Build and Deploy Compute Service') {
                     when {
@@ -329,11 +330,11 @@ pipeline {
                             """
                         }
                     }
-                }
-                post {
-                    always {
-                        script {
-                            handlePostBuild('Compute Service')
+                    post {
+                        always {
+                            script {
+                                handlePostBuild('Compute Service')
+                            }
                         }
                     }
                 }
@@ -360,11 +361,11 @@ pipeline {
                             """
                         }
                     }
-                }
-                post {
-                    always {
-                        script {
-                            handlePostBuild('Deployment Service')
+                    post {
+                        always {
+                            script {
+                                handlePostBuild('Deployment Service')
+                            }
                         }
                     }
                 }
@@ -391,11 +392,11 @@ pipeline {
                             """
                         }
                     }
-                }
-                post {
-                    always {
-                        script {
-                            handlePostBuild('Project Service')
+                    post {
+                        always {
+                            script {
+                                handlePostBuild('Project Service')
+                            }
                         }
                     }
                 }
