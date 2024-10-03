@@ -110,7 +110,6 @@ public class DeploymentDetailResponse {
                 .build();
     }
 
-
     public static DeploymentDetailResponse mapToDTO(DeploymentEntity deploymentEntity,
                                                     HostingEntity hostingEntity,
                                                     List<VersionEntity> versionEntities){
