@@ -1,11 +1,14 @@
 package com.ttalkak.deployment.deployment.application.usecase;
 
 
+import com.ttalkak.deployment.common.UseCase;
 import com.ttalkak.deployment.deployment.framework.web.response.DatabaseResponse;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
 import java.util.List;
 
+
+@UseCase
 public interface InquiryUsecase {
     public DeploymentDetailResponse getDeployment(Long deploymentId);
     public List<DeploymentPreviewResponse> getDeploymentsByProjectId(Long projectId);
