@@ -28,7 +28,7 @@ class ComputeUpdateSocketListener (
 
         val running = loadRunningUseCase.loadRunning(response.deploymentId)
 
-        // * 컴퓨터 상태 변경 이벤트 발생\
+        // * 컴퓨터 상태 변경 이벤트 발생
         val command = AddComputeCommand(
             id = response.deploymentId,
             isDatabase = false,
@@ -37,15 +37,12 @@ class ComputeUpdateSocketListener (
             container = DockerContainer(
                 deploymentId = response.deploymentId,
                 serviceType = response.serviceType,
-                hasDockerImage = false,
                 containerName = "${response.serviceType}-${response.deploymentId}",
                 inboundPort = response.port,
                 subdomainName = response.subdomainName,
                 subdomainKey = response.subdomainKey,
                 sourceCodeLink = parseGithubLink(response.repositoryUrl, response.branch),
                 dockerRootDirectory = response.rootDirectory,
-                dockerImageName = null,
-                dockerImageTag = null,
                 hasDockerFile = response.dockerfileExist,
                 dockerFileScript = response.dockerfileScript,
                 envs = response.envs
