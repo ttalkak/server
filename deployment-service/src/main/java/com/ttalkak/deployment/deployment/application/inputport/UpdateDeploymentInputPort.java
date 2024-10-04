@@ -5,21 +5,18 @@ import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutput
 import com.ttalkak.deployment.deployment.application.outputport.DomainOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.HostingOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.ProjectOutputPort;
-import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUsecase;
+import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUseCase;
 import com.ttalkak.deployment.deployment.domain.event.EnvEvent;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.EnvEntity;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
-import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
-import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainRequest;
+import com.ttalkak.deployment.deployment.framework.domainadapter.dto.WebDomainRequest;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
-import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.EnvUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
-import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
 import com.ttalkak.deployment.common.global.error.ErrorCode;
 import com.ttalkak.deployment.common.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +26,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
+public class UpdateDeploymentInputPort implements UpdateDeploymentUseCase {
 
     private final DeploymentOutputPort deploymentOutputPort;
 
@@ -77,27 +73,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         hosting.setHostingPort(deploymentUpdateRequest.getHostingPort());
         hosting.updateDomainName(domainName, String.valueOf(deploymentEntity.getServiceType()));
 
-        // 업데이트된 내용의 데이터베이스
-        List<DatabaseUpdateRequest> updatedDatabases = deploymentUpdateRequest.getDatabaseUpdateRequests();
-
-        // 데이터베이스 정보 수정
-        deploymentEntity.getDataBaseEntities().forEach(databaseEntity -> {
-
-            Optional.ofNullable(updatedDatabases)
-                    .ifPresent(databases -> databases.forEach(updatedDatabase -> {
-                        if(databaseEntity.getId().equals(updatedDatabase.getId())) {
-                            DatabaseEditor.DatabaseEditorBuilder databaseEditorBuilder = databaseEntity.toEditor();
-                            DatabaseEditor databaseEditor = databaseEditorBuilder
-                                    .username(updatedDatabase.getUsername())
-                                    .password(updatedDatabase.getPassword())
-                                    .port(updatedDatabase.getPort())
-                                    .build();
-
-                            databaseEntity.edit(databaseEditor);
-                        }
-                    }));
-        });
-
         // Env 데이터 수정
         List<EnvEvent> envs = new ArrayList<>();
         deploymentEntity.getEnvs().clear();
@@ -120,8 +95,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deploymentEntity);
 
         // 도메인 이름 수정
-        domainOutputPort.updateDomainKey(new DomainRequest(
-
+        domainOutputPort.updateDomainKey(new WebDomainRequest(
                 hosting.getId().toString(),
                 projectInfo.getDomainName() + " " + hosting.getServiceType().toString(),
                 hosting.getDetailSubDomainName()
