@@ -76,10 +76,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         hosting.setHostingPort(deploymentUpdateRequest.getHostingPort());
         hosting.updateDomainName(domainName, String.valueOf(deploymentEntity.getServiceType()));
 
-        // 업데이트된 내용의 데이터베이스
-        List<DatabaseUpdateRequest> updatedDatabases = deploymentUpdateRequest.getDatabaseUpdateRequests();
-
-
         // Env 데이터 수정
         List<EnvEvent> envs = new ArrayList<>();
         deploymentEntity.getEnvs().clear();
@@ -103,7 +99,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
 
         // 도메인 이름 수정
         domainOutputPort.updateDomainKey(new WebDomainRequest(
-
                 hosting.getId().toString(),
                 projectInfo.getDomainName() + " " + hosting.getServiceType().toString(),
                 hosting.getDetailSubDomainName()

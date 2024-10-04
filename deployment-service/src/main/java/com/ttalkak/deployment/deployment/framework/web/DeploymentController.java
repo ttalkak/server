@@ -8,6 +8,7 @@ import com.ttalkak.deployment.deployment.framework.web.response.DeploymentCreate
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Delete;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,8 @@ public class DeploymentController {
     private final InquiryUsecase inquiryUsecase;
 
     private final CreateDatabaseUsecase createDatabaseUsecase;
+
+    private final DeleteDatabaseUsecase deleteDatabaseUsecase;
 
     // 배포 등록
     @PostMapping
@@ -110,5 +113,12 @@ public class DeploymentController {
     public ApiResponse<DatabaseResponse> getDatabase(@PathVariable("databaseId") Long databaseId){
         DatabaseResponse database = inquiryUsecase.getDatabase(databaseId);
         return ApiResponse.success(database);
+    }
+
+    // 데이터베이스 삭제
+    @DeleteMapping("/database/{databaseId}")
+    public ApiResponse<Void> deleteDatabase(@RequestHeader("X-USER-ID") Long userId, @PathVariable("databaseId") Long databaseId){
+        deleteDatabaseUsecase.deleteDatabase(userId, databaseId);
+        return ApiResponse.empty();
     }
 }
