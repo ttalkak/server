@@ -32,4 +32,9 @@ public class DatabaseAdapter implements DatabaseOutputPort {
     public Optional<DatabaseEntity> findById(Long databaseId) {
         return databaseRepository.findById(databaseId);
     }
+
+    @Override
+    public void delete(DatabaseEntity databaseEntity) {
+        databaseRepository.delete(databaseEntity);
+    }
 }

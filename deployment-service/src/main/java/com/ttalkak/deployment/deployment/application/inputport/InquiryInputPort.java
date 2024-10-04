@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -83,6 +84,8 @@ public class InquiryInputPort implements InquiryUsecase {
 
     @Override
     public DatabaseResponse getDatabase(Long databaseId) {
-        return DatabaseResponse.mapToDTO(databaseOutputPort.findById(databaseId));
+        DatabaseEntity databaseEntity = databaseOutputPort.findById(databaseId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DATABASE));
+        return DatabaseResponse.mapToDTO(databaseEntity);
     }
 }
