@@ -27,8 +27,7 @@ class ComputeAllocateCacheRepository {
 
     fun add(cache: ComputeAllocateCache, priority: Double) {
         val instance = Json.serialize(cache.instance)
-        cache.instance = instance
-        zSetOperations.add(COMPUTE_ALLOCATE_CACHE_KEY, Json.serialize(cache), priority)
+        zSetOperations.add(COMPUTE_ALLOCATE_CACHE_KEY, Json.serialize(cache.copy(instance = instance)), priority)
     }
 
     fun poll(): Optional<ComputeAllocateCache> {
