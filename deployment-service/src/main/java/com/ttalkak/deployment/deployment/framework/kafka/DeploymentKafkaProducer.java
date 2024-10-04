@@ -2,6 +2,7 @@ package com.ttalkak.deployment.deployment.framework.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ttalkak.deployment.deployment.application.outputport.EventOutputPort;
+import com.ttalkak.deployment.deployment.domain.event.CreateDatabaseEvent;
 import com.ttalkak.deployment.deployment.domain.event.CreateInstanceEvent;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,7 +24,12 @@ public class DeploymentKafkaProducer implements EventOutputPort {
     @Value("${producers.topics.rebuild-compute.name}")
     private String TOPIC_REBUILD_INSTANCE;
 
+    @Value("create-database")
+    private String TOPIC_CREATE_DATABASE;
+
     private final KafkaTemplate<String, CreateInstanceEvent> kafkaTemplate;
+
+    private final KafkaTemplate<String, CreateDatabaseEvent> kafkaTemplateDatabase;
 
     private final Logger LOGGER = LoggerFactory.getLogger(DeploymentKafkaProducer.class);
 
@@ -47,6 +53,18 @@ public class DeploymentKafkaProducer implements EventOutputPort {
         future.thenAccept(result -> {
             CreateInstanceEvent value = result.getProducerRecord().value();
             LOGGER.info("Sent message=[" + value.getDeploymentId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+        }).exceptionally(ex ->{
+            throw new IllegalArgumentException(ex);
+        });
+    }
+
+    @Override
+    public void occurCreateDatabase(CreateDatabaseEvent createDatabaseEvent) throws JsonProcessingException {
+        CompletableFuture<SendResult<String, CreateDatabaseEvent>> future = kafkaTemplateDatabase.send(TOPIC_CREATE_DATABASE, createDatabaseEvent);
+        // 콜백 메서드 생성 해야함.
+        future.thenAccept(result -> {
+            CreateDatabaseEvent value = result.getProducerRecord().value();
+            LOGGER.info("Sent message=[" + value.getDatabaseId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
         }).exceptionally(ex ->{
             throw new IllegalArgumentException(ex);
         });

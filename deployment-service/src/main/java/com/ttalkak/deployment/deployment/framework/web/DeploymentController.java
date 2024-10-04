@@ -3,6 +3,7 @@ package com.ttalkak.deployment.deployment.framework.web;
 import com.ttalkak.deployment.common.ApiResponse;
 import com.ttalkak.deployment.deployment.application.usecase.*;
 import com.ttalkak.deployment.deployment.framework.web.request.*;
+import com.ttalkak.deployment.deployment.framework.web.response.DatabaseResponse;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentCreateResponse;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
@@ -28,6 +29,8 @@ public class DeploymentController {
     private final CommandDeploymentStatusUsecase commandDeploymentStatusUsecase;
 
     private final InquiryUsecase inquiryUsecase;
+
+    private final CreateDatabaseUsecase createDatabaseUsecase;
 
     // 배포 등록
     @PostMapping
@@ -87,4 +90,13 @@ public class DeploymentController {
         deleteDeploymentUsecase.deleteDeployment(userId, deploymentId);
         return ApiResponse.empty();
     }
+
+    // 데이터베이스 생성
+    @PostMapping("/database")
+    public ApiResponse<DatabaseResponse> createDatabase(@RequestHeader("X-USER-ID") Long userId, @RequestBody DatabaseCreateRequest databaseCreateRequest){
+        DatabaseResponse database = createDatabaseUsecase.createDatabase(userId, databaseCreateRequest);
+        return ApiResponse.success(database);
+    }
+
+    // 데이터베이스 조회
 }

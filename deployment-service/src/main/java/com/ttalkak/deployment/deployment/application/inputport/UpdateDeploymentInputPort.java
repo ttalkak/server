@@ -13,13 +13,12 @@ import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
-import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DomainRequest;
+import com.ttalkak.deployment.deployment.framework.domainadapter.dto.WebDomainRequest;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.EnvUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
-import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
 import com.ttalkak.deployment.common.global.error.ErrorCode;
 import com.ttalkak.deployment.common.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -120,7 +119,7 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         DeploymentEntity savedDeployment = deploymentOutputPort.save(deploymentEntity);
 
         // 도메인 이름 수정
-        domainOutputPort.updateDomainKey(new DomainRequest(
+        domainOutputPort.updateDomainKey(new WebDomainRequest(
 
                 hosting.getId().toString(),
                 projectInfo.getDomainName() + " " + hosting.getServiceType().toString(),
