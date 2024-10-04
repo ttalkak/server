@@ -4,10 +4,7 @@ import com.ttalkak.compute.common.StreamAdapter
 import com.ttalkak.compute.common.util.Json
 import com.ttalkak.compute.compute.application.port.`in`.StatusCommand
 import com.ttalkak.compute.compute.application.port.`in`.UpdateStatusUseCase
-import com.ttalkak.compute.compute.domain.ComputeCreateEvent
-import com.ttalkak.compute.compute.domain.RunningCommand
-import com.ttalkak.compute.compute.domain.UpdateComputeStatusEvent
-import com.ttalkak.compute.compute.domain.UserCreateEvent
+import com.ttalkak.compute.compute.domain.*
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.annotation.PostConstruct
 import org.springframework.data.redis.core.RedisTemplate
@@ -22,16 +19,19 @@ class KafkaComputeListener(
     private val redisMessageListenerContainer: RedisMessageListenerContainer,
     private val computeCreateSocketListener: ComputeCreateSocketListener,
     private val computeUpdateSocketListener: ComputeUpdateSocketListener,
+    private val databaseCreateSocketListener: ComputeUpdateSocketListener,
     private val updateStatusUseCase: UpdateStatusUseCase
 ) {
     private val log = KotlinLogging.logger {}
     private val computeCreateChannel = ChannelTopic("compute-create")
     private val computeUpdateChannel = ChannelTopic("compute-update")
+    private val databaseCreateChannel = ChannelTopic("database-create")
 
     @PostConstruct
     fun init() {
         redisMessageListenerContainer.addMessageListener(computeCreateSocketListener, computeCreateChannel)
         redisMessageListenerContainer.addMessageListener(computeUpdateSocketListener, computeUpdateChannel)
+        redisMessageListenerContainer.addMessageListener(databaseCreateSocketListener, databaseCreateChannel)
     }
 
     @KafkaListener(topics = ["\${consumer.topics.create-compute.name}"], groupId = "\${spring.kafka.consumer.group-id}")
@@ -39,6 +39,15 @@ class KafkaComputeListener(
         val response = Json.deserialize(record, ComputeCreateEvent::class.java)
         log.info {
             "컴퓨터 생성 이벤트 발생: ${response.deploymentId}"
+        }
+        redisTemplate.convertAndSend(computeCreateChannel.topic, Json.serialize(response))
+    }
+
+    @KafkaListener(topics = ["\${consumer.topics.create-database.name}"], groupId = "\${spring.kafka.consumer.group-id}")
+    fun createDatabase(@Payload record: String) {
+        val response = Json.deserialize(record, DatabaseCreateEvent::class.java)
+        log.info {
+            "데이터베이스 생성 이벤트 발생: ${response.databaseId}"
         }
         redisTemplate.convertAndSend(computeCreateChannel.topic, Json.serialize(response))
     }
