@@ -39,7 +39,8 @@ public class DatabaseEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private Status message;
+    @Setter
+    private String statusMessage;
 
     @Builder
     private DatabaseEntity(Long userId, String name, DatabaseType databaseType) {
