@@ -79,23 +79,6 @@ public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
         // 업데이트된 내용의 데이터베이스
         List<DatabaseUpdateRequest> updatedDatabases = deploymentUpdateRequest.getDatabaseUpdateRequests();
 
-        // 데이터베이스 정보 수정
-        deploymentEntity.getDataBaseEntities().forEach(databaseEntity -> {
-
-            Optional.ofNullable(updatedDatabases)
-                    .ifPresent(databases -> databases.forEach(updatedDatabase -> {
-                        if(databaseEntity.getId().equals(updatedDatabase.getId())) {
-                            DatabaseEditor.DatabaseEditorBuilder databaseEditorBuilder = databaseEntity.toEditor();
-                            DatabaseEditor databaseEditor = databaseEditorBuilder
-                                    .username(updatedDatabase.getUsername())
-                                    .password(updatedDatabase.getPassword())
-                                    .port(updatedDatabase.getPort())
-                                    .build();
-
-                            databaseEntity.edit(databaseEditor);
-                        }
-                    }));
-        });
 
         // Env 데이터 수정
         List<EnvEvent> envs = new ArrayList<>();

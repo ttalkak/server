@@ -24,7 +24,7 @@ public class DeploymentKafkaProducer implements EventOutputPort {
     @Value("${producers.topics.rebuild-compute.name}")
     private String TOPIC_REBUILD_INSTANCE;
 
-    @Value("create-database")
+    @Value("${producers.topics.create-database.name}")
     private String TOPIC_CREATE_DATABASE;
 
     private final KafkaTemplate<String, CreateInstanceEvent> kafkaTemplate;
@@ -64,9 +64,11 @@ public class DeploymentKafkaProducer implements EventOutputPort {
         // 콜백 메서드 생성 해야함.
         future.thenAccept(result -> {
             CreateDatabaseEvent value = result.getProducerRecord().value();
-            LOGGER.info("Sent message=[" + value.getDatabaseId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+            LOGGER.info("Sent message=[" + value.getName() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
         }).exceptionally(ex ->{
             throw new IllegalArgumentException(ex);
         });
     }
+
+
 }

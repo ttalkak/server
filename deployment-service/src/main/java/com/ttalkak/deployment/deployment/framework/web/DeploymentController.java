@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/deployment")
+@RequestMapping("datab")
 public class DeploymentController {
 
     private final CreateDeploymentUsecase createDeploymentUsecase;
@@ -98,5 +98,17 @@ public class DeploymentController {
         return ApiResponse.success(database);
     }
 
-    // 데이터베이스 조회
+    // 데이터베이스 전체조회
+    @GetMapping("/database")
+    public ApiResponse<List<DatabaseResponse>> getDatabases(@RequestHeader("X-USER-ID") Long userId){
+        List<DatabaseResponse> databases = inquiryUsecase.getDatabases(userId);
+        return ApiResponse.success(databases);
+    }
+
+    // 데이터베이스 단건조회
+    @GetMapping("/database/{databaseId}")
+    public ApiResponse<DatabaseResponse> getDatabase(@PathVariable("databaseId") Long databaseId){
+        DatabaseResponse database = inquiryUsecase.getDatabase(databaseId);
+        return ApiResponse.success(database);
+    }
 }
