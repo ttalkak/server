@@ -6,7 +6,7 @@ import com.ttalkak.deployment.deployment.framework.web.response.DeploymentCreate
 
 
 @UseCase
-public interface CreateDeploymentUsecase {
+public interface CreateDeploymentUseCase {
 
     DeploymentCreateResponse createDeployment(DeploymentCreateRequest deploymentCreateRequest);
 }

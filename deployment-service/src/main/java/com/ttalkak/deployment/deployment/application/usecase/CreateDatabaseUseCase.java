@@ -6,7 +6,7 @@ import com.ttalkak.deployment.deployment.framework.web.response.DatabaseResponse
 
 
 @UseCase
-public interface CreateDatabaseUsecase {
+public interface CreateDatabaseUseCase {
 
     DatabaseResponse createDatabase(Long userId, DatabaseCreateRequest databaseCreateRequest);
 }

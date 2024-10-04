@@ -5,7 +5,7 @@ import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateS
 
 
 @UseCase
-public interface UpdateDeploymentStatusUsecase {
+public interface UpdateDeploymentStatusUseCase {
 
     void updateDeploymentStatus(DeploymentUpdateStatusRequest deploymentUpdateStatusRequest);
 }

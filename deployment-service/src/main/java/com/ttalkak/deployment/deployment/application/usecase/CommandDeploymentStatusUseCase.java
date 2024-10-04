@@ -4,7 +4,7 @@ import com.ttalkak.deployment.common.UseCase;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCommandStatusRequest;
 
 @UseCase
-public interface CommandDeploymentStatusUsecase {
+public interface CommandDeploymentStatusUseCase {
 
     void commandDeploymentStatus(DeploymentCommandStatusRequest deploymentCommandStatusRequest);
 }

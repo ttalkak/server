@@ -5,17 +5,15 @@ import com.ttalkak.deployment.deployment.application.outputport.DeploymentOutput
 import com.ttalkak.deployment.deployment.application.outputport.DomainOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.HostingOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.ProjectOutputPort;
-import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUsecase;
+import com.ttalkak.deployment.deployment.application.usecase.UpdateDeploymentUseCase;
 import com.ttalkak.deployment.deployment.domain.event.EnvEvent;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.EnvEntity;
 import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
-import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.DeploymentEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.WebDomainRequest;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
-import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.EnvUpdateRequest;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
@@ -28,12 +26,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class UpdateDeploymentInputPort implements UpdateDeploymentUsecase {
+public class UpdateDeploymentInputPort implements UpdateDeploymentUseCase {
 
     private final DeploymentOutputPort deploymentOutputPort;
 

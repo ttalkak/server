@@ -8,7 +8,6 @@ import com.ttalkak.deployment.deployment.framework.web.response.DeploymentCreate
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentDetailResponse;
 import com.ttalkak.deployment.deployment.framework.web.response.DeploymentPreviewResponse;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.Delete;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,21 +18,21 @@ import java.util.List;
 @RequestMapping("datab")
 public class DeploymentController {
 
-    private final CreateDeploymentUsecase createDeploymentUsecase;
+    private final CreateDeploymentUseCase createDeploymentUsecase;
 
-    private final CreateDockerFileUsecaseRegacy createDockerFileUsecaseRegacy;
+    private final CreateDockerFileUseCaseRegacy createDockerFileUsecaseRegacy;
 
-    private final UpdateDeploymentUsecase updateDeploymentUsecase;
+    private final UpdateDeploymentUseCase updateDeploymentUsecase;
 
-    private final DeleteDeploymentUsecase deleteDeploymentUsecase;
+    private final DeleteDeploymentUseCase deleteDeploymentUsecase;
 
-    private final CommandDeploymentStatusUsecase commandDeploymentStatusUsecase;
+    private final CommandDeploymentStatusUseCase commandDeploymentStatusUsecase;
 
-    private final InquiryUsecase inquiryUsecase;
+    private final inquiryUseCase inquiryUsecase;
 
-    private final CreateDatabaseUsecase createDatabaseUsecase;
+    private final CreateDatabaseUseCase createDatabaseUsecase;
 
-    private final DeleteDatabaseUsecase deleteDatabaseUsecase;
+    private final DeleteDatabaseUseCase deleteDatabaseUsecase;
 
     // 배포 등록
     @PostMapping

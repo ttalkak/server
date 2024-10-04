@@ -5,6 +5,6 @@ import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 
 
 @UseCase
-public interface WebHookDeploymentUsecase {
+public interface WebHookDeploymentUseCase {
     void createDeploymentWebHook(ServiceType serviceType, String webhookToken, WebHookCommand command);
 }

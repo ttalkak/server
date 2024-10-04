@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @UseCase
-public interface InquiryUsecase {
+public interface inquiryUseCase {
     public DeploymentDetailResponse getDeployment(Long deploymentId);
     public List<DeploymentPreviewResponse> getDeploymentsByProjectId(Long projectId);
     public List<DeploymentPreviewResponse> searchDeploymentByGithubRepositoryName(String githubRepoName, int page, int size);

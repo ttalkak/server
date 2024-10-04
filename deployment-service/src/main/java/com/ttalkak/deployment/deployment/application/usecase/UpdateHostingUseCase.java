@@ -5,7 +5,7 @@ import com.ttalkak.deployment.deployment.domain.event.HostingEvent;
 
 
 @UseCase
-public interface UpdateHostingUsecase {
+public interface UpdateHostingUseCase {
     // 호스팅 정보 변경
     void updateHosting(HostingEvent hostingEvent);
 
