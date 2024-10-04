@@ -82,8 +82,8 @@ public class UpdateDeploymentStatusInputPort implements UpdateDeploymentStatusUs
     private void reAllocateInstance(DeploymentEntity deploymentEntity) {
         VersionEntity versionEntity = versionOutputPort.findLastVersionByDeploymentId(deploymentEntity.getId());
 
-
         ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deploymentEntity.getProjectId());
+        Long userId = projectInfo.getUserId();
         String expirationDate = projectInfo.getExpirationDate();
 
         HostingEntity hosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType());
@@ -104,9 +104,9 @@ public class UpdateDeploymentStatusInputPort implements UpdateDeploymentStatusUs
         GithubInfoEvent githubInfoEvent = new GithubInfoEvent(deploymentEntity.getGithubInfo().getRepositoryUrl(), deploymentEntity.getGithubInfo().getRootDirectory(), deploymentEntity.getGithubInfo().getBranch());
         CreateInstanceEvent createInstanceEvent = null;
         if(deploymentEntity.getDockerfileScript().equals("Docker File Exist")){
-            createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, versionEntity.getVersion(), expirationDate, true, deploymentEntity.getDockerfileScript());
+            createInstanceEvent = new CreateInstanceEvent(userId, deploymentEvent, hostingEvent, githubInfoEvent, envEvents, versionEntity.getVersion(), expirationDate, true, deploymentEntity.getDockerfileScript());
         }else{
-            createInstanceEvent = new CreateInstanceEvent(deploymentEvent, hostingEvent, githubInfoEvent, envEvents, versionEntity.getVersion(), expirationDate, false, deploymentEntity.getDockerfileScript());
+            createInstanceEvent = new CreateInstanceEvent(userId, deploymentEvent, hostingEvent, githubInfoEvent, envEvents, versionEntity.getVersion(), expirationDate, false, deploymentEntity.getDockerfileScript());
         }
 
         try {

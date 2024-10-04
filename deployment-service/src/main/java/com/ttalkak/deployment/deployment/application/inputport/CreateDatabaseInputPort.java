@@ -12,7 +12,8 @@ import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseType;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DatabaseDomainKeyRequest;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DatabaseDomainKeyResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseCreateRequest;
-import com.ttalkak.deployment.deployment.framework.web.response.DatabaseResponse;
+import com.ttalkak.deployment.deployment.framework.web.response.DatabaseDetailResponse;
+import com.ttalkak.deployment.deployment.framework.web.response.DatabasePreviewResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class CreateDatabaseInputPort implements CreateDatabaseUseCase {
     private final EventOutputPort eventOutputPort;
 
     @Override
-    public DatabaseResponse createDatabase(Long userId, DatabaseCreateRequest databaseCreateRequest) {
+    public DatabasePreviewResponse createDatabase(Long userId, DatabaseCreateRequest databaseCreateRequest) {
         DatabaseType type = databaseCreateRequest.getType();
         String name = databaseCreateRequest.getName();
 
@@ -48,7 +49,6 @@ public class CreateDatabaseInputPort implements CreateDatabaseUseCase {
         saveDatabase.setPort(port);
         DatabaseEntity savedDatabase = databaseOutputPort.save(saveDatabase);
 
-
         DatabaseEvent databaseEvent = new DatabaseEvent(
                 savedDatabase.getDatabaseType(),
                 savedDatabase.getName(),
@@ -57,6 +57,7 @@ public class CreateDatabaseInputPort implements CreateDatabaseUseCase {
         );
 
         CreateDatabaseEvent createDatabaseEvent = new CreateDatabaseEvent(
+                savedDatabase.getUserId(),
                 savedDatabase.getId(),
                 databaseDomainKeyResponse.getKey(),
                 databaseEvent,
@@ -69,6 +70,6 @@ public class CreateDatabaseInputPort implements CreateDatabaseUseCase {
             throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
         }
 
-        return DatabaseResponse.mapToDTO(savedDatabase);
+        return DatabasePreviewResponse.mapToDTO(savedDatabase);
     }
 }

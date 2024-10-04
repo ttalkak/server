@@ -10,21 +10,13 @@ import com.ttalkak.deployment.deployment.application.outputport.EventOutputPort;
 import com.ttalkak.deployment.deployment.application.usecase.UpdateDatabaseStatusUseCase;
 import com.ttalkak.deployment.deployment.domain.event.*;
 import com.ttalkak.deployment.deployment.domain.model.DatabaseEntity;
-import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
-import com.ttalkak.deployment.deployment.domain.model.HostingEntity;
-import com.ttalkak.deployment.deployment.domain.model.VersionEntity;
-import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseType;
 import com.ttalkak.deployment.deployment.domain.model.vo.Status;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DatabaseDomainKeyRequest;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DatabaseDomainKeyResponse;
-import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
+import com.ttalkak.deployment.deployment.framework.kafka.DeleteEventProducer;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateStatusRequest;
-import com.ttalkak.deployment.deployment.framework.web.response.DatabaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 import static com.ttalkak.deployment.deployment.domain.model.vo.Status.*;
 
@@ -39,12 +31,14 @@ public class UpdateDatabaseStatusInputPort implements UpdateDatabaseStatusUseCas
 
     private final EventOutputPort eventOutputPort;
 
+    private final DeleteEventProducer deleteEventProducer;
+
     @Override
     public void updateDatabaseStatus(DatabaseUpdateStatusRequest databaseUpdateStatusRequest) {
         Long databaseId = Long.parseLong(databaseUpdateStatusRequest.getDatabaseId());
 
-        DatabaseEntity databaseEntity = databaseOutputPort.findById(databaseId).orElseThrow(
-                () -> new BusinessException(ErrorCode.NOT_EXISTS_DATABASE)
+        DatabaseEntity databaseEntity = databaseOutputPort.findById(databaseId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_EXISTS_DATABASE)
         );
 
         Status status = databaseEntity.getStatus();
@@ -96,6 +90,7 @@ public class UpdateDatabaseStatusInputPort implements UpdateDatabaseStatusUseCas
         );
 
         CreateDatabaseEvent createDatabaseEvent = new CreateDatabaseEvent(
+                databaseEntity.getUserId(),
                 savedDatabase.getId(),
                 databaseDomainKeyResponse.getKey(),
                 databaseEvent,
