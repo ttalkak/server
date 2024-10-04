@@ -97,6 +97,7 @@ public class UpdateDatabaseStatusInputPort implements UpdateDatabaseStatusUseCas
         );
 
         CreateDatabaseEvent createDatabaseEvent = new CreateDatabaseEvent(
+                databaseEntity.getUserId(),
                 savedDatabase.getId(),
                 databaseDomainKeyResponse.getKey(),
                 databaseEvent,
