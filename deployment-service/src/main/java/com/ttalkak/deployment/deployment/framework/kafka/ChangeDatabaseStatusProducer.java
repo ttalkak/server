@@ -1,6 +1,7 @@
 package com.ttalkak.deployment.deployment.framework.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.deployment.deployment.domain.event.UpdateDatabaseStatusEvent;
 import com.ttalkak.deployment.deployment.domain.event.UpdateDeploymentStatusEvent;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -14,21 +15,21 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
-public class ChangeStatusProducer {
-    @Value("${producers.topics.command-deployment-status.name}")
-    private String TOPIC_CREATE_INSTANCE;
+public class ChangeDatabaseStatusProducer {
+    @Value("${producers.topics.command-database-status.name}")
+    private String TOPIC_COMMAND_DATABASE_STATUS;
 
-    private final KafkaTemplate<String, UpdateDeploymentStatusEvent> kafkaTemplate;
+    private final KafkaTemplate<String, UpdateDatabaseStatusEvent> kafkaTemplate;
 
     private final Logger LOGGER = LoggerFactory.getLogger(DeploymentKafkaProducer.class);
 
-    public void occurUpdateDeploymentStatus(UpdateDeploymentStatusEvent updateDeploymentStatusEvent) throws JsonProcessingException {
+    public void occurUpdateDatabaseStatus(UpdateDatabaseStatusEvent updateDatabaseStatusEvent) throws JsonProcessingException {
 
-        CompletableFuture<SendResult<String, UpdateDeploymentStatusEvent>> future = kafkaTemplate.send(TOPIC_CREATE_INSTANCE, updateDeploymentStatusEvent);
+        CompletableFuture<SendResult<String, UpdateDatabaseStatusEvent>> future = kafkaTemplate.send(TOPIC_COMMAND_DATABASE_STATUS, updateDatabaseStatusEvent);
         // 콜백 메서드 생성 해야함.
         future.thenAccept(result -> {
-            UpdateDeploymentStatusEvent value = result.getProducerRecord().value();
-            LOGGER.info("Sent message=[" + value.getDeploymentId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+            UpdateDatabaseStatusEvent value = result.getProducerRecord().value();
+            LOGGER.info("Sent message=[" + value.getDatabaseId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
         }).exceptionally(ex ->{
             throw new IllegalArgumentException(ex);
         });

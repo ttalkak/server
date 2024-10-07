@@ -9,7 +9,7 @@ import com.ttalkak.deployment.deployment.application.usecase.CommandDeploymentSt
 import com.ttalkak.deployment.deployment.domain.event.UpdateDeploymentStatusEvent;
 import com.ttalkak.deployment.deployment.domain.model.DeploymentEntity;
 import com.ttalkak.deployment.deployment.domain.model.vo.Status;
-import com.ttalkak.deployment.deployment.framework.kafka.ChangeStatusProducer;
+import com.ttalkak.deployment.deployment.framework.kafka.ChangeDeploymentStatusProducer;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCommandStatusRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class CommandDeploymentStatusInputPort implements CommandDeploymentStatus
 
     private final DeploymentOutputPort deploymentOutputPort;
 
-    private final ChangeStatusProducer changeStatusProducer;
+    private final ChangeDeploymentStatusProducer changeDeploymentStatusProducer;
 
 
     @Override
@@ -33,7 +33,7 @@ public class CommandDeploymentStatusInputPort implements CommandDeploymentStatus
             deploymentEntity.setStatus(Status.PENDING);
             UpdateDeploymentStatusEvent updateDeploymentStatusEvent = toKafkaEventMessage(deploymentCommandStatusRequest);
             try{
-                changeStatusProducer.occurUpdateDeploymentStatus(updateDeploymentStatusEvent);
+                changeDeploymentStatusProducer.occurUpdateDeploymentStatus(updateDeploymentStatusEvent);
             }catch (JsonProcessingException e){
                 throw new BusinessException(ErrorCode.KAFKA_PRODUCER_ERROR);
             }
