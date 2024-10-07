@@ -9,6 +9,7 @@ import com.ttalkak.deployment.deployment.application.usecase.CommandDatabaseStat
 import com.ttalkak.deployment.deployment.domain.event.UpdateDatabaseStatusEvent;
 import com.ttalkak.deployment.deployment.domain.event.UpdateDeploymentStatusEvent;
 import com.ttalkak.deployment.deployment.domain.model.DatabaseEntity;
+import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import com.ttalkak.deployment.deployment.domain.model.vo.Status;
 import com.ttalkak.deployment.deployment.framework.kafka.ChangeDatabaseStatusProducer;
 import com.ttalkak.deployment.deployment.framework.kafka.ChangeDeploymentStatusProducer;
@@ -55,6 +56,7 @@ public class CommandDatabaseStatusInputPort implements CommandDatabaseStatusUseC
     private UpdateDatabaseStatusEvent toKafkaEventMessage(DatabaseCommandStatusRequest databaseCommandStatusRequest) {
         UpdateDatabaseStatusEvent updateDatabaseStatusEvent = new UpdateDatabaseStatusEvent(
                 databaseCommandStatusRequest.getDatabaseId().toString(),
+                ServiceType.DATABASE,
                 databaseCommandStatusRequest.getCommand().toString()
         );
         return updateDatabaseStatusEvent;

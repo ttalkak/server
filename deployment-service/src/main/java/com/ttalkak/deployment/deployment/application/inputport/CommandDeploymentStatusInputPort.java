@@ -31,7 +31,7 @@ public class CommandDeploymentStatusInputPort implements CommandDeploymentStatus
         DeploymentEntity deploymentEntity = deploymentOutputPort.findDeployment(Long.valueOf(deploymentCommandStatusRequest.getDeploymentId()))
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_DEPLOYMENT));
             deploymentEntity.setStatus(Status.PENDING);
-            UpdateDeploymentStatusEvent updateDeploymentStatusEvent = toKafkaEventMessage(deploymentCommandStatusRequest);
+            UpdateDeploymentStatusEvent updateDeploymentStatusEvent = toKafkaEventMessage(deploymentEntity, deploymentCommandStatusRequest);
             try{
                 changeDeploymentStatusProducer.occurUpdateDeploymentStatus(updateDeploymentStatusEvent);
             }catch (JsonProcessingException e){
@@ -40,10 +40,11 @@ public class CommandDeploymentStatusInputPort implements CommandDeploymentStatus
         deploymentOutputPort.save(deploymentEntity);
     }
 
-    private UpdateDeploymentStatusEvent toKafkaEventMessage(DeploymentCommandStatusRequest deploymentUpdateStatusRequest) {
+    private UpdateDeploymentStatusEvent toKafkaEventMessage(DeploymentEntity deploymentEntity, DeploymentCommandStatusRequest deploymentUpdateStatusRequest) {
         UpdateDeploymentStatusEvent updateDeploymentStatusEvent = new UpdateDeploymentStatusEvent(
-                deploymentUpdateStatusRequest.getDeploymentId().toString(),
-                deploymentUpdateStatusRequest.getCommand().toString()
+                deploymentUpdateStatusRequest.getDeploymentId(),
+                deploymentEntity.getServiceType(),
+                deploymentUpdateStatusRequest.getCommand()
         );
         return updateDeploymentStatusEvent;
     }

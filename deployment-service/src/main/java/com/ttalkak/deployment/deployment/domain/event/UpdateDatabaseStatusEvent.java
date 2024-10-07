@@ -1,5 +1,6 @@
 package com.ttalkak.deployment.deployment.domain.event;
 
+import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UpdateDatabaseStatusEvent implements Serializable {
 
-    private String databaseId;
+    private String id;
+
+    private ServiceType serviceType;
 
     private String command;
 }

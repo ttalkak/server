@@ -26,8 +26,6 @@ producers:
       name: update-domain-name-exception
     command-deployment-status:
       name : command-deployment-status
-    command-database-status:
-      name : command-database-status
     create-database:
       name : create-database
 

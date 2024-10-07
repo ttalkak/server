@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 @RequiredArgsConstructor
 public class ChangeDatabaseStatusProducer {
-    @Value("${producers.topics.command-database-status.name}")
+    @Value("${producers.topics.command-deployment-status.name}")
     private String TOPIC_COMMAND_DATABASE_STATUS;
 
     private final KafkaTemplate<String, UpdateDatabaseStatusEvent> kafkaTemplate;
@@ -29,7 +29,7 @@ public class ChangeDatabaseStatusProducer {
         // 콜백 메서드 생성 해야함.
         future.thenAccept(result -> {
             UpdateDatabaseStatusEvent value = result.getProducerRecord().value();
-            LOGGER.info("Sent message=[" + value.getDatabaseId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+            LOGGER.info("Sent message=[" + value.getId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
         }).exceptionally(ex ->{
             throw new IllegalArgumentException(ex);
         });

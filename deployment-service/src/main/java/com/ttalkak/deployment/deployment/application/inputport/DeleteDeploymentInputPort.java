@@ -49,7 +49,10 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUseCase {
         }
 
 
-        UpdateDeploymentStatusEvent deleted = new UpdateDeploymentStatusEvent(deploymentId.toString(), CommandEvent.DELETE.toString());
+        UpdateDeploymentStatusEvent deleted = new UpdateDeploymentStatusEvent(
+                deploymentId,
+                deploymentEntity.getServiceType(),
+                CommandEvent.DELETE);
         try{
             changeDeploymentStatusProducer.occurUpdateDeploymentStatus(deleted);
         }catch (JsonProcessingException e){
