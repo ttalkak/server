@@ -15,6 +15,7 @@ import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DatabaseDom
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.DatabaseDomainKeyResponse;
 import com.ttalkak.deployment.deployment.framework.kafka.DeleteEventProducer;
 import com.ttalkak.deployment.deployment.framework.web.request.DatabaseUpdateStatusRequest;
+import com.ttalkak.deployment.deployment.framework.web.request.UpdateStatusRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,25 +35,25 @@ public class UpdateDatabaseStatusInputPort implements UpdateDatabaseStatusUseCas
     private final DeleteEventProducer deleteEventProducer;
 
     @Override
-    public void updateDatabaseStatus(DatabaseUpdateStatusRequest databaseUpdateStatusRequest) {
-        Long databaseId = Long.parseLong(databaseUpdateStatusRequest.getDatabaseId());
+    public void updateDatabaseStatus(UpdateStatusRequest updateStatusRequest) {
+        Long databaseId = updateStatusRequest.getId();
 
         DatabaseEntity databaseEntity = databaseOutputPort.findById(databaseId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_EXISTS_DATABASE)
         );
 
         Status status = databaseEntity.getStatus();
-        String message = databaseUpdateStatusRequest.getMessage();
+        String message = updateStatusRequest.getMessage();
 
         if(status == WAITING) {
             if (message.equals("cloud manipulate")) {
                 reAllocateDatabase(databaseEntity);
             }
-            databaseEntity.setStatus(WAITING);
+            databaseEntity.setStatus(status);
         }
 
         if(status == ERROR){
-            databaseEntity.setStatus(ERROR);
+            databaseEntity.setStatus(status);
         }
 
         if(status == STOPPED){
@@ -64,8 +65,6 @@ public class UpdateDatabaseStatusInputPort implements UpdateDatabaseStatusUseCas
         }
         databaseEntity.setStatusMessage(message);
         databaseOutputPort.save(databaseEntity);
-
-
     }
 
     private void reAllocateDatabase(DatabaseEntity databaseEntity) {
@@ -84,7 +83,7 @@ public class UpdateDatabaseStatusInputPort implements UpdateDatabaseStatusUseCas
 
         DatabaseEvent databaseEvent = new DatabaseEvent(
                 savedDatabase.getDatabaseType(),
-                savedDatabase.getName(),
+                savedDatabase.getDbName(),
                 savedDatabase.getUsername(),
                 savedDatabase.getPassword()
         );

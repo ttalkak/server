@@ -40,7 +40,7 @@ class KafkaComputeListener(
         log.info {
             "컴퓨터 생성 이벤트 발생: ${response.deploymentId}"
         }
-        redisTemplate.convertAndSend(computeCreateChannel.topic, Json.serialize(response))
+        redisTemplate.convertAndSend(computeCreateChannel.topic, Json.serialize(response.copy(isRebuild = false)))
     }
 
     @KafkaListener(topics = ["\${consumer.topics.create-database.name}"], groupId = "\${spring.kafka.consumer.group-id}")
@@ -69,6 +69,7 @@ class KafkaComputeListener(
         )
 
         updateStatusUseCase.upsertStatus(response.userId, command)
+        updateStatusUseCase.updateAddress(response.userId, response.address)
     }
 
     @KafkaListener(topics = ["\${consumer.topics.command-deployment-status.name}"], groupId = "\${spring.kafka.consumer.group-id}")
@@ -76,7 +77,7 @@ class KafkaComputeListener(
         val response = Json.deserialize(record, UpdateComputeStatusEvent::class.java)
 
         log.info {
-            "컴퓨터 상태 변경 이벤트 발생: ${response.deploymentId} - ${response.command}"
+            "컴퓨터 상태 변경 이벤트 발생: (${response.id}:${response.serviceType}) - ${response.command}"
         }
 
         redisTemplate.convertAndSend(computeUpdateChannel.topic, Json.serialize(response))
@@ -89,6 +90,6 @@ class KafkaComputeListener(
             "컴퓨터 재배포 이벤트 발생: ${response.deploymentId}"
         }
 
-        redisTemplate.convertAndSend(computeUpdateChannel.topic, Json.serialize(response))
+        redisTemplate.convertAndSend(computeCreateChannel.topic, Json.serialize(response.copy(isRebuild = true)))
     }
 }

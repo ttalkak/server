@@ -7,16 +7,16 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class DeploymentCommandStatusRequest {
+public class DatabaseCommandStatusRequest {
 
-    private Long deploymentId;
+    private Long databaseId;
 
     @Enumerated(EnumType.STRING)
     private CommandEvent command;
 
     @Builder
-    public DeploymentCommandStatusRequest(Long deploymentId, CommandEvent command) {
-        this.deploymentId = deploymentId;
+    public DatabaseCommandStatusRequest(Long databaseId, CommandEvent command) {
+        this.databaseId = databaseId;
         this.command = command;
     }
 }

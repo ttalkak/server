@@ -1,6 +1,7 @@
 package com.ttalkak.deployment.deployment.domain.model;
 
 import com.ttalkak.deployment.common.BaseEntity;
+import com.ttalkak.deployment.common.RandomGenerator;
 import com.ttalkak.deployment.deployment.domain.model.vo.DatabaseEditor;
 import com.ttalkak.deployment.deployment.domain.model.vo.Status;
 import jakarta.persistence.*;
@@ -24,6 +25,8 @@ public class DatabaseEntity extends BaseEntity {
 
     private String name;
 
+    private String dbName;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private DatabaseType databaseType;
@@ -35,7 +38,6 @@ public class DatabaseEntity extends BaseEntity {
     @Setter
     private int port;
 
-
     @Setter
     @Column(name = "database_status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -44,15 +46,22 @@ public class DatabaseEntity extends BaseEntity {
     @Setter
     private String statusMessage;
 
+
+    public void updateStatus(Status status){
+        this.status = status;
+        this.statusMessage = status.toString();
+    }
+
     @Builder
     private DatabaseEntity(Long userId, String name, DatabaseType databaseType) {
         this.userId = userId;
         this.name = name;
         this.databaseType = databaseType;
         this.status = PENDING;
-        this.statusMessage = PENDING.toString().toLowerCase();
-        this.username = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
-        this.password = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+        this.statusMessage = PENDING.toString();
+        this.dbName = RandomGenerator.generateRandomString(10);
+        this.username = RandomGenerator.generateRandomString(20);
+        this.password = RandomGenerator.generateRandomString(20);
         this.port = -1;
     }
 
