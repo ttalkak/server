@@ -131,7 +131,6 @@ class AllocateService (
             }.subtract(loadPortPort.loadPorts(availableCompute.userId).toSet())
 
             val create = ComputeCreate(
-                id = compute.id,
                 senderId = 1L,
                 instance = compute.instance
             )
