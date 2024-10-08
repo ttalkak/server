@@ -143,6 +143,7 @@ public class DeploymentController {
             @RequestParam(required = false) String searchKeyword,
             @RequestHeader("X-USER-ID") Long userId) {
         if (searchKeyword == null) searchKeyword = "";
+        
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
         DatabasePageResponse pages = inquiryUsecase.getDatabases(pageable, searchKeyword, userId);
         return ApiResponse.success(pages);
