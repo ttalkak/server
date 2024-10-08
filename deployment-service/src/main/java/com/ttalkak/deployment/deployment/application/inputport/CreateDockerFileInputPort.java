@@ -10,8 +10,9 @@ import com.ttalkak.deployment.deployment.domain.model.docker.frontend.*;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 
 @UseCase
-public class CreateDockerfileInputPort implements CreateDockerfileUseCase {
+public class CreateDockerFileInputPort implements CreateDockerfileUseCase {
 
+    @Override
     public String generateDockerfile(ServiceType serviceType, String buildTool, String packageManager, String languageVersion) {
         String dockerfileScript = "Dockerfile Not Exist";
         if (ServiceType.isBackendType(serviceType)) {
