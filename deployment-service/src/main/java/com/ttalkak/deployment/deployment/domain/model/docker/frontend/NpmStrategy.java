@@ -1,4 +1,4 @@
-package com.ttalkak.deployment.deployment.domain.model.docker;
+package com.ttalkak.deployment.deployment.domain.model.docker.frontend;
 
 public class NpmStrategy implements PackageManagerStrategy {
 
@@ -9,7 +9,7 @@ public class NpmStrategy implements PackageManagerStrategy {
 
     @Override
     public String installDependencies() {
-        return "RUN npm ci\n";
+        return "RUN npm i\n";
     }
 
     @Override

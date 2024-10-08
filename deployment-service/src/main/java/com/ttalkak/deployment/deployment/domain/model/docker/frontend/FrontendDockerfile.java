@@ -1,13 +1,16 @@
-package com.ttalkak.deployment.deployment.domain.model.docker;
+package com.ttalkak.deployment.deployment.domain.model.docker.frontend;
 
+import com.ttalkak.deployment.deployment.domain.model.docker.DockerfileTemplate;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 
 public class FrontendDockerfile extends DockerfileTemplate {
 
     private final PackageManagerStrategy packageManagerStrategy;
+    private final BuildToolStrategy buildToolStrategy;
 
-    public FrontendDockerfile(PackageManagerStrategy packageManagerStrategy) {
+    public FrontendDockerfile(PackageManagerStrategy packageManagerStrategy, BuildToolStrategy buildToolStrategy) {
         this.packageManagerStrategy = packageManagerStrategy;
+        this.buildToolStrategy = buildToolStrategy;
     }
 
     @Override
@@ -27,16 +30,9 @@ public class FrontendDockerfile extends DockerfileTemplate {
 
     @Override
     protected String setupFinalStage(ServiceType serviceType, String buildTool, String languageVersion) {
-        StringBuilder finalStage = new StringBuilder();
-        finalStage.append("FROM nginx:stable-alpine\n");
-
-        if ("cra".equalsIgnoreCase(buildTool)) {
-            finalStage.append("COPY --from=build /app/build /usr/share/nginx/html\n");
-        } else if ("vite".equalsIgnoreCase(buildTool)) {
-            finalStage.append("COPY --from=build /app/dist /usr/share/nginx/html\n");
-        }
-
-        finalStage.append("CMD [\"nginx\", \"-g\", \"daemon off;\"]");
-        return finalStage.toString();
+        return "FROM nginx:stable-alpine\n" +
+                buildToolStrategy.copyBuildOutput() +
+                "RUN chmod -R 755 /usr/share/nginx/html\n" +
+                "CMD [\"nginx\", \"-g\", \"daemon off;\"]";
     }
 }

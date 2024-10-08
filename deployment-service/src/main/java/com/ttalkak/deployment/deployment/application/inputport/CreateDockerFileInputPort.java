@@ -3,6 +3,10 @@ package com.ttalkak.deployment.deployment.application.inputport;
 import com.ttalkak.deployment.common.UseCase;
 import com.ttalkak.deployment.deployment.application.usecase.CreateDockerfileUseCase;
 import com.ttalkak.deployment.deployment.domain.model.docker.*;
+import com.ttalkak.deployment.deployment.domain.model.docker.backend.BackendDockerfile;
+import com.ttalkak.deployment.deployment.domain.model.docker.backend.GradleBuildToolStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.backend.MavenBuildToolStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.*;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 
 @UseCase
@@ -19,7 +23,7 @@ public class CreateDockerfileInputPort implements CreateDockerfileUseCase {
                     languageVersion
             );
         } else if (ServiceType.isFrontendType(serviceType)) {
-            DockerfileTemplate frontendDockerfile = createFrontendDockerfile(buildTool);
+            DockerfileTemplate frontendDockerfile = createFrontendDockerfile(buildTool, packageManager);
             dockerfileScript = frontendDockerfile.generateDockerfileScript(
                     serviceType,
                     buildTool,
@@ -39,12 +43,26 @@ public class CreateDockerfileInputPort implements CreateDockerfileUseCase {
         throw new IllegalArgumentException("Unsupported backend build tool: " + buildTool);
     }
 
-    private DockerfileTemplate createFrontendDockerfile(String packageManager) {
+    private DockerfileTemplate createFrontendDockerfile(String buildTool, String packageManager) {
+        PackageManagerStrategy packageManagerStrategy;
+        BuildToolStrategy buildToolStrategy;
+
         if (packageManager.equalsIgnoreCase("yarn")) {
-            return new FrontendDockerfile(new YarnStrategy());
+            packageManagerStrategy = new YarnStrategy();
         } else if (packageManager.equalsIgnoreCase("npm")) {
-            return new FrontendDockerfile(new NpmStrategy());
+            packageManagerStrategy = new NpmStrategy();
+        } else {
+            throw new IllegalArgumentException("Unsupported frontend package manager: " + packageManager);
         }
-        throw new IllegalArgumentException("Unsupported frontend package manager: " + packageManager);
+
+        if (buildTool.equalsIgnoreCase("cra")) {
+            buildToolStrategy = new CraStrategy();
+        } else if (buildTool.equalsIgnoreCase("vite")) {
+            buildToolStrategy = new ViteStrategy();
+        } else {
+            throw new IllegalArgumentException("Unsupported frontend build tool: " + buildTool);
+        }
+
+        return new FrontendDockerfile(packageManagerStrategy, buildToolStrategy);
     }
 }

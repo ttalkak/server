@@ -1,5 +1,6 @@
-package com.ttalkak.deployment.deployment.domain.model.docker;
+package com.ttalkak.deployment.deployment.domain.model.docker.backend;
 
+import com.ttalkak.deployment.deployment.domain.model.docker.DockerfileTemplate;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 
 public class BackendDockerfile extends DockerfileTemplate {

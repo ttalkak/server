@@ -1,4 +1,4 @@
-package com.ttalkak.deployment.deployment.domain.model.docker;
+package com.ttalkak.deployment.deployment.domain.model.docker.backend;
 
 public class GradleBuildToolStrategy implements BuildToolStrategy {
 
