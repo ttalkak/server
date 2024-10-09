@@ -148,14 +148,12 @@ export class PaymentService {
     });
 
     if (exist) return exist;
-    console.log('exist: ', exist);
 
     const sender = await this.prisma.userTransactionKey.findUnique({
       where: {
         userId: senderId,
       },
     });
-    console.log('sender: ', sender);
     const decipher = createDecipheriv('aes-256-cbc', this.key, this.iv);
     let decrypted = decipher.update(sender.privateKey, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
