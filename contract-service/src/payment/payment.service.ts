@@ -148,19 +148,19 @@ export class PaymentService {
 
     if (exist) return exist;
 
-    const user = await this.prisma.userTransactionKey.findUnique({
+    const sender = await this.prisma.userTransactionKey.findUnique({
       where: {
         userId: senderId,
       },
     });
 
     const decipher = createDecipheriv('aes-256-cbc', this.key, this.iv);
-    let decrypted = decipher.update(user.privateKey, 'hex', 'utf8');
+    let decrypted = decipher.update(sender.privateKey, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
 
     const signedTx = await this.web3.eth.accounts.signTransaction(
       {
-        from: user.address,
+        from: sender.address,
         to: this.configService.get<string>('PAYMENT_CONTRACT_ADDRESS'),
         value: 0,
         gasPrice: 0,

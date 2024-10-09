@@ -8077,12 +8077,12 @@
     "31221": {
       "events": {},
       "links": {},
-      "address": "0x0Db679a3fc73e715d9760336656C23E14d052414",
-      "transactionHash": "0x51eb46b93b24d70182a00f5afebb278ccd8701784b09e36c4adb03e6e05d226f"
+      "address": "0x65914e64fF9f39D4f681718963B9CE3bEfB9a2b7",
+      "transactionHash": "0x8134da63fcc305aaa7e058ff76e602377c8dd7a7eb3e592740d7faf5fc923a50"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2024-10-04T13:07:33.318Z",
+  "updatedAt": "2024-10-09T08:30:51.878Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
