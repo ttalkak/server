@@ -8,4 +8,6 @@ public interface UpdateProjectUseCase {
     ProjectDetailResponse updateProject(Long userId, Long projectId, ProjectUpdateRequest projectUpdateRequest);
 
     void rollbackProjectDomainName(DomainNameEvent domainNameEvent);
+
+    void updateProjectFavicon(Long projectId, String favicon);
 }

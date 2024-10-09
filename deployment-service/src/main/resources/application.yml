@@ -28,7 +28,9 @@ producers:
       name : command-deployment-status
     create-database:
       name : create-database
-
+    update-project-favicon:
+      name: update-project-favicon
+      
 consumers:
   topics:
     create-hosting:

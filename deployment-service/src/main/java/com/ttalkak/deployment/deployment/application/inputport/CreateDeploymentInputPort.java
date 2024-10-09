@@ -12,6 +12,7 @@ import com.ttalkak.deployment.deployment.domain.model.*;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.WebDomainKeyResponse;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.WebDomainRequest;
+import com.ttalkak.deployment.deployment.framework.kafka.ChangeProjectFaviconProducer;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DockerfileCreateRequest;
@@ -45,6 +46,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUseCase {
 
     private final EventOutputPort eventOutputPort;
 
+    private final ChangeProjectFaviconProducer producer;
+
     @Override
     public DeploymentCreateResponse createDeployment(DeploymentCreateRequest deploymentCreateRequest) {
         // 깃허브 관련 정보 객체 생성
@@ -57,6 +60,18 @@ public class CreateDeploymentInputPort implements CreateDeploymentUseCase {
         String webhookToken = projectInfo.getWebhookToken();
         String payloadURL = "https://api.ttalkak.com/webhook/deployment/" + deploymentCreateRequest.getServiceType().toString().toLowerCase() + "/" + webhookToken;
         String expirationDate = projectInfo.getExpirationDate();
+
+        if (deploymentCreateRequest.getFavicon() != null) {
+            UpdateFaviconEvent faviconEvent = new UpdateFaviconEvent();
+            faviconEvent.setProjectId(deploymentCreateRequest.getProjectId());
+            faviconEvent.setFaviconUrl(deploymentCreateRequest.getFavicon());
+
+            try {
+                producer.updateFaviconEvent(faviconEvent);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
+            }
+        }
 
         // 배포 객체 생성
         DeploymentEntity deployment = createDeployment(deploymentCreateRequest, githubInfo, payloadURL);

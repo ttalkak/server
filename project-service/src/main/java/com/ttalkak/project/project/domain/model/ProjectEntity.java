@@ -3,10 +3,7 @@ package com.ttalkak.project.project.domain.model;
 import com.ttalkak.project.project.domain.model.vo.ProjectEditor;
 import com.ttalkak.project.project.domain.model.vo.ProjectStatus;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -28,6 +25,9 @@ public class ProjectEntity extends BaseEntity {
     private String domainName;
 
     private String expirationDate;
+
+    @Setter
+    private String favicon;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

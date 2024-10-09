@@ -85,4 +85,11 @@ public class UpdateProjectInputPort implements UpdateProjectUseCase {
         projectEntity.edit(projectEditor);
         saveProjectOutputPort.save(projectEntity);
     }
+
+    @Override
+    public void updateProjectFavicon(Long projectId, String favicon) {
+        ProjectEntity projectEntity = loadProjectOutputPort.findById(projectId);
+        projectEntity.setFavicon(favicon);
+        saveProjectOutputPort.save(projectEntity);
+    }
 }

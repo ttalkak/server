@@ -35,8 +35,10 @@ public class DeploymentCreateRequest {
     @Nullable
     private DockerfileCreateRequest dockerfileCreateRequest;
 
+    private String favicon;
+
     @Builder
-    private DeploymentCreateRequest(Long projectId, ServiceType serviceType, GithubRepositoryRequest githubRepositoryRequest, VersionRequest versionRequest, int hostingPort, List<EnvCreateRequest> envs, String framework, DockerfileCreateRequest dockerfileCreateRequest) {
+    private DeploymentCreateRequest(Long projectId, ServiceType serviceType, GithubRepositoryRequest githubRepositoryRequest, VersionRequest versionRequest, int hostingPort, List<EnvCreateRequest> envs, String framework, DockerfileCreateRequest dockerfileCreateRequest, String favicon) {
         this.projectId = projectId;
         this.serviceType = serviceType;
         this.githubRepositoryRequest = githubRepositoryRequest;
@@ -45,5 +47,6 @@ public class DeploymentCreateRequest {
         this.envs = envs;
         this.framework = framework;
         this.dockerfileCreateRequest = dockerfileCreateRequest;
+        this.favicon = favicon;
     }
 }

@@ -25,12 +25,14 @@ public class ProjectSearchResponse {
 
     private String expirationDate;
 
+    private String favicon;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     @Builder
-    private ProjectSearchResponse(Long id, Long userId, String projectName, String webhookToken, String domainName, String expirationDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private ProjectSearchResponse(Long id, Long userId, String projectName, String webhookToken, String domainName, String expirationDate, LocalDateTime createdAt, LocalDateTime updatedAt, String favicon) {
         this.id = id;
         this.userId = userId;
         this.projectName = projectName;
@@ -39,6 +41,7 @@ public class ProjectSearchResponse {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.expirationDate = expirationDate;
+        this.favicon = favicon;
     }
 
     public static ProjectSearchResponse mapToResponse(ProjectEntity projectEntity) {
@@ -50,6 +53,7 @@ public class ProjectSearchResponse {
                 .domainName(projectEntity.getDomainName())
                 .createdAt(projectEntity.getCreatedAt())
                 .updatedAt(projectEntity.getUpdatedAt())
+                .favicon(projectEntity.getFavicon())
                 .expirationDate(projectEntity.getExpirationDate())
                 .build();
     }
