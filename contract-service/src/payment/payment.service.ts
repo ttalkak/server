@@ -137,6 +137,7 @@ export class PaymentService {
     receipientId: number;
     toAddress: string;
   }) {
+    console.log(serviceId, serviceType, senderId, receipientId, toAddress);
     const exist = await this.prisma.transaction.findFirst({
       where: {
         serviceId: serviceId,
@@ -147,16 +148,19 @@ export class PaymentService {
     });
 
     if (exist) return exist;
+    console.log('exist: ', exist);
 
     const sender = await this.prisma.userTransactionKey.findUnique({
       where: {
         userId: senderId,
       },
     });
-
+    console.log('sender: ', exist);
     const decipher = createDecipheriv('aes-256-cbc', this.key, this.iv);
     let decrypted = decipher.update(sender.privateKey, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
+
+    console.log('sender privateKey: ', decrypted);
 
     const signedTx = await this.web3.eth.accounts.signTransaction(
       {
