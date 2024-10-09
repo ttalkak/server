@@ -49,6 +49,7 @@ public class DeploymentEntity extends BaseEntity {
     private String framework;
 
     @Setter
+    @Column(length = 1000)
     private String dockerfileScript;
 
     @Setter
