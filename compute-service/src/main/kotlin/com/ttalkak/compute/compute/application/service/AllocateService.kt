@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled
 
 @UseCase
 class AllocateService (
-    private val createAllocatePort: CreateAllocatePort,
+    private val saveAllocatePort: SaveAllocatePort,
     private val loadAllocatePort: LoadAllocatePort,
     private val loadStatusPort: LoadStatusPort,
     private val loadRunningPort: LoadRunningPort,
@@ -36,7 +36,7 @@ class AllocateService (
             "신규 컴퓨터 할당 요청: $command"
         }
 
-        createAllocatePort.append(
+        saveAllocatePort.append(
             id = command.id,
             senderId = command.senderId,
             isDatabase = command.isDatabase,
@@ -60,7 +60,7 @@ class AllocateService (
             "재할당 요청: $command"
         }
 
-        createAllocatePort.appendPriority(
+        saveAllocatePort.appendPriority(
             id = command.id,
             senderId = command.senderId,
             isDatabase = command.isDatabase,
@@ -128,7 +128,7 @@ class AllocateService (
                 if (tries[compute.id] == false) {
                     log.error { "할당 가능한 컴퓨터가 없습니다." }
                     loadAllocatePort.pop().ifPresent {
-                        createAllocatePort.append(
+                        saveAllocatePort.append(
                             id = it.id,
                             senderId = it.senderId,
                             isDatabase = it.isDatabase,

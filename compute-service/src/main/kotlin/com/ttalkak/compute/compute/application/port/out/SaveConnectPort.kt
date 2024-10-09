@@ -1,6 +1,6 @@
 package com.ttalkak.compute.compute.application.port.out
 
-interface CreateConnectPort {
+interface SaveConnectPort {
     /**
      * 컴퓨터 연결
      *
