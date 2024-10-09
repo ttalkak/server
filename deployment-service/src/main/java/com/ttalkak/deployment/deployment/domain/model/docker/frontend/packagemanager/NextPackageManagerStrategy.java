@@ -1,6 +1,6 @@
-package com.ttalkak.deployment.deployment.domain.model.docker.frontend;
+package com.ttalkak.deployment.deployment.domain.model.docker.frontend.packagemanager;
 
-public class NpmStrategy implements PackageManagerStrategy {
+public class NextPackageManagerStrategy implements PackageManagerStrategy {
 
     @Override
     public String copyDependencies() {
@@ -9,7 +9,7 @@ public class NpmStrategy implements PackageManagerStrategy {
 
     @Override
     public String installDependencies() {
-        return "RUN npm i\n";
+        return "RUN npm install --frozen-lockfile\n";
     }
 
     @Override

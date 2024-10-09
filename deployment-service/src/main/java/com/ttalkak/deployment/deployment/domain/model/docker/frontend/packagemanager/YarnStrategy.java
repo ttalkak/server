@@ -1,4 +1,4 @@
-package com.ttalkak.deployment.deployment.domain.model.docker.frontend;
+package com.ttalkak.deployment.deployment.domain.model.docker.frontend.packagemanager;
 
 public class YarnStrategy implements PackageManagerStrategy {
 
