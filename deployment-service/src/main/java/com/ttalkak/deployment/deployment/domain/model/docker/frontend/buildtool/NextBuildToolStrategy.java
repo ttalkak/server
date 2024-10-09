@@ -10,10 +10,10 @@ public class NextBuildToolStrategy implements BuildToolStrategy {
 
     @Override
     public String copyBuildOutput() {
-        return "COPY --from=builder /app/package*.json ./\n" +
-                "COPY --from=builder /app/.next ./.next\n" +
-                "COPY --from=builder /app/public ./public\n" +
-                "COPY --from=builder /app/node_modules ./node_modules\n";
+        return "COPY --from=build /app/package*.json ./\n" +
+                "COPY --from=build /app/.next ./.next\n" +
+                "COPY --from=build /app/public ./public\n" +
+                "COPY --from=build /app/node_modules ./node_modules\n";
     }
 
     @Override
