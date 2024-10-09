@@ -16,6 +16,13 @@ import { Receipt } from './payment.type';
 import { CustomException } from '@src/common/exception/exception';
 import { INVALID_INPUT } from '@src/common/exception/error.code';
 
+interface BaseResponse<T> {
+  success: boolean;
+  message: string;
+  status: number;
+  data: T;
+}
+
 @Controller('v1/payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
@@ -28,11 +35,24 @@ export class PaymentController {
     query: {
       range: number;
     },
-  ): Promise<Receipt> {
+  ): Promise<BaseResponse<Receipt>> {
     if (!query.range) {
-      return this.paymentService.getPayments(+request.user.userId, 7);
+      return {
+        success: true,
+        message: 'OK',
+        status: 200,
+        data: await this.paymentService.getPayments(+request.user.userId, 30),
+      };
     }
-    return this.paymentService.getPayments(+request.user.userId, query.range);
+    return {
+      success: true,
+      message: 'OK',
+      status: 200,
+      data: await this.paymentService.getPayments(
+        +request.user.userId,
+        query.range,
+      ),
+    };
   }
 
   @UseGuards(JwtAuthGuard)
@@ -48,11 +68,16 @@ export class PaymentController {
     if (!query.year || !query.month) {
       throw new CustomException(INVALID_INPUT, '연도 및 월을 입력해주세요');
     }
-    return this.paymentService.getPaymentSummary(
-      +request.user.userId,
-      query.year,
-      query.month,
-    );
+    return {
+      success: true,
+      message: 'OK',
+      status: 200,
+      data: this.paymentService.getPaymentSummary(
+        +request.user.userId,
+        query.year,
+        query.month,
+      ),
+    };
   }
 
   @UseGuards(JwtAuthGuard)
@@ -85,21 +110,29 @@ export class PaymentController {
       address: string;
     },
   ) {
-    return this.paymentService.savePrivateKey({
-      userId: +request.user.userId,
-      privateKey: body.privateKey,
-      address: body.address,
-    });
+    return {
+      success: true,
+      message: 'OK',
+      status: 200,
+      data: this.paymentService.savePrivateKey({
+        userId: +request.user.userId,
+        privateKey: body.privateKey,
+        address: body.address,
+      }),
+    };
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('signature')
-  async getSignature(
-    @Request() request,
-  ) {
-    return this.paymentService.getPrivateKey({
-      userId: +request.user.userId
-    });
+  async getSignature(@Request() request) {
+    return {
+      success: true,
+      message: 'OK',
+      status: 200,
+      data: this.paymentService.getPrivateKey({
+        userId: +request.user.userId,
+      }),
+    };
   }
 
   @Post('sign')
@@ -113,12 +146,17 @@ export class PaymentController {
       address: string;
     },
   ) {
-    return await this.paymentService.signTransaction({
-      serviceId: body.serviceId,
-      serviceType: body.serviceType,
-      senderId: body.senderId,
-      receipientId: body.receipientId,
-      toAddress: body.address,
-    });
+    return {
+      success: true,
+      message: 'OK',
+      status: 200,
+      data: await this.paymentService.signTransaction({
+        serviceId: body.serviceId,
+        serviceType: body.serviceType,
+        senderId: body.senderId,
+        receipientId: body.receipientId,
+        toAddress: body.address,
+      }),
+    };
   }
 }
