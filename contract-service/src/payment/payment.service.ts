@@ -155,12 +155,10 @@ export class PaymentService {
         userId: senderId,
       },
     });
-    console.log('sender: ', exist);
+    console.log('sender: ', sender);
     const decipher = createDecipheriv('aes-256-cbc', this.key, this.iv);
     let decrypted = decipher.update(sender.privateKey, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
-
-    console.log('sender privateKey: ', decrypted);
 
     const signedTx = await this.web3.eth.accounts.signTransaction(
       {
@@ -171,7 +169,7 @@ export class PaymentService {
         gasLimit: 50000,
         data: this.payment.methods.sendPayment(toAddress, 10).encodeABI(),
       },
-      decrypted,
+      decrypted.trim(),
     );
 
     return this.prisma.transaction.create({
