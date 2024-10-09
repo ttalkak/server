@@ -20,7 +20,7 @@ public class ProjectFaviconConsumer {
     private final ObjectMapper objectMapper;
     private final UpdateProjectUseCase updateProjectUseCase;
 
-    @KafkaListener(topics = "${consumers.topics.update-project-favicon.name}", groupId = "${consumers.group-id..name}")
+    @KafkaListener(topics = "${consumers.topics.update-project-favicon.name}", groupId = "${spring.kafka.consumer.group-id}")
     public void consumeRollBack(ConsumerRecord<String, String> record) throws IOException {
         FaviconEvent faviconEvent = objectMapper.readValue(record.value(), FaviconEvent.class);
         updateProjectUseCase.updateProjectFavicon(faviconEvent.getProjectId(), faviconEvent.getFaviconUrl());
