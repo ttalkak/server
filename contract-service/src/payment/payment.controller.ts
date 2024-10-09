@@ -72,7 +72,7 @@ export class PaymentController {
       success: true,
       message: 'OK',
       status: 200,
-      data: this.paymentService.getPaymentSummary(
+      data: await this.paymentService.getPaymentSummary(
         +request.user.userId,
         query.year,
         query.month,
@@ -114,7 +114,7 @@ export class PaymentController {
       success: true,
       message: 'OK',
       status: 200,
-      data: this.paymentService.savePrivateKey({
+      data: await this.paymentService.savePrivateKey({
         userId: +request.user.userId,
         privateKey: body.privateKey,
         address: body.address,
@@ -129,7 +129,7 @@ export class PaymentController {
       success: true,
       message: 'OK',
       status: 200,
-      data: this.paymentService.getPrivateKey({
+      data: await this.paymentService.getPrivateKey({
         userId: +request.user.userId,
       }),
     };

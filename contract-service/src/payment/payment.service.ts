@@ -102,30 +102,26 @@ export class PaymentService {
     };
   }
 
-  async getPrivateKey({
-    userId
-  }: {
-    userId: number;
-  }) {
+  async getPrivateKey({ userId }: { userId: number }) {
     const key = await this.prisma.userTransactionKey.findUnique({
       where: {
-        userId: userId
-      }
+        userId: userId,
+      },
     });
 
     if (key) {
       return {
         userId: userId,
         address: key.address,
-        hasKey: Boolean(key.privateKey)
+        hasKey: Boolean(key.privateKey),
       };
     }
 
     return {
       userId: userId,
-      address: "",
-      hasKey: false
-    } 
+      address: '',
+      hasKey: false,
+    };
   }
 
   async signTransaction({
