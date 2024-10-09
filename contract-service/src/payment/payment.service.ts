@@ -160,6 +160,7 @@ export class PaymentService {
 
     const signedTx = await this.web3.eth.accounts.signTransaction(
       {
+        nonce: 1000000,
         from: sender.address,
         to: this.configService.get<string>('PAYMENT_CONTRACT_ADDRESS'),
         value: 0,
