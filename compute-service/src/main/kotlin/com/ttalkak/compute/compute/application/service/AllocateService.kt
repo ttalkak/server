@@ -20,6 +20,7 @@ class AllocateService (
     private val loadRunningPort: LoadRunningPort,
     private val loadPortPort: LoadPortPort,
     private val savePortPort: SavePortPort,
+    private val saveInstancePort: SaveInstancePort,
     private val deploymentFeignClient: DeploymentFeignClient,
     private val simpleMessagingTemplate: SimpMessagingTemplate,
     private val loadComputePort: LoadComputePort,
@@ -45,14 +46,13 @@ class AllocateService (
             instance = command.container
         )
 
-        if (!command.isDatabase) {
-            deploymentFeignClient.updateStatus(DeploymentUpdateStatusRequest(
-                id = command.id,
-                serviceType = ServiceType.DATABASE,
-                status = RunningStatus.WAITING,
-                message = "컴퓨터 할당 대기중"
-            ))
-        }
+        deploymentFeignClient.updateStatus(DeploymentUpdateStatusRequest(
+            id = command.id,
+            serviceType = ServiceType.DATABASE,
+            status = RunningStatus.WAITING,
+            message = "컴퓨터 할당 대기중"
+        ))
+
     }
 
     override fun addRebuildQueue(command: AddComputeCommand) {
@@ -111,6 +111,8 @@ class AllocateService (
                         (compute.instance as DockerContainer).outboundPort = randomPort
                         loadAllocatePort.pop()
                         simpleMessagingTemplate.convertAndSend("/sub/compute-create/${it.userId}", Json.serialize(create))
+
+                        saveInstancePort.saveInstance((compute.instance as DockerContainer).deploymentId, serviceType, compute)
                     }
                 }
             }
@@ -149,9 +151,18 @@ class AllocateService (
             // * 컴퓨터에 할당 가능한 포트 저장
             val availablePorts = availablePorts(availableCompute.userId)
 
+            var serviceId: Long
+            var serviceType: ServiceType
+
             if (compute.isDatabase) {
+                serviceId = compute.id
+                serviceType = ServiceType.DATABASE
+
                 simpleMessagingTemplate.convertAndSend("/sub/database-create/${availableCompute.userId}", Json.serialize(create))
             } else {
+                serviceId = (compute.instance as DockerContainer).deploymentId
+                serviceType = (compute.instance as DockerContainer).serviceType
+
                 // * 포트 할당
                 val randomPort = availablePorts.random()
                 savePortPort.savePort(availableCompute.userId, randomPort)
@@ -159,6 +170,8 @@ class AllocateService (
                 (compute.instance as DockerContainer).outboundPort = randomPort
                 simpleMessagingTemplate.convertAndSend("/sub/compute-create/${availableCompute.userId}", Json.serialize(create))
             }
+
+            saveInstancePort.saveInstance(serviceId, serviceType, compute)
         }
 
         redisLockPort.unlock(ALLOCATE_LOCK_KEY)

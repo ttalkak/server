@@ -18,6 +18,8 @@ class ComputeService (
     private val saveDeploymentStatusPort: SaveDeploymentStatusPort,
     private val saveRunningPort: SaveRunningPort,
     private val savePortPort: SavePortPort,
+    private val loadInstancePort: LoadInstancePort,
+    private val saveAllocatePort: SaveAllocatePort,
     private val loadRunningPort: LoadRunningPort,
     private val removePortPort: RemovePortPort,
     private val removeDeploymentStatusPort: RemoveDeploymentStatusPort,
@@ -56,6 +58,18 @@ class ComputeService (
                 deploymentFeignClient.updateStatus(status)
             } catch (e: Exception) {
                 log.error(e) { "직접 연결: 디플로이먼트 상태 업데이트 실패" }
+            } finally {
+                loadInstancePort.loadInstance(it.id, it.serviceType).ifPresent { instance ->
+                    saveAllocatePort.appendPriority(
+                        id = it.id,
+                        senderId = instance.senderId,
+                        rebuild = true,
+                        isDatabase = instance.isDatabase,
+                        useMemory = instance.useMemory,
+                        useCPU = instance.useCPU,
+                        instance = instance.instance
+                    )
+                }
             }
         }
         saveComputePort.deleteCompute(userId)

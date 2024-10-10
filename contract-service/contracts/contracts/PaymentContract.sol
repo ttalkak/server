@@ -42,7 +42,7 @@ contract PaymentContract {
         uint256 recipientAmount = _amount - ownerFee;
 
         tokenContract.transferFrom(_from, _to, recipientAmount);
-        // tokenContract.transferFrom(_from, owner, ownerFee);
+        tokenContract.transferFrom(_from, owner, ownerFee);
     }
 
     function approve(address _owner, address _spender, uint256 _amount) external {

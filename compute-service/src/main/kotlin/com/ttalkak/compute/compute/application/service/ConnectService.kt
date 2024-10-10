@@ -16,6 +16,8 @@ class ConnectService (
     private val removeConnectPort: RemoveConnectPort,
     private val saveComputePort: SaveComputePort,
     private val checkConnectPort: CheckConnectPort,
+    private val loadInstancePort: LoadInstancePort,
+    private val saveAllocatePort: SaveAllocatePort,
     private val removePortPort: RemovePortPort,
     private val removeRunningPort: RemoveRunningPort,
     private val loadRunningPort: LoadRunningPort,
@@ -57,6 +59,18 @@ class ConnectService (
                     deploymentFeignClient.updateStatus(status)
                 } catch (e: Exception) {
                     log.error(e) { "간접 연결: 디플로이먼트 상태 업데이트 실패" }
+                } finally {
+                    loadInstancePort.loadInstance(compute.id, compute.serviceType).ifPresent { instance ->
+                        saveAllocatePort.appendPriority(
+                            id = compute.id,
+                            senderId = instance.senderId,
+                            rebuild = true,
+                            isDatabase = instance.isDatabase,
+                            useMemory = instance.useMemory,
+                            useCPU = instance.useCPU,
+                            instance = instance.instance
+                        )
+                    }
                 }
             }
             removeRunningPort.removeRunningByUserId(it.userId)

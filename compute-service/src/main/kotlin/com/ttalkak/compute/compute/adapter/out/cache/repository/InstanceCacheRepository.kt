@@ -8,6 +8,7 @@ import jakarta.annotation.Resource
 import org.springframework.data.redis.core.HashOperations
 import org.springframework.data.redis.core.ZSetOperations
 import org.springframework.stereotype.Repository
+import java.util.Optional
 
 @Repository
 class InstanceCacheRepository {
@@ -25,11 +26,11 @@ class InstanceCacheRepository {
         hashOperations.put(INSTANCE_CACHE_KEY, key(serviceId, serviceType), value)
     }
 
-    fun get(serviceId: Long, serviceType: ServiceType): ComputeAllocateCache? {
+    fun get(serviceId: Long, serviceType: ServiceType): Optional<ComputeAllocateCache> {
         val value = hashOperations.get(INSTANCE_CACHE_KEY, key(serviceId, serviceType))
         return value?.let {
-            Json.deserialize(it, ComputeAllocateCache::class.java)
-        }
+            Optional.of(Json.deserialize(it, ComputeAllocateCache::class.java))
+        } ?: Optional.empty()
     }
 
     fun remove(serviceId: Long, serviceType: ServiceType) {
