@@ -9,7 +9,8 @@ public class NextPackageManagerStrategy implements PackageManagerStrategy {
 
     @Override
     public String installDependencies() {
-        return "RUN npm install --frozen-lockfile\n";
+        return "RUN npm install --frozen-lockfile\n" +
+                "COPY . .\n";
     }
 
     @Override

@@ -25,14 +25,13 @@ public class FrontendDockerfile extends DockerfileTemplate {
         StringBuilder command = new StringBuilder();
         command.append(packageManagerStrategy.copyDependencies())
                 .append(packageManagerStrategy.installDependencies())
-                .append("COPY . .\n")
                 .append(packageManagerStrategy.runBuild());
         return command.toString();
     }
 
     @Override
     protected String setupFinalStage(ServiceType serviceType, String buildTool, String languageVersion) {
-        return buildToolStrategy.buildFromImage() +
+        return buildToolStrategy.buildFromImage(languageVersion) +
                 buildToolStrategy.copyBuildOutput() +
                 buildToolStrategy.cmdCommand();
     }

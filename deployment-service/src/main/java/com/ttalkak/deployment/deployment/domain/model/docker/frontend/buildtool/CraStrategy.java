@@ -3,7 +3,7 @@ package com.ttalkak.deployment.deployment.domain.model.docker.frontend.buildtool
 public class CraStrategy implements BuildToolStrategy {
 
     @Override
-    public String buildFromImage() {
+    public String buildFromImage(String languageVersion) {
         return "FROM nginx:stable-alpine\n";
     }
 
