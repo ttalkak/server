@@ -28,34 +28,6 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get('')
-  async getPayments(
-    @Request() request,
-    @Query()
-    query: {
-      range: number;
-    },
-  ): Promise<BaseResponse<Receipt>> {
-    if (!query.range) {
-      return {
-        success: true,
-        message: 'OK',
-        status: 200,
-        data: await this.paymentService.getPayments(+request.user.userId, 30),
-      };
-    }
-    return {
-      success: true,
-      message: 'OK',
-      status: 200,
-      data: await this.paymentService.getPayments(
-        +request.user.userId,
-        query.range,
-      ),
-    };
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Get('summary')
   async getSummary(
     @Request() request,
@@ -89,6 +61,7 @@ export class PaymentController {
       serviceId: number;
       serviceType: string;
       senderId: number;
+      address: string;
     },
   ): Promise<any> {
     const receipientId = +request.user.userId;
@@ -97,6 +70,7 @@ export class PaymentController {
       body.serviceType,
       body.senderId,
       receipientId,
+      body.address,
     );
   }
 
@@ -135,28 +109,38 @@ export class PaymentController {
     };
   }
 
-  @Post('sign')
-  async signTransaction(
+  @UseGuards(JwtAuthGuard)
+  @Post('confirm')
+  async getConfirm(
+    @Request() request,
     @Body()
     body: {
-      senderId: number;
-      serviceType: string;
-      serviceId: number;
-      receipientId: number;
-      address: string;
+      toAddress: string;
+      fromAddress: string;
+      hash: string;
     },
   ) {
     return {
       success: true,
       message: 'OK',
       status: 200,
-      data: await this.paymentService.signTransaction({
-        serviceId: body.serviceId,
-        serviceType: body.serviceType,
-        senderId: body.senderId,
-        receipientId: body.receipientId,
-        toAddress: body.address,
-      }),
+      data: await this.paymentService.saveConfirm(
+        +request.user.userId,
+        body.toAddress,
+        body.fromAddress,
+        body.hash,
+      ),
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('confirm')
+  async getConfirmList(@Request() request) {
+    return {
+      success: true,
+      message: 'OK',
+      status: 200,
+      data: await this.paymentService.getConfirm(+request.user.userId),
     };
   }
 }
