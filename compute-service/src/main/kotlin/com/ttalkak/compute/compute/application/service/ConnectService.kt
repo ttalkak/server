@@ -44,9 +44,7 @@ class ConnectService (
 
             saveComputePort.deleteCompute(it.userId)
             removePortPort.removePort(it.userId)
-            removeRunningPort.removeRunningByUserId(it.userId)
             removeDeploymentStatusPort.removeDeploymentStatusByUserId(it.userId)
-
             loadRunningPort.loadRunningByUserId(it.userId).forEach { compute ->
                 val status = DeploymentUpdateStatusRequest(
                     id = compute.id,
@@ -61,6 +59,7 @@ class ConnectService (
                     log.error(e) { "간접 연결: 디플로이먼트 상태 업데이트 실패" }
                 }
             }
+            removeRunningPort.removeRunningByUserId(it.userId)
         }
     }
 }

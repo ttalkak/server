@@ -43,10 +43,6 @@ class ComputeService (
 
     override fun disconnect(userId: Long) {
         log.debug { "연결 해제 요청: $userId" }
-        saveComputePort.deleteCompute(userId)
-        removePortPort.removePort(userId)
-        removeRunningPort.removeRunningByUserId(userId)
-        removeDeploymentStatusPort.removeDeploymentStatusByUserId(userId)
         loadRunningPort.loadRunningByUserId(userId).forEach {
             log.debug { "연결 해제 요청 보낼 Running: $it"}
             val status = DeploymentUpdateStatusRequest(
@@ -62,6 +58,10 @@ class ComputeService (
                 log.error(e) { "직접 연결: 디플로이먼트 상태 업데이트 실패" }
             }
         }
+        saveComputePort.deleteCompute(userId)
+        removePortPort.removePort(userId)
+        removeRunningPort.removeRunningByUserId(userId)
+        removeDeploymentStatusPort.removeDeploymentStatusByUserId(userId)
     }
 
     override fun update(command: StatusUpdateCommand, deploymentCommands: List<DeploymentCommand>) {
