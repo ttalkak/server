@@ -58,6 +58,7 @@ export class PaymentController {
     @Request() request,
     @Body()
     body: {
+      domain: string;
       serviceId: number;
       serviceType: string;
       senderId: number;
@@ -66,6 +67,7 @@ export class PaymentController {
   ): Promise<any> {
     const receipientId = +request.user.userId;
     await this.paymentService.processPayment(
+      body.domain,
       body.serviceId,
       body.serviceType,
       body.senderId,

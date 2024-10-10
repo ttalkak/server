@@ -130,6 +130,7 @@ export class PaymentService {
   }
 
   async processPayment(
+    domain: string,
     serviceId: number,
     serviceType: string,
     senderId: number,
@@ -183,12 +184,10 @@ export class PaymentService {
         signedTx.rawTransaction,
       );
 
-      console.log(receipt);
-
       await this.prisma.transactionHistory.create({
         data: {
           fromAddress: receipt.from,
-          toAddress: receipt.to,
+          toAddress: toAddress,
           senderId: senderId,
           receipientId: receipientId,
           blockHash: receipt.blockHash.toString(),
