@@ -45,14 +45,6 @@ class AllocateService (
             useCPU = command.useCPU,
             instance = command.container
         )
-
-        deploymentFeignClient.updateStatus(DeploymentUpdateStatusRequest(
-            id = command.id,
-            serviceType = ServiceType.DATABASE,
-            status = RunningStatus.WAITING,
-            message = "컴퓨터 할당 대기중"
-        ))
-
     }
 
     override fun addRebuildQueue(command: AddComputeCommand) {
@@ -69,13 +61,6 @@ class AllocateService (
             useCPU = command.useCPU,
             instance = command.container
         )
-
-        deploymentFeignClient.updateStatus(DeploymentUpdateStatusRequest(
-            id = command.id,
-            serviceType = ServiceType.DATABASE,
-            status = RunningStatus.WAITING,
-            message = "컴퓨터 재할당 대기중"
-        ))
     }
 
     @Scheduled(fixedDelay = 1000 * 60)
@@ -111,6 +96,13 @@ class AllocateService (
                         (compute.instance as DockerContainer).outboundPort = randomPort
                         loadAllocatePort.pop()
                         simpleMessagingTemplate.convertAndSend("/sub/compute-create/${it.userId}", Json.serialize(create))
+
+                        deploymentFeignClient.updateStatus(DeploymentUpdateStatusRequest(
+                            id = (compute.instance as DockerContainer).deploymentId,
+                            serviceType = serviceType,
+                            status = RunningStatus.WAITING,
+                            message = "컴퓨터 할당 대기중"
+                        ))
 
                         saveInstancePort.saveInstance((compute.instance as DockerContainer).deploymentId, serviceType, compute)
                     }
@@ -172,6 +164,13 @@ class AllocateService (
             }
 
             saveInstancePort.saveInstance(serviceId, serviceType, compute)
+
+            deploymentFeignClient.updateStatus(DeploymentUpdateStatusRequest(
+                id = serviceId,
+                serviceType = serviceType,
+                status = RunningStatus.WAITING,
+                message = "컴퓨터 할당 대기중"
+            ))
         }
 
         redisLockPort.unlock(ALLOCATE_LOCK_KEY)

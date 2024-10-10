@@ -26,6 +26,20 @@ class ComputeAllocateCacheRepository {
     }
 
     fun add(cache: ComputeAllocateCache, priority: Double) {
+        val isEmpty = (zSetOperations.range(COMPUTE_ALLOCATE_CACHE_KEY, 0, -1)?.filter {
+            Json.deserialize(it, ComputeAllocateCache::class.java).let { compute ->
+                cache.id == compute.id && cache.isDatabase == compute.isDatabase
+            }
+        } ?: emptyList()).isEmpty()
+
+        if (!isEmpty) {
+            log.debug {
+                "이미 존재하는 캐시: ${cache.id}"
+            }
+
+            return
+        }
+
         val instance = Json.serialize(cache.instance)
         zSetOperations.add(COMPUTE_ALLOCATE_CACHE_KEY, Json.serialize(cache.copy(instance = instance)), priority)
     }
