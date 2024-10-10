@@ -102,18 +102,17 @@ class AllocateService (
                 log.info { "재할당 대기중인 컴퓨터: ${compute.id}" }
 
                 val serviceType = if (compute.isDatabase) ServiceType.DATABASE else (compute.instance as DockerContainer).serviceType
-                val running = loadRunningPort.loadRunning(compute.id, serviceType)
+                loadRunningPort.loadRunning(compute.id, serviceType).ifPresent {
+                    if (it.status == RunningStatus.RUNNING) {
+                        val availablePorts = availablePorts(it.userId)
+                        val randomPort = availablePorts.random()
+                        savePortPort.savePort(it.userId, randomPort)
 
-                if (running.status == RunningStatus.RUNNING) {
-                    val availablePorts = availablePorts(running.userId)
-                    val randomPort = availablePorts.random()
-                    savePortPort.savePort(running.userId, randomPort)
-
-                    (compute.instance as DockerContainer).outboundPort = randomPort
-                    loadAllocatePort.pop()
-                    simpleMessagingTemplate.convertAndSend("/sub/compute-create/${running.userId}", Json.serialize(create))
+                        (compute.instance as DockerContainer).outboundPort = randomPort
+                        loadAllocatePort.pop()
+                        simpleMessagingTemplate.convertAndSend("/sub/compute-create/${it.userId}", Json.serialize(create))
+                    }
                 }
-                continue
             }
 
             // * 할당 로직

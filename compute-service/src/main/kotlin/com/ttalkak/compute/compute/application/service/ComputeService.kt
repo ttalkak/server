@@ -10,6 +10,7 @@ import com.ttalkak.compute.compute.domain.ComputeRunning
 import com.ttalkak.compute.compute.domain.RunningStatus
 import com.ttalkak.compute.compute.domain.ServiceType
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.util.Optional
 
 @UseCase
 class ComputeService (
@@ -41,11 +42,13 @@ class ComputeService (
     }
 
     override fun disconnect(userId: Long) {
+        log.debug { "연결 해제 요청: $userId" }
         saveComputePort.deleteCompute(userId)
         removePortPort.removePort(userId)
         removeRunningPort.removeRunningByUserId(userId)
         removeDeploymentStatusPort.removeDeploymentStatusByUserId(userId)
         loadRunningPort.loadRunningByUserId(userId).forEach {
+            log.debug { "연결 해제 요청 보낼 Running: $it"}
             val status = DeploymentUpdateStatusRequest(
                 id = it.id,
                 serviceType = it.serviceType,
@@ -86,7 +89,6 @@ class ComputeService (
     }
 
     override fun upsertRunning(userId: Long, command: RunningCommand) {
-        // TODO: compute Type 추가
         saveRunningPort.saveRunning(
             userId = userId,
             id = command.id,
@@ -114,7 +116,7 @@ class ComputeService (
         }
     }
 
-    override fun loadRunning(id: Long, serviceType: ServiceType): ComputeRunning {
+    override fun loadRunning(id: Long, serviceType: ServiceType): Optional<ComputeRunning> {
         return loadRunningPort.loadRunning(id, serviceType)
     }
 }
