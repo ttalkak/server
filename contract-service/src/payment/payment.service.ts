@@ -293,4 +293,15 @@ export class PaymentService {
         ).length > 0,
     };
   }
+
+  async validateUser(userId: number) {
+    const confirm = await this.getConfirm(userId);
+    const privateKey = await this.getPrivateKey({ userId: userId });
+
+    return {
+      hasKey: privateKey.hasKey,
+      hasContract: confirm.contract,
+      hasAdmin: confirm.admin,
+    };
+  }
 }

@@ -15,6 +15,7 @@ import { PaymentService } from '@src/payment/payment.service';
 import { Receipt } from './payment.type';
 import { CustomException } from '@src/common/exception/exception';
 import { INVALID_INPUT } from '@src/common/exception/error.code';
+import { request } from 'http';
 
 interface BaseResponse<T> {
   success: boolean;
@@ -174,6 +175,17 @@ export class PaymentController {
       message: 'OK',
       status: 200,
       data: await this.paymentService.getConfirm(+request.user.userId),
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('validate')
+  async validateUser(@Request() request) {
+    return {
+      success: true,
+      message: 'OK',
+      status: 200,
+      data: await this.paymentService.validateUser(+request.user.userId),
     };
   }
 }
