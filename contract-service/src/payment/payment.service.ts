@@ -106,6 +106,28 @@ export class PaymentService {
     };
   }
 
+  async getPaymentHistory(userId: number, range: number): Promise<any> {
+    const histories = await this.prisma.transactionHistory.groupBy({
+      by: ['domain', 'serviceId', 'serviceType', 'toAddress'],
+      _sum: {
+        amount: true,
+      },
+      where: {
+        senderId: userId,
+      },
+    });
+
+    return histories.map((history) => {
+      return {
+        serviceId: history.serviceId,
+        serviceType: history.serviceType,
+        domain: history.domain,
+        amount: history._sum.amount,
+        toAddress: history.toAddress,
+      };
+    });
+  }
+
   async getPaymentSummary(
     userId: number,
     year: number,
@@ -117,7 +139,7 @@ export class PaymentService {
     );
 
     const histories = await this.prisma.transactionHistory.groupBy({
-      by: ['serviceId'],
+      by: ['serviceId', 'serviceType'],
       _sum: {
         amount: true,
       },
@@ -151,6 +173,13 @@ export class PaymentService {
       },
     });
 
+    if (!sender) {
+      throw new CustomException(
+        ALREADY_TRANSACTION_EXIST,
+        '트랜잭션 키가 존재하지 않습니다.',
+      );
+    }
+
     const decipher = createDecipheriv('aes-256-cbc', this.key, this.iv);
     let decrypted = decipher.update(sender.privateKey, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
@@ -159,7 +188,7 @@ export class PaymentService {
       where: {
         serviceId: serviceId,
         createdAt: {
-          gte: new Date(Date.now() - 5 * 60 * 1000),
+          gte: new Date(Date.now() - 4 * 60 * 1000),
         },
       },
     });
@@ -167,6 +196,7 @@ export class PaymentService {
     if (hasPaied) {
       throw new CustomException(ALREADY_PAID, '이미 결제가 완료되었습니다.');
     }
+
     try {
       const signedTx = await this.web3.eth.accounts.signTransaction(
         {
@@ -194,6 +224,7 @@ export class PaymentService {
 
       await this.prisma.transactionHistory.create({
         data: {
+          domain: domain,
           fromAddress: receipt.from,
           toAddress: toAddress,
           senderId: senderId,

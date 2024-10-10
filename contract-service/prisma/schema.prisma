@@ -25,6 +25,7 @@ model UserTransactionKey {
 
 model TransactionHistory {
   id            Int         @id @default(autoincrement())
+  domain        String
   fromAddress   String
   toAddress     String
   senderId      Int

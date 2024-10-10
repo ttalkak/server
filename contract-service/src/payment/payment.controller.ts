@@ -28,6 +28,37 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @UseGuards(JwtAuthGuard)
+  @Get('')
+  async getPaymentHistory(
+    @Request() request,
+    @Query()
+    query: {
+      range: number;
+    },
+  ): Promise<BaseResponse<Receipt[]>> {
+    if (!query.range) {
+      return {
+        success: true,
+        message: 'OK',
+        status: 200,
+        data: await this.paymentService.getPaymentHistory(
+          +request.user.userId,
+          7,
+        ),
+      };
+    }
+    return {
+      success: true,
+      message: 'OK',
+      status: 200,
+      data: await this.paymentService.getPaymentHistory(
+        +request.user.userId,
+        query.range,
+      ),
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('summary')
   async getSummary(
     @Request() request,
