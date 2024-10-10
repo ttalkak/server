@@ -63,8 +63,16 @@ export class PaymentService {
     let encrypted = cipher.update(privateKey, 'utf8', 'hex');
     encrypted += cipher.final('hex');
 
-    await this.prisma.userTransactionKey.create({
-      data: {
+    await this.prisma.userTransactionKey.upsert({
+      where: {
+        userId: userId,
+      },
+      create: {
+        userId: userId,
+        privateKey: encrypted,
+        address: address,
+      },
+      update: {
         userId: userId,
         privateKey: encrypted,
         address: address,
