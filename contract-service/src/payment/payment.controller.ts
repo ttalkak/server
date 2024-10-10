@@ -188,4 +188,15 @@ export class PaymentController {
       data: await this.paymentService.validateUser(+request.user.userId),
     };
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('coin')
+  async getToken(@Request() request) {
+    return {
+      success: true,
+      message: 'OK',
+      status: 200,
+      data: await this.paymentService.getToken(+request.user.userId),
+    };
+  }
 }

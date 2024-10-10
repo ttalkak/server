@@ -304,4 +304,19 @@ export class PaymentService {
       hasAdmin: confirm.admin,
     };
   }
+
+  async getToken(userId: number) {
+    const token = await this.prisma.transactionHistory.aggregate({
+      where: {
+        receipientId: userId,
+      },
+      _sum: {
+        amount: true,
+      },
+    });
+
+    return {
+      coin: token._sum.amount,
+    };
+  }
 }
