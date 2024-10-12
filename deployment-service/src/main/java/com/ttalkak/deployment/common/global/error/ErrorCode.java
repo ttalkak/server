@@ -11,6 +11,8 @@ public enum ErrorCode {
     // 배포
     NOT_EXISTS_DEPLOYMENT(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), "해당 배포 내역이 존재하지 않습니다"),
 
+    NOT_DETECTED_GIT_REPOSITORY(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), "깃허브 서버 상태가 불안정합니다."),
+
     // 호스팅
     NOT_EXISTS_HOSTING(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), "호스팅 내역이 존재하지 않습니다"),
 

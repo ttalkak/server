@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
 import com.ttalkak.deployment.common.UseCase;
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.usecase.CreateDockerfileUseCase;
 import com.ttalkak.deployment.deployment.domain.model.docker.*;
 import com.ttalkak.deployment.deployment.domain.model.docker.backend.BackendDockerfile;
@@ -49,7 +51,7 @@ public class CreateDockerFileInputPort implements CreateDockerfileUseCase {
         } else if (buildTool.equalsIgnoreCase("gradle")) {
             return new BackendDockerfile(new GradleBuildToolStrategy());
         }
-        throw new IllegalArgumentException("Unsupported backend build tool: " + buildTool);
+        throw new BusinessException(ErrorCode.NOT_EXISTS_DEPLOYMENT);
     }
 
     private DockerfileTemplate createFrontendDockerfile(String framework, String buildTool, String packageManager) {
@@ -67,7 +69,7 @@ public class CreateDockerFileInputPort implements CreateDockerfileUseCase {
             } else if (packageManager.equalsIgnoreCase("npm")) {
                 packageManagerStrategy = new NpmStrategy();
             } else {
-                throw new IllegalArgumentException("Unsupported frontend package manager: " + packageManager);
+                throw new BusinessException(ErrorCode.NOT_EXISTS_DEPLOYMENT);
             }
 
             if (buildTool.equalsIgnoreCase("cra")) {
@@ -75,7 +77,8 @@ public class CreateDockerFileInputPort implements CreateDockerfileUseCase {
             } else if (buildTool.equalsIgnoreCase("vite")) {
                 buildToolStrategy = new ViteStrategy();
             } else {
-                throw new IllegalArgumentException("Unsupported frontend build tool: " + buildTool);
+
+                throw new BusinessException(ErrorCode.NOT_EXISTS_DEPLOYMENT);
             }
         }
 
