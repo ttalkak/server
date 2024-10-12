@@ -136,7 +136,7 @@ public class UpdateDeploymentStatusInputPort implements UpdateDeploymentStatusUs
         try {
             eventOutputPort.occurRebuildInstance(createInstanceEvent);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
+            throw new BusinessException(ErrorCode.KAFKA_REBUILD_INSTANCE_PRODUCER_ERROR);
         }
     }
 }
