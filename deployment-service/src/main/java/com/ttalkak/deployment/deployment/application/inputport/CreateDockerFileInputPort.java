@@ -51,7 +51,7 @@ public class CreateDockerFileInputPort implements CreateDockerfileUseCase {
         } else if (buildTool.equalsIgnoreCase("gradle")) {
             return new BackendDockerfile(new GradleBuildToolStrategy());
         }
-        throw new BusinessException(ErrorCode.NOT_EXISTS_DEPLOYMENT);
+        throw new BusinessException(ErrorCode.NOT_DETECTED_GIT_REPOSITORY);
     }
 
     private DockerfileTemplate createFrontendDockerfile(String framework, String buildTool, String packageManager) {
@@ -69,7 +69,7 @@ public class CreateDockerFileInputPort implements CreateDockerfileUseCase {
             } else if (packageManager.equalsIgnoreCase("npm")) {
                 packageManagerStrategy = new NpmStrategy();
             } else {
-                throw new BusinessException(ErrorCode.NOT_EXISTS_DEPLOYMENT);
+                throw new BusinessException(ErrorCode.NOT_DETECTED_GIT_REPOSITORY);
             }
 
             if (buildTool.equalsIgnoreCase("cra")) {
@@ -78,7 +78,7 @@ public class CreateDockerFileInputPort implements CreateDockerfileUseCase {
                 buildToolStrategy = new ViteStrategy();
             } else {
 
-                throw new BusinessException(ErrorCode.NOT_EXISTS_DEPLOYMENT);
+                throw new BusinessException(ErrorCode.NOT_DETECTED_GIT_REPOSITORY);
             }
         }
 
