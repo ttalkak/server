@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 @Getter
 public enum ErrorCode {
-    UN_AUTHORIZATION(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.value(), "해당 요청에 대한 권한이 없는 사용자입니다."),
+    UN_AUTHORIZATION(HttpStatus.FORBIDDEN, HttpStatus.FORBIDDEN.value(), "해당 요청에 대한 권한이 없는 사용자입니다."),
     // 배포
     NOT_EXISTS_DEPLOYMENT(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), "해당 배포 내역이 존재하지 않습니다"),
 
