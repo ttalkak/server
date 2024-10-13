@@ -27,11 +27,15 @@ public enum ErrorCode {
 
     KAFKA_CHANGE_DEPLOYMENT_STATUS_PRODUCER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), "배포 상태 변경 카프카 메시지 발행 도중 오류가 발생했습니다."),
 
+    KAFKA_CHANGE_PAVICON_STATUS_PRODUCER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), "파비콘 변경 카프카 메시지 발행 도중 오류가 발생했습니다."),
+
     KAFKA_CREATE_INSTANCE_PRODUCER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), "배포 생성 카프카 메시지 발행 도중 오류가 발생했습니다."),
 
     KAFKA_REBUILD_INSTANCE_PRODUCER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), "배포 재생성 카프카 메시지 발행 도중 오류가 발생했습니다."),
 
     KAFKA_FAVICON_PRODUCER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), "파비콘 관련 카프카 메시지 발행 도중 오류가 발생했습니다."),
+
+    KAFKA_DOMAIN_PRODUCER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), "도메인 관련 카프카 메시지 발행 도중 오류가 발생했습니다."),
 
     // 배포
     NOT_EXIST_VERSION(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), "해당 배포버전이 존재하지 않습니다"),
