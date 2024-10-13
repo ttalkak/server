@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.outputport.DatabaseOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.DomainOutputPort;
 import com.ttalkak.deployment.deployment.application.outputport.EventOutputPort;
@@ -67,7 +69,7 @@ public class CreateDatabaseInputPort implements CreateDatabaseUseCase {
         try {
             eventOutputPort.occurCreateDatabase(createDatabaseEvent);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
+            throw new BusinessException(ErrorCode.KAFKA_CREATE_DATABASE_PRODUCER_ERROR);
         }
 
         return DatabasePreviewResponse.mapToDTO(savedDatabase);
