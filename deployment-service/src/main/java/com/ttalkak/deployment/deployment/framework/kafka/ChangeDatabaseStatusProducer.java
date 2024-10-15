@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.framework.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.domain.event.UpdateDatabaseStatusEvent;
 import com.ttalkak.deployment.deployment.domain.event.UpdateDeploymentStatusEvent;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +33,7 @@ public class ChangeDatabaseStatusProducer {
             UpdateDatabaseStatusEvent value = result.getProducerRecord().value();
             LOGGER.info("Sent message=[" + value.getId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
         }).exceptionally(ex ->{
-            throw new IllegalArgumentException(ex);
+            throw new BusinessException(ErrorCode.KAFKA_CHANGE_DATABASE_STATUS_PRODUCER_ERROR);
         });
     }
 }

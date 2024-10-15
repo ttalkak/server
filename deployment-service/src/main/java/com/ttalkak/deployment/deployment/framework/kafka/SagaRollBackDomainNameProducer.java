@@ -1,5 +1,7 @@
 package com.ttalkak.deployment.deployment.framework.kafka;
 
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.domain.event.DomainNameEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +28,7 @@ public class SagaRollBackDomainNameProducer {
         future.thenAccept(sendResult -> {
             log.info("롤백 - 프로젝트 ID {} 도메인명 {} 변경", domainNameEvent.getProjectId(), domainNameEvent.getNewDomainName());
         }).exceptionally(ex ->{
-            throw new IllegalArgumentException(ex);
+            throw new BusinessException(ErrorCode.KAFKA_DOMAIN_PRODUCER_ERROR);
         });
 
 

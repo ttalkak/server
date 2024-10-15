@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.framework.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.domain.event.UpdateDeploymentStatusEvent;
 import com.ttalkak.deployment.deployment.domain.event.UpdateFaviconEvent;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +32,7 @@ public class ChangeProjectFaviconProducer {
             UpdateFaviconEvent value = result.getProducerRecord().value();
             LOGGER.info("Sent message=[" + value.getProjectId() + "]");
         }).exceptionally(ex ->{
-            throw new IllegalArgumentException(ex);
+            throw new BusinessException(ErrorCode.KAFKA_CHANGE_PAVICON_STATUS_PRODUCER_ERROR);
         });
     }
 }

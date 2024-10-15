@@ -60,7 +60,7 @@ public class DeleteDeploymentInputPort implements DeleteDeploymentUseCase {
         try{
             changeDeploymentStatusProducer.occurUpdateDeploymentStatus(deleted);
         }catch (JsonProcessingException e){
-            throw new BusinessException(ErrorCode.KAFKA_PRODUCER_ERROR);
+            throw new BusinessException(ErrorCode.KAFKA_CHANGE_DEPLOYMENT_STATUS_PRODUCER_ERROR);
         }
 
         HostingEntity findHosting = hostingOutputPort.findByProjectIdAndServiceType(deploymentEntity.getProjectId(), deploymentEntity.getServiceType());

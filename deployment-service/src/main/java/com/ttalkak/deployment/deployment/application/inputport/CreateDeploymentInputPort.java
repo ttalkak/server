@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.outputport.*;
 import com.ttalkak.deployment.deployment.application.usecase.CreateDeploymentUseCase;
 import com.ttalkak.deployment.deployment.application.usecase.CreateDockerfileUseCase;
@@ -69,7 +71,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUseCase {
             try {
                 producer.updateFaviconEvent(faviconEvent);
             } catch (JsonProcessingException e) {
-                throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
+                throw new BusinessException(ErrorCode.KAFKA_FAVICON_PRODUCER_ERROR);
             }
         }
 
@@ -116,7 +118,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUseCase {
         try {
             eventOutputPort.occurCreateInstance(createInstanceEvent);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
+            throw new BusinessException(ErrorCode.KAFKA_CREATE_INSTANCE_PRODUCER_ERROR);
         }
 
         return DeploymentCreateResponse.of(payloadURL);

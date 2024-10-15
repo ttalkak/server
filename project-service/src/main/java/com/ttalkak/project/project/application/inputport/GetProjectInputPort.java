@@ -98,6 +98,10 @@ public class GetProjectInputPort implements GetProjectUseCase {
                 .totalPages(page.getTotalPages())
                 .build();
 
+
+        log.info("------------------------프로젝트 페이징 조회 시 반환 데이터 ::: ------------------------" + projectPageResponse);
+
+
         return projectPageResponse;
     }
 

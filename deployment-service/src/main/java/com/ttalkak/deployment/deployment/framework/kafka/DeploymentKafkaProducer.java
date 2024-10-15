@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.framework.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.outputport.EventOutputPort;
 import com.ttalkak.deployment.deployment.domain.event.CreateDatabaseEvent;
 import com.ttalkak.deployment.deployment.domain.event.CreateInstanceEvent;
@@ -42,7 +44,7 @@ public class DeploymentKafkaProducer implements EventOutputPort {
             CreateInstanceEvent value = result.getProducerRecord().value();
             LOGGER.info("Sent message=[" + value.getDeploymentId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
         }).exceptionally(ex ->{
-            throw new IllegalArgumentException(ex);
+            throw new BusinessException(ErrorCode.KAFKA_CREATE_INSTANCE_PRODUCER_ERROR);
         });
     }
 
@@ -54,7 +56,7 @@ public class DeploymentKafkaProducer implements EventOutputPort {
             CreateInstanceEvent value = result.getProducerRecord().value();
             LOGGER.info("Sent message=[" + value.getDeploymentId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
         }).exceptionally(ex ->{
-            throw new IllegalArgumentException(ex);
+            throw new BusinessException(ErrorCode.KAFKA_REBUILD_INSTANCE_PRODUCER_ERROR);
         });
     }
 
@@ -66,7 +68,7 @@ public class DeploymentKafkaProducer implements EventOutputPort {
             CreateDatabaseEvent value = result.getProducerRecord().value();
             LOGGER.info("Sent message=[" + value.getPort() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
         }).exceptionally(ex ->{
-            throw new IllegalArgumentException(ex);
+            throw new BusinessException(ErrorCode.KAFKA_CREATE_DATABASE_PRODUCER_ERROR);
         });
     }
 

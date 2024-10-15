@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
 import com.ttalkak.deployment.common.UseCase;
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.usecase.CreateDockerfileUseCase;
 import com.ttalkak.deployment.deployment.domain.model.docker.*;
 import com.ttalkak.deployment.deployment.domain.model.docker.backend.BackendDockerfile;
@@ -44,12 +46,12 @@ public class CreateDockerFileInputPort implements CreateDockerfileUseCase {
     }
 
     private DockerfileTemplate createBackendDockerfile(String buildTool) {
-        if (buildTool.equalsIgnoreCase("maven")) {
+        if (buildTool != null && buildTool.equalsIgnoreCase("maven")) {
             return new BackendDockerfile(new MavenBuildToolStrategy());
-        } else if (buildTool.equalsIgnoreCase("gradle")) {
+        } else if (buildTool != null && buildTool.equalsIgnoreCase("gradle")) {
             return new BackendDockerfile(new GradleBuildToolStrategy());
         }
-        throw new IllegalArgumentException("Unsupported backend build tool: " + buildTool);
+        throw new BusinessException(ErrorCode.NOT_DETECTED_GIT_REPOSITORY);
     }
 
     private DockerfileTemplate createFrontendDockerfile(String framework, String buildTool, String packageManager) {
@@ -62,20 +64,20 @@ public class CreateDockerFileInputPort implements CreateDockerfileUseCase {
         }
 
         else {
-            if (packageManager.equalsIgnoreCase("yarn")) {
+            if (packageManager != null && packageManager.equalsIgnoreCase("yarn")) {
                 packageManagerStrategy = new YarnStrategy();
-            } else if (packageManager.equalsIgnoreCase("npm")) {
+            } else if (packageManager != null && packageManager.equalsIgnoreCase("npm")) {
                 packageManagerStrategy = new NpmStrategy();
             } else {
-                throw new IllegalArgumentException("Unsupported frontend package manager: " + packageManager);
+                throw new BusinessException(ErrorCode.NOT_DETECTED_GIT_REPOSITORY);
             }
 
-            if (buildTool.equalsIgnoreCase("cra")) {
+            if (buildTool != null && buildTool.equalsIgnoreCase("cra")) {
                 buildToolStrategy = new CraStrategy();
-            } else if (buildTool.equalsIgnoreCase("vite")) {
+            } else if (buildTool != null && buildTool.equalsIgnoreCase("vite")) {
                 buildToolStrategy = new ViteStrategy();
             } else {
-                throw new IllegalArgumentException("Unsupported frontend build tool: " + buildTool);
+                throw new BusinessException(ErrorCode.NOT_DETECTED_GIT_REPOSITORY);
             }
         }
 
