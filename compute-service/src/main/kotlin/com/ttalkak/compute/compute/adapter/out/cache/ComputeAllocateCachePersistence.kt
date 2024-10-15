@@ -3,15 +3,14 @@ package com.ttalkak.compute.compute.adapter.out.cache
 import com.ttalkak.compute.common.PersistenceAdapter
 import com.ttalkak.compute.compute.adapter.out.cache.entity.ComputeAllocateCache
 import com.ttalkak.compute.compute.adapter.out.cache.repository.ComputeAllocateCacheRepository
-import com.ttalkak.compute.compute.application.port.out.CreateAllocatePort
+import com.ttalkak.compute.compute.application.port.out.SaveAllocatePort
 import com.ttalkak.compute.compute.application.port.out.LoadAllocatePort
-import com.ttalkak.compute.compute.domain.DockerContainer
 import java.util.*
 
 @PersistenceAdapter
 class ComputeAllocateCachePersistence (
     private val computeAllocateCacheRepository: ComputeAllocateCacheRepository
-): CreateAllocatePort, LoadAllocatePort {
+): SaveAllocatePort, LoadAllocatePort {
     companion object {
         const val PRIORITY_WEIGHT = 1_000_000_000 // 11.57 days
     }

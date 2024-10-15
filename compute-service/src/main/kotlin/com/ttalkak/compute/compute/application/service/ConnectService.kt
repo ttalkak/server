@@ -1,28 +1,34 @@
 package com.ttalkak.compute.compute.application.service
 
 import com.ttalkak.compute.common.UseCase
-import com.ttalkak.compute.compute.application.port.`in`.ComputeUseCase
+import com.ttalkak.compute.compute.adapter.out.feign.DeploymentFeignClient
+import com.ttalkak.compute.compute.adapter.out.feign.request.DeploymentUpdateStatusRequest
 import com.ttalkak.compute.compute.application.port.`in`.ConnectUseCase
 import com.ttalkak.compute.compute.application.port.`in`.DisconnectScheduleUseCase
 import com.ttalkak.compute.compute.application.port.out.*
+import com.ttalkak.compute.compute.domain.RunningStatus
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.scheduling.annotation.Scheduled
 
 @UseCase
 class ConnectService (
-    private val createConnectPort: CreateConnectPort,
+    private val saveConnectPort: SaveConnectPort,
     private val removeConnectPort: RemoveConnectPort,
     private val saveComputePort: SaveComputePort,
     private val checkConnectPort: CheckConnectPort,
+    private val loadInstancePort: LoadInstancePort,
+    private val saveAllocatePort: SaveAllocatePort,
     private val removePortPort: RemovePortPort,
     private val removeRunningPort: RemoveRunningPort,
+    private val loadRunningPort: LoadRunningPort,
+    private val deploymentFeignClient: DeploymentFeignClient,
     private val removeDeploymentStatusPort: RemoveDeploymentStatusPort,
     private val loadComputePort: LoadComputePort
 ): ConnectUseCase, DisconnectScheduleUseCase {
     private val log = KotlinLogging.logger {}
 
     override fun connect(userId: Long, sessionId: String) {
-        createConnectPort.connect(userId, sessionId)
+        saveConnectPort.connect(userId, sessionId)
     }
 
     override fun disconnect(sessionId: String): Long {
@@ -40,8 +46,34 @@ class ConnectService (
 
             saveComputePort.deleteCompute(it.userId)
             removePortPort.removePort(it.userId)
-            removeRunningPort.removeRunningByUserId(it.userId)
             removeDeploymentStatusPort.removeDeploymentStatusByUserId(it.userId)
+            loadRunningPort.loadRunningByUserId(it.userId).forEach { compute ->
+                val status = DeploymentUpdateStatusRequest(
+                    id = compute.id,
+                    serviceType = compute.serviceType,
+                    status = RunningStatus.ERROR,
+                    message = "노드 서버 연결이 끊어짐"
+                )
+
+                try {
+                    deploymentFeignClient.updateStatus(status)
+                } catch (e: Exception) {
+                    log.error(e) { "간접 연결: 디플로이먼트 상태 업데이트 실패" }
+                } finally {
+                    loadInstancePort.loadInstance(compute.id, compute.serviceType).ifPresent { instance ->
+                        saveAllocatePort.appendPriority(
+                            id = compute.id,
+                            senderId = instance.senderId,
+                            rebuild = true,
+                            isDatabase = instance.isDatabase,
+                            useMemory = instance.useMemory,
+                            useCPU = instance.useCPU,
+                            instance = instance.instance
+                        )
+                    }
+                }
+            }
+            removeRunningPort.removeRunningByUserId(it.userId)
         }
     }
 }

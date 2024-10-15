@@ -53,7 +53,7 @@ public class UpdateDatabaseStatusInputPort implements UpdateDatabaseStatusUseCas
                     try {
                         changeDatabaseStatusProducer.occurUpdateDatabaseStatus(updateDatabaseStatusEvent);
                     } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
+                        return new BusinessException(ErrorCode.KAFKA_CHANGE_DATABASE_STATUS_PRODUCER_ERROR);
                     }
                     return new BusinessException(ErrorCode.NOT_EXISTS_DATABASE); // return으로 예외 생성
                 });
@@ -117,7 +117,7 @@ public class UpdateDatabaseStatusInputPort implements UpdateDatabaseStatusUseCas
         try {
             eventOutputPort.occurCreateDatabase(createDatabaseEvent);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
+            throw new BusinessException(ErrorCode.KAFKA_CREATE_DATABASE_PRODUCER_ERROR);
         }
     }
 }

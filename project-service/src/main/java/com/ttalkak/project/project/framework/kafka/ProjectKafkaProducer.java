@@ -1,6 +1,8 @@
 package com.ttalkak.project.project.framework.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.project.common.error.ErrorCode;
+import com.ttalkak.project.common.exception.BusinessException;
 import com.ttalkak.project.project.application.outputport.EventOutputPort;
 import com.ttalkak.project.project.domain.event.DomainNameEvent;
 import com.ttalkak.project.project.domain.event.ProjectEvent;
@@ -45,7 +47,7 @@ public class ProjectKafkaProducer implements EventOutputPort {
             String value = String.valueOf(result.getProducerRecord().value().getProjectId());
             log.info("프로젝트 ID가 {}인 배포 정보를 삭제했습니다. offset=[{}]", value, result.getRecordMetadata().offset());
         }).exceptionally(ex ->{
-            throw new IllegalArgumentException(ex);
+            throw new BusinessException(ErrorCode.KAFKA_CHANGE_DEPLOYMENT_STATUS_PRODUCER_ERROR);
         });
     }
 
@@ -60,7 +62,7 @@ public class ProjectKafkaProducer implements EventOutputPort {
             String value = String.valueOf(result.getProducerRecord().value().getProjectId());
             log.info("프로젝트 ID가 {}인 호스팅 도메인명을 변경했습니다. offset=[{}]", value, result.getRecordMetadata().offset());
         }).exceptionally(ex -> {
-            throw new IllegalArgumentException(ex);
+            throw new BusinessException(ErrorCode.KAFKA_CHANGE_DOMAIN_STATUS_PRODUCER_ERROR);
         });
     }
 }

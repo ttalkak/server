@@ -26,8 +26,8 @@ class ComputeUpdateSocketListener (
 
         require(response != null) { "컴퓨터 상태 변경 통신에 문제가 발생하였습니다." }
 
-        val running = loadRunningUseCase.loadRunning(response.id, response.serviceType)
-
-        simpleMessagingTemplate.convertAndSend("/sub/compute-update/${running.userId}", Json.serialize(response))
+        loadRunningUseCase.loadRunning(response.id, response.serviceType).ifPresent {
+            simpleMessagingTemplate.convertAndSend("/sub/compute-update/${it.userId}", Json.serialize(response))
+        }
     }
 }

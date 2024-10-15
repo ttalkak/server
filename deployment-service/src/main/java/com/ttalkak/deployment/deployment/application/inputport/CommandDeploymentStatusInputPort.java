@@ -42,7 +42,7 @@ public class CommandDeploymentStatusInputPort implements CommandDeploymentStatus
         try{
             changeDeploymentStatusProducer.occurUpdateDeploymentStatus(updateDeploymentStatusEvent);
         }catch (JsonProcessingException e){
-            throw new BusinessException(ErrorCode.KAFKA_PRODUCER_ERROR);
+            throw new BusinessException(ErrorCode.KAFKA_CHANGE_DEPLOYMENT_STATUS_PRODUCER_ERROR);
         }
         deploymentOutputPort.save(deploymentEntity);
     }

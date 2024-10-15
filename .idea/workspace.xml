@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a1774c54-c6a5-4af4-9971-881967232b08" name="Changes" comment="프로젝트 기능 구현">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-service/src/main/java/com/ttalkak/project/project/domain/model/ProjectEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/project-service/src/main/java/com/ttalkak/project/project/domain/model/ProjectEntity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +18,9 @@
       <ProjectState />
     </projectState>
     <projectState path="$PROJECT_DIR$/deployment-service">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/gateway-service">
       <ProjectState />
     </projectState>
     <projectState path="$PROJECT_DIR$/project-service">
@@ -113,7 +117,7 @@
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;database.data.extractors.current.export.id&quot;: &quot;SQL Updates&quot;,
     &quot;database.data.extractors.current.id&quot;: &quot;SQL Updates&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;241009__0001&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/SSAFY/Desktop/Jun/YeoHaengDam/frontend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -153,6 +157,7 @@
       <recent name="com.ttalkak.deployment" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.ttalkak.deployment.deployment.domain.model.docker.frontend.packagemanager" />
       <recent name="com.ttalkak.deployment.deployment.application.inputport" />
     </key>
   </component>
@@ -187,7 +192,6 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="ComputeServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
@@ -207,6 +211,13 @@
     <configuration name="DeploymentServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="deployment.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.ttalkak.deployment.DeploymentServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="gateway-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ttalkak.gateway.GatewayServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -239,27 +250,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="SwaggerCodegen" show_console_on_std_err="false" show_console_on_std_out="false">
-      <option name="allowRunningInParallel" value="false" />
+    <configuration default="true" type="SwaggerCodegen">
+      <option name="activeConfigurationType" value="FILE" />
+      <option name="configurationPath" value="" />
+      <option name="customJreEnabled" value="false" />
       <option name="customTemplatesPath" value="" />
-      <option name="envs">
-        <map />
-      </option>
+      <option name="enableDebugLogging" value="false" />
       <option name="generateToPath" value="$PROJECT_DIR$/gen" />
       <option name="generationParameters">
         <list />
       </option>
-      <option name="generatorType" value="OPENAPI_GENERATOR_V6" />
+      <option name="generatorPath" value="" />
       <option name="jdkPath" value="" />
       <option name="language" value="java" />
-      <option name="passParentEnvs" value="true" />
-      <option name="programParameters" />
-      <option name="projectPathOnTarget" />
-      <option name="selectedOptions">
-        <list />
-      </option>
       <option name="specificationPath" value="$PROJECT_DIR$/docs/index.yaml" />
-      <option name="workingDirectory" value="C:\Users\SSAFY\Desktop\Jun\0927\ddalkak\docs" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
@@ -384,6 +388,7 @@
       <workItem from="1728307321757" duration="1581000" />
       <workItem from="1728345859830" duration="13942000" />
       <workItem from="1728375425368" duration="1192000" />
+      <workItem from="1728387032029" duration="2847000" />
     </task>
     <task id="LOCAL-00001" summary="도커 컴포즈 수정">
       <option name="closed" value="true" />

@@ -45,7 +45,7 @@ public class WebHookDeploymentInputPort implements WebHookDeploymentUseCase {
             ProjectInfoResponse projectInfo = projectOutputPort.getProjectInfo(deployment.getProjectId());
             expirationDate = projectInfo.getExpirationDate();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BusinessException(ErrorCode.KAFKA_CREATE_INSTANCE_PRODUCER_ERROR);
         }
         // 배포 상태 변환
         deployment.setStatus(Status.PENDING);
@@ -87,7 +87,7 @@ public class WebHookDeploymentInputPort implements WebHookDeploymentUseCase {
         try {
             eventOutputPort.occurRebuildInstance(createInstanceEvent);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
+            throw new BusinessException(ErrorCode.KAFKA_CREATE_INSTANCE_PRODUCER_ERROR);
         }
     }
 }

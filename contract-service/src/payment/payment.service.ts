@@ -3,8 +3,9 @@ import Web3, { Contract } from 'web3';
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '@src/prisma/prisma.service';
-import { Prisma, Transaction, TransactionHistory } from '@prisma/client';
+import { Prisma, TransactionConfrim, TransactionHistory } from '@prisma/client';
 import PaymentContract from '@contracts/build/contracts/PaymentContract.json';
+import ERC20Contract from '@contracts/build/contracts/ERC20.json';
 import { CustomException } from '@src/common/exception/exception';
 import {
   ALREADY_PAID,
@@ -13,6 +14,7 @@ import {
 } from '@src/common/exception/error.code';
 import { Decimal } from '@prisma/client/runtime/library';
 import { Receipt } from './payment.type';
+import { from } from 'rxjs';
 
 const AMOUNT = 10;
 
@@ -22,6 +24,7 @@ export class PaymentService {
   private key: Buffer;
   private iv: Buffer;
   private payment: any;
+  private token: any;
 
   constructor(
     private readonly configService: ConfigService,
@@ -36,44 +39,15 @@ export class PaymentService {
       PaymentContract.abi,
       this.configService.get<string>('PAYMENT_CONTRACT_ADDRESS'),
     );
+    this.token = new this.web3.eth.Contract(
+      ERC20Contract.abi,
+      this.configService.get<string>('SSF_TOKEN_CONTRACT_ADDRESS'),
+    );
 
     this.key = Buffer.from(
       this.configService.get<string>('ENCRYPT_SECRET_KEY'),
     );
     this.iv = Buffer.from(this.configService.get<string>('ENCRYPT_IV_KEY'));
-  }
-
-  async getPayments(userId: number, range: number): Promise<Receipt> {
-    const userTransactions = await this.prisma.transaction.findMany({
-      where: {
-        OR: [
-          {
-            senderId: userId,
-          },
-        ],
-        AND: [
-          {
-            createdAt: {
-              gte: new Date(Date.now() - range * 24 * 60 * 60 * 1000),
-            },
-          },
-        ],
-      },
-      include: {
-        transactionHistories: true,
-      },
-    });
-
-    const histories = userTransactions
-      .map((transaction) => transaction.transactionHistories)
-      .flat();
-
-    return {
-      histories,
-      amount: histories.reduce((acc, cur) => {
-        return +new Decimal(acc).add(cur.amount).toString();
-      }, 0),
-    };
   }
 
   async savePrivateKey({
@@ -89,8 +63,16 @@ export class PaymentService {
     let encrypted = cipher.update(privateKey, 'utf8', 'hex');
     encrypted += cipher.final('hex');
 
-    await this.prisma.userTransactionKey.create({
-      data: {
+    await this.prisma.userTransactionKey.upsert({
+      where: {
+        userId: userId,
+      },
+      create: {
+        userId: userId,
+        privateKey: encrypted,
+        address: address,
+      },
+      update: {
         userId: userId,
         privateKey: encrypted,
         address: address,
@@ -102,87 +84,46 @@ export class PaymentService {
     };
   }
 
-  async getPrivateKey({
-    userId
-  }: {
-    userId: number;
-  }) {
+  async getPrivateKey({ userId }: { userId: number }) {
     const key = await this.prisma.userTransactionKey.findUnique({
       where: {
-        userId: userId
-      }
+        userId: userId,
+      },
     });
 
     if (key) {
       return {
         userId: userId,
         address: key.address,
-        hasKey: Boolean(key.privateKey)
+        hasKey: Boolean(key.privateKey),
       };
     }
 
     return {
       userId: userId,
-      address: "",
-      hasKey: false
-    } 
+      address: '',
+      hasKey: false,
+    };
   }
 
-  async signTransaction({
-    serviceId,
-    serviceType,
-    senderId,
-    receipientId,
-    toAddress,
-  }: {
-    serviceId: number;
-    serviceType: string;
-    senderId: number;
-    receipientId: number;
-    toAddress: string;
-  }) {
-    const exist = await this.prisma.transaction.findFirst({
+  async getPaymentHistory(userId: number, range: number): Promise<any> {
+    const histories = await this.prisma.transactionHistory.groupBy({
+      by: ['domain', 'serviceId', 'serviceType'],
+      _sum: {
+        amount: true,
+      },
       where: {
-        serviceId: serviceId,
-        serviceType: serviceType,
-        senderId: senderId,
-        receipientId: receipientId,
+        senderId: userId,
       },
     });
 
-    if (exist) return exist;
-
-    const user = await this.prisma.userTransactionKey.findUnique({
-      where: {
-        userId: senderId,
-      },
-    });
-
-    const decipher = createDecipheriv('aes-256-cbc', this.key, this.iv);
-    let decrypted = decipher.update(user.privateKey, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
-
-    const signedTx = await this.web3.eth.accounts.signTransaction(
-      {
-        from: user.address,
-        to: this.configService.get<string>('PAYMENT_CONTRACT_ADDRESS'),
-        value: 0,
-        gasPrice: 0,
-        gasLimit: 50000,
-        data: this.payment.methods.sendPayment(toAddress, 10).encodeABI(),
-      },
-      decrypted,
-    );
-
-    return this.prisma.transaction.create({
-      data: {
-        serviceId: serviceId,
-        serviceType: serviceType,
-        senderId: senderId,
-        receipientId: receipientId,
-        amount: AMOUNT,
-        transaction: signedTx.rawTransaction,
-      },
+    return histories.map((history) => {
+      return {
+        serviceId: history.serviceId,
+        serviceType: history.serviceType,
+        domain: history.domain,
+        amount: history._sum.amount,
+      };
     });
   }
 
@@ -197,7 +138,7 @@ export class PaymentService {
     );
 
     const histories = await this.prisma.transactionHistory.groupBy({
-      by: ['serviceId'],
+      by: ['serviceId', 'serviceType'],
       _sum: {
         amount: true,
       },
@@ -218,30 +159,35 @@ export class PaymentService {
   }
 
   async processPayment(
+    domain: string,
     serviceId: number,
     serviceType: string,
     senderId: number,
     receipientId: number,
+    toAddress: string,
   ): Promise<any> {
-    const transaction = await this.getTransaction(
-      serviceId,
-      serviceType,
-      senderId,
-      receipientId,
-    );
+    const sender = await this.prisma.userTransactionKey.findUnique({
+      where: {
+        userId: senderId,
+      },
+    });
 
-    if (!transaction) {
+    if (!sender) {
       throw new CustomException(
-        INVALID_PAYMENT_CONTRACT,
-        '결제 정보가 존재하지 않습니다.',
+        ALREADY_TRANSACTION_EXIST,
+        '트랜잭션 키가 존재하지 않습니다.',
       );
     }
 
+    const decipher = createDecipheriv('aes-256-cbc', this.key, this.iv);
+    let decrypted = decipher.update(sender.privateKey, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+
     const hasPaied = await this.prisma.transactionHistory.count({
       where: {
-        transactionId: transaction.id,
+        serviceId: serviceId,
         createdAt: {
-          gte: new Date(Date.now() - 5 * 60 * 1000),
+          gte: new Date(Date.now() - 4 * 60 * 1000),
         },
       },
     });
@@ -251,20 +197,41 @@ export class PaymentService {
     }
 
     try {
-      const response = await this.web3.eth.sendSignedTransaction(
-        transaction.transaction,
+      const signedTx = await this.web3.eth.accounts.signTransaction(
+        {
+          nonce: await this.web3.eth.getTransactionCount(sender.address),
+          from: sender.address,
+          to: this.configService.get<string>('PAYMENT_CONTRACT_ADDRESS'),
+          data: this.payment.methods
+            .transfer(
+              sender.address,
+              this.configService.get<string>('ADMIN_ADDRESS'),
+              AMOUNT,
+            )
+            .encodeABI(),
+          gasPrice: 0,
+          gasLimit: 50000,
+          value: 0,
+        },
+        '0x' + decrypted.trim(),
+      );
+
+      // 서명된 트랜잭션을 블록체인에 전송
+      const receipt = await this.web3.eth.sendSignedTransaction(
+        signedTx.rawTransaction,
       );
 
       await this.prisma.transactionHistory.create({
         data: {
-          fromAddress: response.from,
-          toAddress: response.to,
+          domain: domain,
+          fromAddress: receipt.from,
+          toAddress: toAddress,
           senderId: senderId,
           receipientId: receipientId,
-          blockHash: response.blockHash.toString(),
-          amount: transaction.amount,
-          serviceId: transaction.id,
-          transactionId: transaction.id,
+          blockHash: receipt.blockHash.toString(),
+          amount: AMOUNT,
+          serviceId: serviceId,
+          serviceType: serviceType,
         },
       });
     } catch (error) {
@@ -278,21 +245,78 @@ export class PaymentService {
         '결제가 정상적으로 이루어지지 않았습니다.',
       );
     }
+
+    return {
+      success: true,
+    };
   }
 
-  private async getTransaction(
-    serviceId: number,
-    serviceType: string,
-    senderId: number,
-    receipientId: number,
-  ): Promise<Transaction> {
-    return await this.prisma.transaction.findFirst({
-      where: {
-        serviceId: serviceId,
-        serviceType: serviceType,
-        senderId: senderId,
-        receipientId: receipientId,
+  async saveConfirm(
+    userId: number,
+    toAddress: string,
+    fromAddress: string,
+    hash: string,
+  ) {
+    const confirm = await this.prisma.transactionConfrim.create({
+      data: {
+        userId: userId,
+        toAddress: toAddress,
+        fromAddress: fromAddress,
+        hash: hash,
       },
     });
+
+    return confirm;
+  }
+
+  async getConfirm(userId: number): Promise<{
+    contract: boolean;
+    admin: boolean;
+  }> {
+    const confirm = await this.prisma.transactionConfrim.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return {
+      contract:
+        confirm.filter(
+          (c) =>
+            c.toAddress ===
+            this.configService.get<string>('PAYMENT_CONTRACT_ADDRESS'),
+        ).length > 0,
+      admin:
+        confirm.filter(
+          (c) =>
+            c.toAddress === this.configService.get<string>('ADMIN_ADDRESS'),
+        ).length > 0,
+    };
+  }
+
+  async validateUser(userId: number) {
+    const confirm = await this.getConfirm(userId);
+    const privateKey = await this.getPrivateKey({ userId: userId });
+
+    return {
+      hasKey: privateKey.hasKey,
+      hasContract: confirm.contract,
+      hasAdmin: confirm.admin,
+    };
+  }
+
+  async getToken(userId: number) {
+    const token = await this.prisma.transactionHistory.aggregate({
+      where: {
+        receipientId: userId,
+      },
+      _sum: {
+        amount: true,
+      },
+    });
+
+    return {
+      coin: token._sum.amount,
+    };
   }
 }

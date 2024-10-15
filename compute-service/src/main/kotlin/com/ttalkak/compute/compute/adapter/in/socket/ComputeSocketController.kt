@@ -101,13 +101,13 @@ class ComputeSocketController(
 
         upsertRunningUseCase.upsertRunning(userId, command)
 
-        if (request.status == RunningStatus.RUNNING) {
-            contractSignUseCase.sign(
-                serviceId = id,
-                serviceType = request.serviceType,
-                senderId = request.senderId,
-                recipientId = userId
-            )
-        }
+//        if (request.status == RunningStatus.RUNNING) {
+//            contractSignUseCase.sign(
+//                serviceId = id,
+//                serviceType = request.serviceType,
+//                senderId = request.senderId,
+//                recipientId = userId
+//            )
+//        }
     }
 }

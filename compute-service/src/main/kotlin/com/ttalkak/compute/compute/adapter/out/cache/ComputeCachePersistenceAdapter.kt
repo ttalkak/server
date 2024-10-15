@@ -83,7 +83,7 @@ class ComputeCachePersistenceAdapter(
         }
     }
 
-    override fun loadRunning(id: Long, serviceType: ServiceType): ComputeRunning {
+    override fun loadRunning(id: Long, serviceType: ServiceType): Optional<ComputeRunning> {
         log.debug {
             "id: $id, serviceType: $serviceType, runningCacheRepository.findById(deploymentId): ${runningCacheRepository.findById(id, serviceType)}"
         }
@@ -94,9 +94,11 @@ class ComputeCachePersistenceAdapter(
                 status = it.status,
                 message = it.message
             )
-        }.orElseThrow {
-            RuntimeException("현재 실행중인 인스턴스가 없습니다.")
         }
+    }
+
+    override fun loadRunningByUserId(userId: Long): List<ComputeInstance> {
+        return runningCacheRepository.findByUserId(userId)
     }
 
     override fun saveRunning(userId: Long, id: Long, serviceType: ServiceType, port: Int, status: RunningStatus, message: String?) {

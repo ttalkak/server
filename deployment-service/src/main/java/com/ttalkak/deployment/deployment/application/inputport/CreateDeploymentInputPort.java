@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.outputport.*;
 import com.ttalkak.deployment.deployment.application.usecase.CreateDeploymentUseCase;
 import com.ttalkak.deployment.deployment.application.usecase.CreateDockerfileUseCase;
@@ -10,9 +12,9 @@ import com.ttalkak.deployment.deployment.domain.event.HostingEvent;
 import com.ttalkak.deployment.deployment.domain.event.*;
 import com.ttalkak.deployment.deployment.domain.model.*;
 import com.ttalkak.deployment.deployment.domain.model.vo.GithubInfo;
-import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.WebDomainKeyResponse;
 import com.ttalkak.deployment.deployment.framework.domainadapter.dto.WebDomainRequest;
+import com.ttalkak.deployment.deployment.framework.kafka.ChangeProjectFaviconProducer;
 import com.ttalkak.deployment.deployment.framework.projectadapter.dto.ProjectInfoResponse;
 import com.ttalkak.deployment.deployment.framework.web.request.DeploymentCreateRequest;
 import com.ttalkak.deployment.deployment.framework.web.request.DockerfileCreateRequest;
@@ -30,7 +32,7 @@ import java.util.List;
 @Transactional
 public class CreateDeploymentInputPort implements CreateDeploymentUseCase {
 
-    private final CreateDockerfileUseCase createDockerfileUseCase;
+    private final CreateDockerfileUseCase createDockerfileUsecase;
 
     private final DeploymentOutputPort deploymentOutputPort;
 
@@ -46,6 +48,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUseCase {
 
     private final EventOutputPort eventOutputPort;
 
+    private final ChangeProjectFaviconProducer producer;
+
     @Override
     public DeploymentCreateResponse createDeployment(DeploymentCreateRequest deploymentCreateRequest) {
         // 깃허브 관련 정보 객체 생성
@@ -56,8 +60,20 @@ public class CreateDeploymentInputPort implements CreateDeploymentUseCase {
         Long userId = projectInfo.getUserId();
         String domainName = projectInfo.getDomainName();
         String webhookToken = projectInfo.getWebhookToken();
-        String payloadURL = "https://api.ttalkak.com/webhook/deployment/" + deploymentCreateRequest.getServiceType().toLowerCase() + "/" + webhookToken;
+        String payloadURL = "https://api.ttalkak.com/webhook/deployment/" + deploymentCreateRequest.getServiceType().toString().toLowerCase() + "/" + webhookToken;
         String expirationDate = projectInfo.getExpirationDate();
+
+        if (deploymentCreateRequest.getFavicon() != null) {
+            UpdateFaviconEvent faviconEvent = new UpdateFaviconEvent();
+            faviconEvent.setProjectId(deploymentCreateRequest.getProjectId());
+            faviconEvent.setFaviconUrl(deploymentCreateRequest.getFavicon());
+
+            try {
+                producer.updateFaviconEvent(faviconEvent);
+            } catch (JsonProcessingException e) {
+                throw new BusinessException(ErrorCode.KAFKA_FAVICON_PRODUCER_ERROR);
+            }
+        }
 
         // 배포 객체 생성
         DeploymentEntity deployment = createDeployment(deploymentCreateRequest, githubInfo, payloadURL);
@@ -68,12 +84,8 @@ public class CreateDeploymentInputPort implements CreateDeploymentUseCase {
 
         boolean dockerfileExist = dockerfileCreateRequest.getExist();
         if(!dockerfileExist){
-            String dockerFileScript = createDockerfileUseCase.generateDockerfileScript(deployment.getServiceType(),
-                    dockerfileCreateRequest.getBuildTool(),
-                    dockerfileCreateRequest.getPackageManager(),
-                    dockerfileCreateRequest.getLanguageVersion()
-            );
-            deployment.setDockerfileScript(dockerFileScript);
+            String dockerfileScript = createDockerfileUsecase.generateDockerfile(deployment.getFramework(), deployment.getServiceType(), dockerfileCreateRequest.getBuildTool(), dockerfileCreateRequest.getPackageManager(), dockerfileCreateRequest.getLanguageVersion());
+            deployment.setDockerfileScript(dockerfileScript);
         }
 
         // 배포 버전 객체 생성
@@ -106,7 +118,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUseCase {
         try {
             eventOutputPort.occurCreateInstance(createInstanceEvent);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("카프카 요청 오류가 발생했습니다.");
+            throw new BusinessException(ErrorCode.KAFKA_CREATE_INSTANCE_PRODUCER_ERROR);
         }
 
         return DeploymentCreateResponse.of(payloadURL);
@@ -182,7 +194,7 @@ public class CreateDeploymentInputPort implements CreateDeploymentUseCase {
     private static DeploymentEntity createDeployment(DeploymentCreateRequest deploymentCreateRequest, GithubInfo githubInfo, String payloadURL) {
         return DeploymentEntity.createDeployment(
                 deploymentCreateRequest.getProjectId(),
-                ServiceType.valueOf(deploymentCreateRequest.getServiceType()),
+                deploymentCreateRequest.getServiceType(),
                 githubInfo,
                 deploymentCreateRequest.getFramework(),
                 payloadURL);

@@ -14,12 +14,13 @@ import org.springframework.scheduling.annotation.Scheduled
 
 @UseCase
 class AllocateService (
-    private val createAllocatePort: CreateAllocatePort,
+    private val saveAllocatePort: SaveAllocatePort,
     private val loadAllocatePort: LoadAllocatePort,
     private val loadStatusPort: LoadStatusPort,
     private val loadRunningPort: LoadRunningPort,
     private val loadPortPort: LoadPortPort,
     private val savePortPort: SavePortPort,
+    private val saveInstancePort: SaveInstancePort,
     private val deploymentFeignClient: DeploymentFeignClient,
     private val simpleMessagingTemplate: SimpMessagingTemplate,
     private val loadComputePort: LoadComputePort,
@@ -36,7 +37,7 @@ class AllocateService (
             "신규 컴퓨터 할당 요청: $command"
         }
 
-        createAllocatePort.append(
+        saveAllocatePort.append(
             id = command.id,
             senderId = command.senderId,
             isDatabase = command.isDatabase,
@@ -44,15 +45,6 @@ class AllocateService (
             useCPU = command.useCPU,
             instance = command.container
         )
-
-        if (!command.isDatabase) {
-            deploymentFeignClient.updateStatus(DeploymentUpdateStatusRequest(
-                id = command.id,
-                serviceType = ServiceType.DATABASE,
-                status = RunningStatus.WAITING,
-                message = "컴퓨터 할당 대기중"
-            ))
-        }
     }
 
     override fun addRebuildQueue(command: AddComputeCommand) {
@@ -60,7 +52,7 @@ class AllocateService (
             "재할당 요청: $command"
         }
 
-        createAllocatePort.appendPriority(
+        saveAllocatePort.appendPriority(
             id = command.id,
             senderId = command.senderId,
             isDatabase = command.isDatabase,
@@ -69,13 +61,6 @@ class AllocateService (
             useCPU = command.useCPU,
             instance = command.container
         )
-
-        deploymentFeignClient.updateStatus(DeploymentUpdateStatusRequest(
-            id = command.id,
-            serviceType = ServiceType.DATABASE,
-            status = RunningStatus.WAITING,
-            message = "컴퓨터 재할당 대기중"
-        ))
     }
 
     @Scheduled(fixedDelay = 1000 * 60)
@@ -102,18 +87,26 @@ class AllocateService (
                 log.info { "재할당 대기중인 컴퓨터: ${compute.id}" }
 
                 val serviceType = if (compute.isDatabase) ServiceType.DATABASE else (compute.instance as DockerContainer).serviceType
-                val running = loadRunningPort.loadRunning(compute.id, serviceType)
+                loadRunningPort.loadRunning(compute.id, serviceType).ifPresent {
+                    if (it.status == RunningStatus.RUNNING) {
+                        val availablePorts = availablePorts(it.userId)
+                        val randomPort = availablePorts.random()
+                        savePortPort.savePort(it.userId, randomPort)
 
-                if (running.status == RunningStatus.RUNNING) {
-                    val availablePorts = availablePorts(running.userId)
-                    val randomPort = availablePorts.random()
-                    savePortPort.savePort(running.userId, randomPort)
+                        (compute.instance as DockerContainer).outboundPort = randomPort
+                        loadAllocatePort.pop()
+                        simpleMessagingTemplate.convertAndSend("/sub/compute-create/${it.userId}", Json.serialize(create))
 
-                    (compute.instance as DockerContainer).outboundPort = randomPort
-                    loadAllocatePort.pop()
-                    simpleMessagingTemplate.convertAndSend("/sub/compute-create/${running.userId}", Json.serialize(create))
+                        deploymentFeignClient.updateStatus(DeploymentUpdateStatusRequest(
+                            id = (compute.instance as DockerContainer).deploymentId,
+                            serviceType = serviceType,
+                            status = RunningStatus.WAITING,
+                            message = "컴퓨터 할당 대기중"
+                        ))
+
+                        saveInstancePort.saveInstance((compute.instance as DockerContainer).deploymentId, serviceType, compute)
+                    }
                 }
-                continue
             }
 
             // * 할당 로직
@@ -128,7 +121,7 @@ class AllocateService (
                 if (tries[compute.id] == false) {
                     log.error { "할당 가능한 컴퓨터가 없습니다." }
                     loadAllocatePort.pop().ifPresent {
-                        createAllocatePort.append(
+                        saveAllocatePort.append(
                             id = it.id,
                             senderId = it.senderId,
                             isDatabase = it.isDatabase,
@@ -150,9 +143,18 @@ class AllocateService (
             // * 컴퓨터에 할당 가능한 포트 저장
             val availablePorts = availablePorts(availableCompute.userId)
 
+            var serviceId: Long
+            var serviceType: ServiceType
+
             if (compute.isDatabase) {
+                serviceId = compute.id
+                serviceType = ServiceType.DATABASE
+
                 simpleMessagingTemplate.convertAndSend("/sub/database-create/${availableCompute.userId}", Json.serialize(create))
             } else {
+                serviceId = (compute.instance as DockerContainer).deploymentId
+                serviceType = (compute.instance as DockerContainer).serviceType
+
                 // * 포트 할당
                 val randomPort = availablePorts.random()
                 savePortPort.savePort(availableCompute.userId, randomPort)
@@ -160,6 +162,15 @@ class AllocateService (
                 (compute.instance as DockerContainer).outboundPort = randomPort
                 simpleMessagingTemplate.convertAndSend("/sub/compute-create/${availableCompute.userId}", Json.serialize(create))
             }
+
+            saveInstancePort.saveInstance(serviceId, serviceType, compute)
+
+            deploymentFeignClient.updateStatus(DeploymentUpdateStatusRequest(
+                id = serviceId,
+                serviceType = serviceType,
+                status = RunningStatus.WAITING,
+                message = "컴퓨터 할당 대기중"
+            ))
         }
 
         redisLockPort.unlock(ALLOCATE_LOCK_KEY)

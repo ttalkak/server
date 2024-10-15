@@ -1,78 +1,86 @@
 package com.ttalkak.deployment.deployment.application.inputport;
 
-
+import com.ttalkak.deployment.common.UseCase;
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.application.usecase.CreateDockerfileUseCase;
+import com.ttalkak.deployment.deployment.domain.model.docker.*;
+import com.ttalkak.deployment.deployment.domain.model.docker.backend.BackendDockerfile;
+import com.ttalkak.deployment.deployment.domain.model.docker.backend.GradleBuildToolStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.backend.MavenBuildToolStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.*;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.buildtool.BuildToolStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.buildtool.CraStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.buildtool.NextBuildToolStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.buildtool.ViteStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.packagemanager.NextPackageManagerStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.packagemanager.NpmStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.packagemanager.PackageManagerStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.packagemanager.YarnStrategy;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@RequiredArgsConstructor
-@Transactional
+@UseCase
 public class CreateDockerFileInputPort implements CreateDockerfileUseCase {
 
     @Override
-    public String generateDockerfileScript(ServiceType serviceType, String buildTool, String packageManager, String languageVersion) {
-        StringBuilder dockerfileBuilder = new StringBuilder();
-
-        if(serviceType == ServiceType.BACKEND) {
-            if("gradle".equalsIgnoreCase(buildTool)) {
-                dockerfileBuilder.append("FROM gradle:8.8-jdk").append(languageVersion).append(" AS build\n");
-            } else if("maven".equalsIgnoreCase(buildTool)) {
-                dockerfileBuilder.append("FROM maven:3.9.4-eclipse-temurin-").append(languageVersion).append(" AS build\n");
-            }
-
-            dockerfileBuilder.append("WORKDIR /app\n")
-                    .append("COPY . .\n");
-
-            if("gradle".equalsIgnoreCase(buildTool)) {
-                dockerfileBuilder.append("RUN gradle clean build -x test --no-daemon\n");
-            } else if("maven".equalsIgnoreCase(buildTool)) {
-                dockerfileBuilder.append("RUN mvn clean package -DskipTests\n");
-            }
-
-            dockerfileBuilder.append("FROM eclipse-temurin:").append(languageVersion).append("-jdk\n")
-                    .append("WORKDIR /app\n");
-
-
-            if("gradle".equalsIgnoreCase(buildTool)) {
-                dockerfileBuilder.append("COPY --from=build /app/build/libs/*.jar /app/app.jar\n");
-            } else if("maven".equalsIgnoreCase(buildTool)) {
-                dockerfileBuilder.append("COPY --from=build /app/target/*.jar /app/app.jar\n");
-            }
-
-            dockerfileBuilder.append("ENTRYPOINT [\"java\", \"-jar\", \"/app/app.jar\"]\n");
+    public String generateDockerfile(String framework, ServiceType serviceType, String buildTool, String packageManager, String languageVersion) {
+        String dockerfileScript = "Dockerfile Not Exist";
+        if (ServiceType.isBackendType(serviceType)) {
+            DockerfileTemplate backendDockerfile = createBackendDockerfile(buildTool);
+            dockerfileScript = backendDockerfile.generateDockerfileScript(
+                    serviceType,
+                    buildTool,
+                    packageManager,
+                    languageVersion
+            );
+        } else if (ServiceType.isFrontendType(serviceType)) {
+            DockerfileTemplate frontendDockerfile = createFrontendDockerfile(framework, buildTool, packageManager);
+            dockerfileScript = frontendDockerfile.generateDockerfileScript(
+                    serviceType,
+                    buildTool,
+                    packageManager,
+                    languageVersion
+            );
         }
-
-        if(serviceType == ServiceType.FRONTEND) {
-            dockerfileBuilder.append("FROM node:").append(languageVersion).append(" AS build\n")
-                    .append("WORKDIR /app\n");
-
-            if("npm".equalsIgnoreCase(packageManager)) {
-                dockerfileBuilder.append("COPY package*.json ./\n")
-                        .append("RUN npm ci\n")
-                        .append("COPY . .\n")
-                        .append("RUN ").append(packageManager).append(" run build\n");
-            } else if("yarn".equalsIgnoreCase(packageManager)) {
-                dockerfileBuilder.append("COPY package.json yarn.lock ./\n")
-                        .append("RUN yarn install --frozen-lockfile\n")
-                        .append("COPY . .\n")
-                        .append("RUN ").append("yarn build\n");
-            }
-
-            dockerfileBuilder.append("FROM nginx:stable-alpine\n");
-
-            if("cra".equalsIgnoreCase(buildTool)) {
-                dockerfileBuilder.append("COPY --from=build /app/build /usr/share/nginx/html\n");
-            } else if("vite".equalsIgnoreCase(buildTool)) {
-                dockerfileBuilder.append("COPY --from=build /app/dist /usr/share/nginx/html\n");
-            }
-
-            dockerfileBuilder.append("CMD [\"nginx\", \"-g\", \"daemon off;\"]");
-        }
-
-        return dockerfileBuilder.toString();
+        return dockerfileScript;
     }
 
+    private DockerfileTemplate createBackendDockerfile(String buildTool) {
+        if (buildTool != null && buildTool.equalsIgnoreCase("maven")) {
+            return new BackendDockerfile(new MavenBuildToolStrategy());
+        } else if (buildTool != null && buildTool.equalsIgnoreCase("gradle")) {
+            return new BackendDockerfile(new GradleBuildToolStrategy());
+        }
+        throw new BusinessException(ErrorCode.NOT_DETECTED_GIT_REPOSITORY);
+    }
+
+    private DockerfileTemplate createFrontendDockerfile(String framework, String buildTool, String packageManager) {
+        PackageManagerStrategy packageManagerStrategy;
+        BuildToolStrategy buildToolStrategy;
+
+        if(framework.equals("NEXTJS")){
+            packageManagerStrategy = new NextPackageManagerStrategy();
+            buildToolStrategy = new NextBuildToolStrategy();
+        }
+
+        else {
+            if (packageManager != null && packageManager.equalsIgnoreCase("yarn")) {
+                packageManagerStrategy = new YarnStrategy();
+            } else if (packageManager != null && packageManager.equalsIgnoreCase("npm")) {
+                packageManagerStrategy = new NpmStrategy();
+            } else {
+                throw new BusinessException(ErrorCode.NOT_DETECTED_GIT_REPOSITORY);
+            }
+
+            if (buildTool != null && buildTool.equalsIgnoreCase("cra")) {
+                buildToolStrategy = new CraStrategy();
+            } else if (buildTool != null && buildTool.equalsIgnoreCase("vite")) {
+                buildToolStrategy = new ViteStrategy();
+            } else {
+                throw new BusinessException(ErrorCode.NOT_DETECTED_GIT_REPOSITORY);
+            }
+        }
+
+        return new FrontendDockerfile(packageManagerStrategy, buildToolStrategy);
+    }
 }

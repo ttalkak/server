@@ -7,8 +7,10 @@ import com.ttalkak.compute.compute.application.port.`in`.*
 import com.ttalkak.compute.compute.application.port.out.*
 import com.ttalkak.compute.compute.domain.AllocateCompute
 import com.ttalkak.compute.compute.domain.ComputeRunning
+import com.ttalkak.compute.compute.domain.RunningStatus
 import com.ttalkak.compute.compute.domain.ServiceType
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.util.Optional
 
 @UseCase
 class ComputeService (
@@ -16,6 +18,8 @@ class ComputeService (
     private val saveDeploymentStatusPort: SaveDeploymentStatusPort,
     private val saveRunningPort: SaveRunningPort,
     private val savePortPort: SavePortPort,
+    private val loadInstancePort: LoadInstancePort,
+    private val saveAllocatePort: SaveAllocatePort,
     private val loadRunningPort: LoadRunningPort,
     private val removePortPort: RemovePortPort,
     private val removeDeploymentStatusPort: RemoveDeploymentStatusPort,
@@ -40,6 +44,34 @@ class ComputeService (
     }
 
     override fun disconnect(userId: Long) {
+        log.debug { "연결 해제 요청: $userId" }
+        loadRunningPort.loadRunningByUserId(userId).forEach {
+            log.debug { "연결 해제 요청 보낼 Running: $it"}
+            val status = DeploymentUpdateStatusRequest(
+                id = it.id,
+                serviceType = it.serviceType,
+                status = RunningStatus.ERROR,
+                message = "노드 서버 연결이 끊어짐"
+            )
+
+            try {
+                deploymentFeignClient.updateStatus(status)
+            } catch (e: Exception) {
+                log.error(e) { "직접 연결: 디플로이먼트 상태 업데이트 실패" }
+            } finally {
+                loadInstancePort.loadInstance(it.id, it.serviceType).ifPresent { instance ->
+                    saveAllocatePort.appendPriority(
+                        id = it.id,
+                        senderId = instance.senderId,
+                        rebuild = true,
+                        isDatabase = instance.isDatabase,
+                        useMemory = instance.useMemory,
+                        useCPU = instance.useCPU,
+                        instance = instance.instance
+                    )
+                }
+            }
+        }
         saveComputePort.deleteCompute(userId)
         removePortPort.removePort(userId)
         removeRunningPort.removeRunningByUserId(userId)
@@ -71,7 +103,6 @@ class ComputeService (
     }
 
     override fun upsertRunning(userId: Long, command: RunningCommand) {
-        // TODO: compute Type 추가
         saveRunningPort.saveRunning(
             userId = userId,
             id = command.id,
@@ -99,7 +130,7 @@ class ComputeService (
         }
     }
 
-    override fun loadRunning(id: Long, serviceType: ServiceType): ComputeRunning {
+    override fun loadRunning(id: Long, serviceType: ServiceType): Optional<ComputeRunning> {
         return loadRunningPort.loadRunning(id, serviceType)
     }
 }

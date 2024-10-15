@@ -1,8 +1,6 @@
 package com.ttalkak.compute.compute.application.port.out
 
-import com.ttalkak.compute.compute.domain.DockerContainer
-
-interface CreateAllocatePort {
+interface SaveAllocatePort {
     fun append(
         id: Long,
         senderId: Long,

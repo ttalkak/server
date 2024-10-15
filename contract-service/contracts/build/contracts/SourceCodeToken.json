@@ -251,7 +251,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -270,7 +271,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -294,7 +296,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -307,7 +310,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -326,7 +330,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -414,7 +419,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -427,7 +433,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -446,7 +453,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -12674,9 +12682,17 @@
     "name": "solc",
     "version": "0.8.27+commit.40a35a09.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "31221": {
+      "events": {},
+      "links": {},
+      "address": "0x21e839786A2Ee46c22f3FdE52EbEb425f39Ec1eF",
+      "transactionHash": "0x3532054267a319c3462dde48a54870a04c14b5e0993837cca4c93112ec41fd29"
+    }
+  },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2024-10-04T13:07:07.421Z",
+  "updatedAt": "2024-10-09T13:50:32.090Z",
+  "networkType": "ethereum",
   "devdoc": {
     "errors": {
       "ERC721IncorrectOwner(address,uint256,address)": [

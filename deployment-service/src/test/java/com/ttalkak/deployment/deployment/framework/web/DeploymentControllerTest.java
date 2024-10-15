@@ -87,7 +87,7 @@ class DeploymentControllerTest extends RestDocsSupport {
 
         DeploymentCreateRequest request = DeploymentCreateRequest.builder()
                 .projectId(1L)
-                .serviceType("BACKEND")
+                .serviceType(ServiceType.BACKEND)
                 .githubRepositoryRequest(githubRepositoryRequest)
                 .versionRequest(versionRequest)
                 .hostingPort(8080)
@@ -156,7 +156,7 @@ class DeploymentControllerTest extends RestDocsSupport {
 
     private DatabaseCreateRequest createDatabaseRequest(DatabaseType databaseName, int databasePort, String username, String password) {
         return DatabaseCreateRequest.builder()
-                .databaseName(databaseName)
+                .name(databaseName)
                 .databasePort(databasePort)
                 .username(username)
                 .password(password)

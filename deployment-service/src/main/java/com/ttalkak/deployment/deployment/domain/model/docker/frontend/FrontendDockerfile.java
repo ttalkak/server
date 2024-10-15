@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.domain.model.docker.frontend;
 
 import com.ttalkak.deployment.deployment.domain.model.docker.DockerfileTemplate;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.buildtool.BuildToolStrategy;
+import com.ttalkak.deployment.deployment.domain.model.docker.frontend.packagemanager.PackageManagerStrategy;
 import com.ttalkak.deployment.deployment.domain.model.vo.ServiceType;
 
 public class FrontendDockerfile extends DockerfileTemplate {
@@ -23,16 +25,14 @@ public class FrontendDockerfile extends DockerfileTemplate {
         StringBuilder command = new StringBuilder();
         command.append(packageManagerStrategy.copyDependencies())
                 .append(packageManagerStrategy.installDependencies())
-                .append("COPY . .\n")
                 .append(packageManagerStrategy.runBuild());
         return command.toString();
     }
 
     @Override
     protected String setupFinalStage(ServiceType serviceType, String buildTool, String languageVersion) {
-        return "FROM nginx:stable-alpine\n" +
+        return buildToolStrategy.buildFromImage(languageVersion) +
                 buildToolStrategy.copyBuildOutput() +
-                "RUN chmod -R 755 /usr/share/nginx/html\n" +
-                "CMD [\"nginx\", \"-g\", \"daemon off;\"]";
+                buildToolStrategy.cmdCommand();
     }
 }

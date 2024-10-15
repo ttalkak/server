@@ -1,6 +1,8 @@
 package com.ttalkak.deployment.deployment.framework.kafka;
 
 
+import com.ttalkak.deployment.common.global.error.ErrorCode;
+import com.ttalkak.deployment.common.global.exception.BusinessException;
 import com.ttalkak.deployment.deployment.domain.event.DeleteDeploymentsEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +28,7 @@ public class SagaRollBackProducer {
         future.thenAccept(result -> {
             log.info("롤백 - 프로젝트 ID {} 배포 삭제 실패", deleteDeploymentsEvent.getProjectId());
         }).exceptionally(ex -> {
-            throw new IllegalArgumentException(ex);
+            throw new BusinessException(ErrorCode.KAFKA_CHANGE_DEPLOYMENT_STATUS_PRODUCER_ERROR);
         });
     }
 }

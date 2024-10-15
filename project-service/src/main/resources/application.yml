@@ -27,6 +27,9 @@ consumers:
     update-domain-name-exception:
       name: update-domain-name-exception
 
+    update-project-favicon:
+      name: update-project-favicon
+
   group-id:
     project-deletion-group:
       name: project_deletion_group

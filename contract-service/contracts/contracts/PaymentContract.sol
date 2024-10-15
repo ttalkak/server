@@ -2,9 +2,13 @@
 pragma solidity ^0.8.0;
 
 interface IERC20 {
+    function _transfer(address sender, address recipient, uint256 amount) external returns (bool);
+    function transfer(address recipient, uint256 amount) external returns (bool);
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
     function balanceOf(address account) external view returns (uint256);
     function allowance(address owner, address spender) external view returns (uint256); // Allowance 함수 추가
+    function _approve(address owner, address spender, uint256 amount) external returns (bool);
+    function approve(address spender, uint256 amount) external returns (bool);
 }
 
 contract PaymentContract {
@@ -28,26 +32,25 @@ contract PaymentContract {
     constructor(uint256 _ownerFeePercent, address _tokenContract) {
         owner = msg.sender;
         ownerFeePercent = _ownerFeePercent;
-        tokenContract = IERC20(_tokenContract); // Set the token contract
+        tokenContract = IERC20(_tokenContract);
     }
 
-    function sendPayment(address _to, uint256 _amount) external {
+    function sendPayment(address _from, address _to, uint256 _amount) external {
         require(_amount > 0, "Amount must be greater than zero");
 
         uint256 ownerFee = (_amount * ownerFeePercent) / 100;
         uint256 recipientAmount = _amount - ownerFee;
 
-        tokenContract.transferFrom(msg.sender, _to, recipientAmount);
-        tokenContract.transferFrom(msg.sender, owner, ownerFee);
+        tokenContract.transferFrom(_from, _to, recipientAmount);
+        tokenContract.transferFrom(_from, owner, ownerFee);
+    }
 
-        paymentHistory.push(Payment({
-            from: msg.sender,
-            to: _to,
-            amount: recipientAmount,
-            timestamp: block.timestamp
-        }));
+    function approve(address _owner, address _spender, uint256 _amount) external {
+        tokenContract._approve(_owner, _spender, _amount);
+    }
 
-        emit PaymentMade(msg.sender, _to, recipientAmount, ownerFee, block.timestamp);
+    function transfer(address _from, address _to, uint256 _amount) external {
+        tokenContract.transferFrom(_from, _to, _amount);
     }
 
     function balance(address _account) external view returns (uint256) {
